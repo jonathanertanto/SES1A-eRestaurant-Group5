@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/customersDB', {
 
 
 const app = express();
-app.use(express.static("public"));
+app.use(express.static("Login/public"));
 app.use('/', express.static(path.join(__dirname, 'static')))
 app.use(bodyParser.json());
 
