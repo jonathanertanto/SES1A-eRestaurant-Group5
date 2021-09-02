@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.87.0">
+    <meta name="author" content="">
     <title>Sign Up</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
@@ -26,76 +25,79 @@
     <link href="css/styles.css" rel="stylesheet">
   </head>
   <body class="text-center">
+    <main class="form-signup">
+      <form action = "/" method = "post" id = "reg-form">
+        <h1>Sign Up</h1>
+        <h4>with</h4>
+        <h2>Le Bistrot d'Andre</h2>
+        <div class="form-floating">
+          <input type="text" class="form-control" id="floatingInput" placeholder="username">
+          <label for="floatingInput">Username</label>
+        </div>
+        <div class="form-floating">
+          <input type="email" class="form-control" id="email" placeholder="name@example.com">
+          <label for="email">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+          <label for="floatingPassword">Password</label>
+        </div>
+        <div class="form-floating left-field">
+          <input type="text" class="form-control" id="first_name" placeholder="First Name">
+          <label for="floatingInput">First Name</label>
+        </div>
+        <div class="form-floating right-field">
+          <input type="text" class="form-control" id="last_name" placeholder="Last Name">
+          <label for="floatingInput">Last Name (optional)</label>
+        </div>
+        <div class="form-floating">
+          <input type="date" class="form-control" id="date_of_birth" placeholder="DD/MM/YYYY">
+          <label for="floatingInput">Date of Birth</label>
+        </div>
+        <div class="form-floating">
+          <input type="text" class="form-control" id="contact_number" placeholder="Contact Number">
+          <label for="floatingInput">Contact Number</label>
+        </div>
 
-  <main class="form-signup">
-    <form action = "/" method = "post" id = "reg-form">
-      <h1 class="h3 mb-3 fw-normal">Sign up with Le Bistrot d'Andre</h1>
-      <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput" placeholder="username">
-        <label for="floatingInput">Username</label>
-      </div>
-      <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-        <label for="floatingInput">Email address</label>
-      </div>
-      <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Password</label>
-      </div>
-      <div class="form-floating left-field">
-        <input type="text" class="form-control" id="floatingInput" placeholder="First Name">
-        <label for="floatingInput">First Name</label>
-      </div>
-      <div class="form-floating right-field">
-        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name">
-        <label for="floatingInput">Last Name</label>
-      </div>
-      <div class="form-floating">
-        <input type="date" class="form-control" id="floatingInput" placeholder="DD/MM/YYYY">
-        <label for="floatingInput">Date of Birth</label>
-      </div>
-      <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput" placeholder="Contact Number">
-        <label for="floatingInput">Contact Number</label>
-      </div>
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+        <a href="login.html">Already have an account</a>
+      </form>
+    </main>
 
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div>
-      <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
-      <a href="login.html">Already have an account</a>
-    </form>
-  </main>
+    <script>
+      const form = document.getElementById("reg-form")
+      form.addEventListener("submit", registerUser)
 
-  <script>
-    const form = document.getElementById("reg-form")
-    form.addEventListener("submit", registerUser)
+      async function registerUser(event) {
+        event.preventDefault()
+        const username = document.getElementById("floatingInput").value
+        const email = document.getElementById("email").value
+        const password = document.getElementById("floatingPassword").value
 
-    async function registerUser(event) {
-      event.preventDefault()
-      const username = document.getElementById("floatingInput").value
-      const password = document.getElementById("floatingPassword").value
+        const result = await fetch("/api/register", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              username,
+              email,
+              password
+            })
+        }).then ((res) =>res.json())
 
-      const result = await fetch("/api/register", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username,
-            password
-          })
-      }).then ((res) =>res.json())
-
-      if (result.status === "ok"){
-            alert ("Success")
-      } else {
-        alert (result.error)
+        if (result.status === "ok"){
+          alert ("Success")
+        } else {
+          alert (result.error)
+        }
+        
       }
-
-    }
-  </script>
+    </script>
   </body>
 </html>

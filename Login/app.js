@@ -106,8 +106,8 @@ app.post("/api/register", async (req,res) => {
     return res.json({status: "error", error: "Invalid password"})
   }
 
-  if (plainTextPassword.length < 5) {
-      return res.json({status: "error", error: "Password is too small. Should be at least 6 characters"})
+  if (plainTextPassword.length < 8) {
+      return res.json({status: "error", error: "Password is too small. Should be at least 8 characters"})
   }
 
   const password = await bcrypt.hash(plainTextPassword,10)
@@ -125,8 +125,8 @@ app.post("/api/register", async (req,res) => {
     }
     throw error
   }
-res.json ({status: "ok"})
-//  bcrypt.hash ()
+  res.json ({status: "ok"})
+  //  bcrypt.hash ()
 })
 
 const port = process.env.PORT || 3000;
