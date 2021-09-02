@@ -22,10 +22,10 @@ app.use(bodyParser.json());
 
 /*
 app.get("/", function(req, res){
-  res.sendFile(__dirname + "/signup_page.html")
+  res.sendFile(__dirname + "/signup.html")
 });
 app.get("/login", function(req,res){
-  res.sendFile(__dirname + "/login_page.html")
+  res.sendFile(__dirname + "/login.html")
 });
 app.get("/change_password", function(req,res){
   res.sendFile(__dirname + "/change_password.html")
@@ -69,8 +69,6 @@ app.post("/api/change_password", async (req, res)  => {
   res.json({ status: "ok"})
 })
 
-
-
 app.post("/api/login", async (req, res) => {
   const {username,password} = req.body
 
@@ -79,6 +77,7 @@ app.post("/api/login", async (req, res) => {
   if (!user){
     return res.json({ status: "error", error: "Invalid username/password"})
   }
+
   if (await bcrypt.compare(password, user.password)){
       //if the username, password combination is successful
       const token = jwt.sign ({
@@ -93,8 +92,6 @@ app.post("/api/login", async (req, res) => {
 })
 
 app.post("/api/register", async (req,res) => {
-  //console.log(req.body)
-
   const {username, password: plainTextPassword} = req.body
 
   if (!username || typeof username !==  "string"){
@@ -111,7 +108,6 @@ app.post("/api/register", async (req,res) => {
 
   const password = await bcrypt.hash(plainTextPassword,10)
 
-
   try {
     const response = await User.create({
       username,
@@ -121,7 +117,6 @@ app.post("/api/register", async (req,res) => {
   } catch (error){
     if( error.code === 11000){
       //error for dupicate key
-
     return res.json({status: "error", error: "Userame already in use"})
     }
     throw error
@@ -130,6 +125,7 @@ res.json ({status: "ok"})
 //  bcrypt.hash ()
 })
 
-app.listen(3000, function(){
-  console.log("Server started on port 3000.");
+const port = process.env.PORT || 3000;
+app.listen(port, function(){
+  console.log(`Server started on port ${port}.`);
 });
