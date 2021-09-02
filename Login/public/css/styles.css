@@ -1,13 +1,14 @@
 /*
 COLOR PALETTE
 Kind of dark yellow: #ffcc00
-
+dark gray - almost black: #343434
 */
 
+/* Global Styles
+-----------------*/
 html{
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
   padding: 0;
@@ -15,9 +16,30 @@ body {
   background-color: #ffcc00;
   font-family: 'Montserrat', sans-serif;
 }
-
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 a{
   color: #343434;
+}
+a:hover {
+  text-decoration: none;
+}
+
+/* Sign Up
+ ----------*/
+ .form-signup{
+   max-width: 450px;
+   padding: 15px;
+   margin: auto;
+ }
+.left-field{
+  float: left;
+  margin-right: 0px;
+  width: 50%;
+}
+.right-field{
+  display: grid;
 }
 
 .form-signin {

@@ -22,34 +22,18 @@
     <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">
     <meta name="theme-color" content="#7952b3">
 
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-
-
     <!-- Custom styles for this template -->
     <link href="css/styles.css" rel="stylesheet">
   </head>
   <body class="text-center">
 
-  <main class="form-signin">
+  <main class="form-signup">
     <form action = "/" method = "post" id = "reg-form">
-      <img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
       <h1 class="h3 mb-3 fw-normal">Sign up with Le Bistrot d'Andre</h1>
-
+      <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInput" placeholder="username">
+        <label for="floatingInput">Username</label>
+      </div>
       <div class="form-floating">
         <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
         <label for="floatingInput">Email address</label>
@@ -57,6 +41,22 @@
       <div class="form-floating">
         <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
         <label for="floatingPassword">Password</label>
+      </div>
+      <div class="form-floating left-field">
+        <input type="text" class="form-control" id="floatingInput" placeholder="First Name">
+        <label for="floatingInput">First Name</label>
+      </div>
+      <div class="form-floating right-field">
+        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name">
+        <label for="floatingInput">Last Name</label>
+      </div>
+      <div class="form-floating">
+        <input type="date" class="form-control" id="floatingInput" placeholder="DD/MM/YYYY">
+        <label for="floatingInput">Date of Birth</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInput" placeholder="Contact Number">
+        <label for="floatingInput">Contact Number</label>
       </div>
 
       <div class="checkbox mb-3">
