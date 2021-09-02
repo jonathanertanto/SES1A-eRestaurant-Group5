@@ -32,6 +32,10 @@ app.get("/change_password", function(req,res){
 });
 */
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname+'/static/login.html'));
+});
+
 app.post("/api/change_password", async (req, res)  => {
   const {token, newpassword: plainTextPassword} = req.body
 
