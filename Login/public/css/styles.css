@@ -10,7 +10,7 @@ html{
   box-sizing: border-box;
 }
 body {
-  background-color: #ffcc00;
+  background-color: #ffffff;
   margin: 0;
   padding: 0;
   align-items: center;
@@ -42,15 +42,23 @@ h1, h2, h3{
   margin-top: 10px;
 }
 
+/* Header 
+--------------*/
+.cover{
+  background-image: url(https://www.crownsydney.com.au/getmedia/a4b64699-e7ba-459d-bc30-ab9ed96cc5f6/210420-Crown-Sydney-Restaurant-Epicurean-0520-6496x4872.jpg?width=1440);
+  background-size: cover;
+  padding-bottom: 250px;
+  background-position: center;
+}
+
 /* Navigation Bar
  -----------------*/
 .topnav {
   overflow: hidden;
-  background-color: #4d0000;
 }
 .topnav a {
   float: left;
-  color: #f2f2f2;
+  color: #242424;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -59,12 +67,12 @@ h1, h2, h3{
   align-items: center;
 }
 .topnav a:hover {
-  background-color: #ff704d;
-  color: black;
+  border-bottom: 3px solid #242424;
+  color: #242424;
 }
 .topnav a.active {
-  background-color: #ff3300;
-  color: white;
+  border-bottom: 3px solid #242424;
+  color: #242424;
 }
 
 
@@ -87,9 +95,6 @@ h1, h2, h3{
 
 /* Sign In/Log In
  -----------------*/
- .form-signin{
-   margin-top: 5%;
- }
 .form-signin h3{
   margin-bottom: 10px;
 }
@@ -113,3 +118,5 @@ h1, h2, h3{
   border-top-right-radius: 0;
   border-top-left-radius:  0;
 }
+
+@media screen and (max-height: )
