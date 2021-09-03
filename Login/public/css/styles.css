@@ -55,6 +55,8 @@ h1, h2, h3{
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+  display: flex;
+  align-items: center;
 }
 .topnav a:hover {
   background-color: #ff704d;
