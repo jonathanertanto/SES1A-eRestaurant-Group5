@@ -57,13 +57,14 @@ h1, h2, h3{
   font-size: 17px;
 }
 .topnav a:hover {
-  background-color: #ddd;
+  background-color: #ff704d;
   color: black;
 }
 .topnav a.active {
-  background-color: #04AA6D;
+  background-color: #ff3300;
   color: white;
 }
+
 
 /* Sign Up
  ----------*/
