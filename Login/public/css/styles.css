@@ -27,7 +27,7 @@ a:hover {
 }
 h1{
   font-weight: 700;
-  font-size: 50px;
+  font-size: 60px;
 }
 h2{
   font-weight: 525;
@@ -42,12 +42,36 @@ h1, h2, h3{
   margin-top: 10px;
 }
 
+/* Navigation Bar
+ -----------------*/
+.topnav {
+  overflow: hidden;
+  background-color: #4d0000;
+}
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
 /* Sign Up
  ----------*/
  .form-signup, .form-signin{
    max-width: 450px;
    padding: 15px;
    margin: auto;
+   margin-top: 10px;
  }
 .left-field{
   float: left;
