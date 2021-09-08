@@ -51,6 +51,7 @@ header{
   background-position: center;
   margin: 0 auto;
   padding: 0 0 10px 0;
+  opacity: 0.85;
 }
 .homepage{
   padding: 0 0 350px 0;
@@ -64,7 +65,7 @@ header{
 }
 .topnav a {
   float: left;
-  color: #343434;
+  color: #0a0a0a;
   text-align: center;
   padding: 20px 15px;
   text-decoration: none;
@@ -73,11 +74,11 @@ header{
   align-items: center;
 }
 .topnav a:hover {
-  border-bottom: 3px solid #343434;
+  border-bottom: 3px solid #0a0a0a;
 }
 .topnav a.active {
-  border-bottom: 3px solid #343434;
-  color: #343434;
+  border-bottom: 3px solid #0a0a0a;
+  color: #0a0a0a;
 }
 
 /* Sign Up
