@@ -47,17 +47,19 @@ h1, h2, h3{
 header{
   overflow: hidden;
   background-image: url(https://www.crownsydney.com.au/getmedia/a4b64699-e7ba-459d-bc30-ab9ed96cc5f6/210420-Crown-Sydney-Restaurant-Epicurean-0520-6496x4872.jpg?width=1440);
+  background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   margin: 0 auto;
-  padding: 0 0 10px 0;
-  opacity: 0.85;
+  padding: 0 0 1vh 0;
+  opacity: 0.9;
+  filter: grayscale(35%);
 }
 
 /* Home Page
 ------------ */
 .homepage{
-  padding: 0 0 30% 0;
+  padding: 0 0 50vh 0;
 }
 
 /* Navigation Bar

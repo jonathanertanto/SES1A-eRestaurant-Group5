@@ -17,12 +17,12 @@
   <body class="text-center">
     <header>
       <div class="topnav">
-          <a href="#"><i class="material-icons">home</i>Home</a> 
-          <a href="#"><i class="material-icons">list_alt</i>Menu</a>
-          <a href="./login.html"><i class="material-icons">login</i>Log In</a>
-          <a class="active" href="./signup.html"><i class="material-icons">how_to_reg</i>Sign Up</a>
-      </div>
-  </header>
+        <a href="./homepage.html"><i class="material-icons">home</i>Home</a> 
+        <a href="./menu.html"><i class="material-icons">list_alt</i>Menu</a>
+        <a href="./login.html"><i class="material-icons">login</i>Log In</a>
+        <a class="active" href="./signup.html"><i class="material-icons">how_to_reg</i>Sign Up</a>
+      </div>  
+    </header>
     <main class="form-signup">
       <form action = "/" method = "post" id = "reg-form">
         <h1>Sign Up</h1>
@@ -42,19 +42,19 @@
         </div>
         <div class="form-floating left-field">
           <input type="text" class="form-control" id="first_name" placeholder="First Name">
-          <label for="floatingInput">First Name</label>
+          <label for="first_name">First Name</label>
         </div>
         <div class="form-floating right-field">
           <input type="text" class="form-control" id="last_name" placeholder="Last Name">
-          <label for="floatingInput">Last Name (optional)</label>
+          <label for="last_name">Last Name (optional)</label>
         </div>
         <div class="form-floating">
           <input type="date" class="form-control" id="date_of_birth" placeholder="DD/MM/YYYY">
-          <label for="floatingInput">Date of Birth</label>
+          <label for="date_of_birth">Date of Birth</label>
         </div>
         <div class="form-floating">
           <input type="text" class="form-control" id="contact_number" placeholder="Contact Number">
-          <label for="floatingInput">Contact Number</label>
+          <label for="contact_number">Contact Number</label>
         </div>
 
         <div class="checkbox mb-3">
@@ -66,11 +66,10 @@
         <a href="login.html">Already have an account</a>
       </form>
     </main>
-
     <script>
       const form = document.getElementById("reg-form")
       form.addEventListener("submit", registerUser)
-
+      
       async function registerUser(event) {
         event.preventDefault()
         const username = document.getElementById("floatingInput").value
@@ -93,8 +92,7 @@
           alert ("Success")
         } else {
           alert (result.error)
-        }
-
+        }  
       }
     </script>
   </body>
