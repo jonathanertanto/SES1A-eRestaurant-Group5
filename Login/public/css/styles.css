@@ -53,8 +53,11 @@ header{
   padding: 0 0 10px 0;
   opacity: 0.85;
 }
+
+/* Home Page
+------------ */
 .homepage{
-  padding: 0 0 350px 0;
+  padding: 0 0 30% 0;
 }
 
 /* Navigation Bar

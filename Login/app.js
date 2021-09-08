@@ -1,3 +1,6 @@
+let loginStatus = "false";
+exports.loginStatus = loginStatus;
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require ("path");
@@ -13,7 +16,6 @@ mongoose.connect('mongodb://localhost:27017/customersDB', {
   useCreateIndex: true,
   useUnifiedTopology: true
 });
-
 
 const app = express();
 app.use(express.static("Login/public"));
@@ -33,7 +35,7 @@ app.get("/change_password", function(req,res){
 */
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname+'/static/login.html'));
+  res.sendFile(path.join(__dirname+'/static/homepage.html'));
 });
 
 app.post("/api/change_password", async (req, res)  => {

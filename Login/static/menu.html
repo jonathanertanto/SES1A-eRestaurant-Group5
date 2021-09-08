@@ -4,18 +4,32 @@
         <meta charset="UTF-8">
         <title>Le Bistrot d'Andre</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Homepage of Le Bistrot d'Andre Booking Website.">
+        <meta name="description" content="Menu page of Le Bistrot d'Andre Booking Website.">
         <meta name="theme-color" content="#ffcc00">
         <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script>
+            var loginStatus = require('../app.js').loginStatus;
+        </script>
     </head>
     <body>
         <header>
             <div class="topnav">
-                <a href="./homepage.html"><i class="material-icons">home</i>Home</a> 
-                <a href="./booking.html"><i class="material-icons">event</i>Booking</a>
+                <a href="./homepage.html"><i class="material-icons">home</i>Home</a>
+                <script>
+                    if(loginStatus == "true"){
+                        document.write('<a href="./booking.html"><i class="material-icons">event</i>Booking</a>');
+                    }
+                </script>
                 <a class="active" href="./menu.html"><i class="material-icons">list_alt</i>Menu</a>
-                <a href="./profile.html"><i class="material-icons">account_circle</i>Profile</a>
+                <script>
+                    if(loginStatus == "true"){
+                        document.write('<a href="./profile.html"><i class="material-icons">account_circle</i>Profile</a>');
+                    }else{
+                        document.write('<a href="./login.html"><i class="material-icons">login</i>Log In</a>');
+                        document.write('<a href="./signup.html"><i class="material-icons">how_to_reg</i>Sign Up</a>');
+                    }
+                </script>
             </div>
         </header>
         <main>
