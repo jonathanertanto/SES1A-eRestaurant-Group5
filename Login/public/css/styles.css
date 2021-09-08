@@ -42,39 +42,43 @@ h1, h2, h3{
   margin-top: 10px;
 }
 
-/* Header 
+/* Header
 --------------*/
-.cover{
+header{
+  overflow: hidden;
   background-image: url(https://www.crownsydney.com.au/getmedia/a4b64699-e7ba-459d-bc30-ab9ed96cc5f6/210420-Crown-Sydney-Restaurant-Epicurean-0520-6496x4872.jpg?width=1440);
   background-size: cover;
-  padding-bottom: 250px;
   background-position: center;
+  margin: 0 auto;
+  padding: 0 0 10px 0;
+}
+.homepage{
+  padding: 0 0 300px 0;
 }
 
 /* Navigation Bar
  -----------------*/
 .topnav {
   overflow: hidden;
+  float: right;
 }
 .topnav a {
   float: left;
-  color: #242424;
+  color: #ffffff;
   text-align: center;
-  padding: 14px 16px;
+  padding: 20px 15px;
   text-decoration: none;
   font-size: 17px;
   display: flex;
   align-items: center;
 }
 .topnav a:hover {
-  border-bottom: 3px solid #242424;
-  color: #242424;
+  border-bottom: 3px solid #ffffff;
 }
 .topnav a.active {
-  border-bottom: 3px solid #242424;
-  color: #242424;
+  border-bottom: 3px solid #ffffff;
+  color: #ffffff;
 }
-
 
 /* Sign Up
  ----------*/
