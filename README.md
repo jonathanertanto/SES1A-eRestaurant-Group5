@@ -6,3 +6,6 @@ Step by step from pulling to executing the code:
     Otherwise, make sure you are already in the folder directory of the project on your computer and type git pull
 3. To run the program, type nodemon app.js
 4. Open your browser and type localhost:3000
+
+Step by step to stop the program:
+1. Press control c from your keyboard
