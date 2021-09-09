@@ -13,26 +13,26 @@
         </script>
     </head>
     <body>
-        <header>
-            <div class="topnav">
-                <a href="./homepage.html"><i class="material-icons">home</i>Home</a>
-                <script>
-                    if(loginStatus == "true"){
-                        document.write('<a href="./booking.html"><i class="material-icons">event</i>Booking</a>');
-                    }
-                </script>
-                <a class="active" href="./menu.html"><i class="material-icons">list_alt</i>Menu</a>
-                <script>
-                    if(loginStatus == "true"){
-                        document.write('<a href="./profile.html"><i class="material-icons">account_circle</i>Profile</a>');
-                    }else{
-                        document.write('<a href="./login.html"><i class="material-icons">login</i>Log In</a>');
-                        document.write('<a href="./signup.html"><i class="material-icons">how_to_reg</i>Sign Up</a>');
-                    }
-                </script>
-            </div>
-        </header>
         <main>
+            <header>
+                <div class="topnav">
+                    <a href="./homepage.html"><i class="material-icons">home</i>Home</a>
+                    <script>
+                        if(loginStatus == "true"){
+                            document.write('<a href="./booking.html"><i class="material-icons">event</i>Booking</a>');
+                        }
+                    </script>
+                    <a class="active" href="./menu.html"><i class="material-icons">list_alt</i>Menu</a>
+                    <script>
+                        if(loginStatus == "true"){
+                            document.write('<a href="./profile.html"><i class="material-icons">account_circle</i>Profile</a>');
+                        }else{
+                            document.write('<a href="./login.html"><i class="material-icons">login</i>Log In</a>');
+                            document.write('<a href="./signup.html"><i class="material-icons">how_to_reg</i>Sign Up</a>');
+                        }
+                    </script>
+                </div>
+            </header>
         </main>
     </body>
 </html>
