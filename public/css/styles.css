@@ -72,21 +72,37 @@ header{
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-}
-.title a{
-  border: none;
-  color: rgb(18, 18, 18);
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+  font-weight: 900;
   font-size: 60px;
-  font-weight: 600;
-  cursor: pointer;
-  vertical-align: middle;
-  position: relative;
-  padding: 0;
-  letter-spacing: 3px;
+  color: #111111;
 }
+.ml5 {
+  position: relative;
+}
+.ml5 .text-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-top: 0.1em;
+  padding-right: 0.05em;
+  padding-bottom: 0.15em;
+  line-height: 1em;
+}
+.ml5 .line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 3px;
+  width: 100%;
+  background-color: #402d2d;
+  transform-origin: 0.5 0;
+}
+.ml5 .letters {
+  display: inline-block;
+  opacity: 0;
+}
+
 .booking{
   display: block;
   margin-bottom: 21.73913043px;

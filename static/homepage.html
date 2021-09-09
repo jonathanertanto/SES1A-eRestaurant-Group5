@@ -40,7 +40,14 @@
                     </script>
                 </div>
                 <div class="title">
-                    <a href="./homepage.html">Le Bistrot d'Andre</a>
+                    <h1 class="ml5">
+                        <span class="text-wrapper">
+                          <span class="line line1"></span>
+                          <span class="letters letters-left">Le Bistrot</span>
+                          <span class="letters letters-right">d'Andre</span>
+                          <span class="line line2"></span>
+                        </span>
+                    </h1>
                 </div>
                 <div class="center booking">
                     <script>
@@ -82,4 +89,40 @@
             </footer>
         </main>
     </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+    <script>
+        anime.timeline({loop: true})
+        .add({
+            targets: '.ml5 .line',
+            opacity: [0.5,1],
+            scaleX: [0, 1],
+            easing: "easeInOutExpo",
+            duration: 1000
+        }).add({
+            targets: '.ml5 .line',
+            duration: 1000,
+            easing: "easeOutExpo",
+            translateY: (el, i) => (-0.625 + 0.625*2*i) + "em"
+        }).add({
+            targets: '.ml5 .letters-left',
+            opacity: [0,1],
+            translateX: ["0.5em", 0],
+            easing: "easeOutExpo",
+            duration: 1500,
+            offset: '-=300'
+        }).add({
+            targets: '.ml5 .letters-right',
+            opacity: [0,1],
+            translateX: ["-0.5em", 0],
+            easing: "easeOutExpo",
+            duration: 1500,
+            offset: '-=600'
+        }).add({
+            targets: '.ml5',
+            opacity: 0,
+            duration: 2000,
+            easing: "easeOutExpo",
+            delay: 1000
+        });
+    </script>
 </html>
