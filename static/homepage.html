@@ -11,6 +11,13 @@
         <script>
             var loginStatus = require('../app.js').loginStatus;
         </script>
+        <script>
+            if(loginStatus == "true"){
+                urlBooking = "./booking.html";
+            }else{
+                urlBooking = "./login.html";
+            }
+        </script>
     </head>
     <body>
         <main>
@@ -34,20 +41,27 @@
                 </div>
                 <div class="center booking">
                     <script>
-                        if(loginStatus == "true"){
-                            document.write('<a href="./booking.html" class="submit">Book a Table</a>');
-                        }else{
-                            document.write('<a href="./login.html" class="submit">Book a Table</a>');
-                        }
+                        document.write('<a href="'+urlBooking+'" >Book a Table</a>');
                     </script>
                 </div>
             </header>
             <div class="container-info">
                 <div class="info-box left">
-                    <img src="https://www.crownsydney.com.au/getmedia/ad5ae0e2-2872-4fbe-bf54-601b12baee97/210420-Crown-Sydney-Restaurant-Epicurean-0099-6496x4872.jpg" >
+                    <script>
+                        document.write('<a href="'+urlBooking+'"><img src="https://www.crownsydney.com.au/getmedia/ad5ae0e2-2872-4fbe-bf54-601b12baee97/210420-Crown-Sydney-Restaurant-Epicurean-0099-6496x4872.jpg" ></a>');
+                    </script>
+                    <div class="info-box-text center">
+                        <script>
+                            document.write('<a href="'+urlBooking+'">Lunch = 12:00 - 15:00</a> <br>');
+                            document.write('<a href="'+urlBooking+'">Dinner = 12:00 - 15:00</a>');
+                        </script>
+                    </div>
                 </div>
                 <div class="info-box right">
-                    <img src="https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg">
+                    <a href="./menu.html"><img src="https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg"></a>
+                    <div class="info-box-text center">
+                        <a href="./menu.html">Dinning</a>
+                    </div>
                 </div>
             </div>
             <div class="container-about">
@@ -59,7 +73,9 @@
                 </article>
             </div>
             <footer>
+                <div class="footer-widget">
 
+                </div>
             </footer>
         </main>
     </body>
