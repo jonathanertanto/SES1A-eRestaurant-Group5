@@ -13,27 +13,54 @@
         </script>
     </head>
     <body>
-        <header>
-            <div class="topnav homepage">
-                <a class="active" href="./homepage.html"><i class="material-icons">home</i>Home</a> 
-                <script>
-                    if(loginStatus == "true"){
-                        document.write('<a href="./booking.html"><i class="material-icons">event</i>Booking</a>');
-                    }
-                </script>
-                <a href="./menu.html"><i class="material-icons">list_alt</i>Menu</a>
-                <script>
-                    if(loginStatus == "true"){
-                        document.write('<a href="./profile.html"><i class="material-icons">account_circle</i>Profile</a>');
-                    }else{
-                        document.write('<a href="./login.html"><i class="material-icons">login</i>Log In</a>');
-                        document.write('<a href="./signup.html"><i class="material-icons">how_to_reg</i>Sign Up</a>');
-                    }
-                </script>
-            </div>
-        </header>
         <main>
-            
+            <header>
+                <div class="topnav homepage">
+                    <a class="active" href="./homepage.html"><i class="material-icons">home</i>Home</a> 
+                    <script>
+                        if(loginStatus == "true"){
+                            document.write('<a href="./booking.html"><i class="material-icons">event</i>Booking</a>');
+                        }
+                    </script>
+                    <a href="./menu.html"><i class="material-icons">list_alt</i>Menu</a>
+                    <script>
+                        if(loginStatus == "true"){
+                            document.write('<a href="./profile.html"><i class="material-icons">account_circle</i>Profile</a>');
+                        }else{
+                            document.write('<a href="./login.html"><i class="material-icons">login</i>Log In</a>');
+                            document.write('<a href="./signup.html"><i class="material-icons">how_to_reg</i>Sign Up</a>');
+                        }
+                    </script>
+                </div>
+                <div class="center booking">
+                    <script>
+                        if(loginStatus == "true"){
+                            document.write('<a href="./booking.html" class="submit">Book a Table</a>');
+                        }else{
+                            document.write('<a href="./login.html" class="submit">Book a Table</a>');
+                        }
+                    </script>
+                </div>
+            </header>
+            <div class="container-info">
+                <div class="info-box left">
+                    <img src="https://www.crownsydney.com.au/getmedia/ad5ae0e2-2872-4fbe-bf54-601b12baee97/210420-Crown-Sydney-Restaurant-Epicurean-0099-6496x4872.jpg" >
+                </div>
+                <div class="info-box right">
+                    <img src="https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg">
+                </div>
+            </div>
+            <div class="container-about">
+                <h2>About</h2>
+                <h1>Le Bistrot d'Andre</h1>
+                <article>
+                    Experience a unique French fine dining at Le Bistrot d'Andre, with enlightened “open kitchens” serving you the finest flavours from some of the most exciting cuisines.
+                    Le Bistrot d'Andre is the all-in-one venue to celebrate moments and create memories.
+                </article>
+            </div>
+            <footer>
+
+            </footer>
         </main>
     </body>
 </html>
