@@ -6,3 +6,4 @@ Step by step from pulling to executing the code:
     Otherwise, type git pull
       Note: make sure you are already in the folder directory of the project on your computer
 3. To run the program, type nodemon app.js
+4. Open your browser and type localhost:3000
