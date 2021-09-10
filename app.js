@@ -1,4 +1,4 @@
-let loginStatus = "false";
+let loginStatus = false;
 exports.loginStatus = loginStatus;
 
 const express = require("express");

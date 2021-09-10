@@ -12,7 +12,7 @@
             var loginStatus = require('../app.js').loginStatus;
         </script>
         <script>
-            if(loginStatus == "true"){
+            if(loginStatus){
                 urlBooking = "./booking.html";
             }else{
                 urlBooking = "./login.html";
@@ -25,13 +25,13 @@
                 <div class="topnav homepage">
                     <a class="active" href="./homepage.html"><i class="material-icons">home</i>Home</a> 
                     <script>
-                        if(loginStatus == "true"){
+                        if(loginStatus){
                             document.write('<a href="./booking.html"><i class="material-icons">event</i>Booking</a>');
                         }
                     </script>
                     <a href="./menu.html"><i class="material-icons">list_alt</i>Menu</a>
                     <script>
-                        if(loginStatus == "true"){
+                        if(loginStatus){
                             document.write('<a href="./profile.html"><i class="material-icons">account_circle</i>Profile</a>');
                         }else{
                             document.write('<a href="./login.html"><i class="material-icons">login</i>Log In</a>');
@@ -84,7 +84,7 @@
             </section>
             <footer>
                 <div class="footer-widget">
-                    
+
                 </div>
             </footer>
         </main>

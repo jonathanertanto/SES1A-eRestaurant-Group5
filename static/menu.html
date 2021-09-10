@@ -19,13 +19,13 @@
                 <div class="topnav">
                     <a href="./homepage.html"><i class="material-icons">home</i>Home</a>
                     <script>
-                        if(loginStatus == "true"){
+                        if(loginStatus){
                             document.write('<a href="./booking.html"><i class="material-icons">event</i>Booking</a>');
                         }
                     </script>
                     <a class="active" href="./menu.html"><i class="material-icons">list_alt</i>Menu</a>
                     <script>
-                        if(loginStatus == "true"){
+                        if(loginStatus){
                             document.write('<a href="./profile.html"><i class="material-icons">account_circle</i>Profile</a>');
                         }else{
                             document.write('<a href="./login.html"><i class="material-icons">login</i>Log In</a>');
@@ -39,22 +39,32 @@
                 <div class="menu-item">
                     <img src="https://uppercutsteakhouse.com/wp-content/uploads/2019/09/menu-dry-agedc.jpg">
                     <div class="name">Menu 1</div>
+                    <div class="description">Description</div>
+                    <div class="price">$xxx</div>
                 </div>
                 <div class="menu-item">
                     <img src="https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg">
                     <div class="name">Menu 2</div>
+                    <div class="description">Description</div>
+                    <div class="price">$xxx</div>
                 </div>
                 <div class="menu-item">
                     <img src="https://i.pinimg.com/564x/d4/c9/31/d4c9317f618ef2eff5e74cd91240460b.jpg">
                     <div class="name">Menu 3</div>
+                    <div class="description">Description</div>
+                    <div class="price">$xxx</div>
                 </div>
                 <div class="menu-item">
                     <img src="https://i.pinimg.com/564x/6c/6e/8d/6c6e8dabd1808b9b17c0f0425e812f60.jpg">
                     <div class="name">Menu 4</div>
+                    <div class="description">Description</div>
+                    <div class="price">$xxx</div>
                 </div>
                 <div class="menu-item">
                     <img src="https://i.pinimg.com/474x/96/44/81/964481b56cc24fb0b5cb26163d8c7d1e.jpg">
                     <div class="name">Menu 5</div>
+                    <div class="description">Description</div>
+                    <div class="price">$xxx</div>
                 </div>
             </section>
         </main>

@@ -31,9 +31,13 @@
 }
 
 .menu-item, .description{
-    
+    font-weight: 500;
+    font-size:medium;
 }
 
 .menu-item, .price{
     text-align: center;
+    font-weight: 500;
+    font-size:medium;
 }
+
