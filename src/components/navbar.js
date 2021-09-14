@@ -1,92 +1,53 @@
 import React from "react";
-//import { NavbarToggler,Nav, Navbar, NavbarBrand, NavLink } from "reactstrap";
-import * as NavbarProperties from "react-bootstrap";
-/*
+import {Outlet} from "react-router-dom";
+import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle} from '@material-ui/icons/';
+import { isLogedIn } from "../App";
 
-export default props => {
+export function Navbar(props){
+    let menu, menu2;
+    if(!isLogedIn()){
+        menu = <a className={props.page==="login"? "active":""} href="#"><ExitToApp />Log In</a>;
+        menu2 = <a className={props.page==="signup"? "active":""} href="#"><HowToReg />Sign Up</a>
+    }else{
+        menu = <a className={props.page==="booking"? "active":""} href="#"><Event />Booking</a>
+        menu2 = <a className={props.page==="profile"? "active":""} href="#"><AccountCircle />Profile</a>
+    }
     return (
-        <div className = "header">
-<nav className="navbar">
-<NavbarProperties.Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-  <NavbarProperties.Container>
-  <NavbarProperties.Navbar.Brand className = "nav-brand">Le Bistrot de Andre</NavbarProperties.Navbar.Brand>
-  <NavbarProperties.Navbar.Toggle aria-controls="responsive-navbar-nav" />
-  <NavbarProperties.Navbar.Collapse id="responsive-navbar-nav">
-    <NavbarProperties.Nav className="me-auto">
-     
+        <main>
+            <header>
+                <div className={props.page==="homepage"? "topnav homepage":"topnav"}>
+                    <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
+                    <a className={props.page==="menu"? "active":""} href="#"><ListAlt />Menu</a>
+                    {menu}
+                    {menu2}
+                </div>
 
-        <NavbarProperties.NavDropdown.Divider />
-      
-   
-    </NavbarProperties.Nav>
-    <NavbarProperties.Nav>
+                {props.page==="homepage" &&
+                    <div>
+                        {restaurantName()}
+                        <div className="center booking">
+                            <a href="#">Book a Table</a>
+                        </div>
+                    </div>
+                }
+            </header>
+            <Outlet />
+        </main>
+    );
+}
 
-      <NavbarProperties.Nav.Link href="#deets">
-        Menu
-       </NavbarProperties.Nav.Link>
-
-      <NavbarProperties.Nav.Link 
-            onClick={_ =>{
-                props.setPage(1);
-                }}>
-        Book a Table
-        </NavbarProperties.Nav.Link>
-
-      <NavbarProperties.Nav.Link eventKey={2} href="#memes">
-        Sign in
-      </NavbarProperties.Nav.Link>
-
-    </NavbarProperties.Nav>
-  </NavbarProperties.Navbar.Collapse>
-  </NavbarProperties.Container>
-</NavbarProperties.Navbar>
-</nav>
+function restaurantName(){
+    return(
+        <div className="title">
+            <h1 className="ml5">
+                <span className="text-wrapper">
+                    <span className="line line1"></span>
+                    <span className="letters letters-left">Le Bistrot</span>
+                    <span className="letters ampersand"> </span>
+                    <span className="letters letters-right">d'Andre</span>
+                    <span className="line line2"></span>
+                </span>
+            </h1>
         </div>
-        );
-    };
-    
-
-    /*
-
-*/
-    export default props => {
-      return (
-          <div>
-
-        <nav className="navbar">
-
-            <div className="navbar-container">
-                <NavbarProperties.Nav.Link to="/" className="navbar-logo">
-                    ECO drvin
-                </NavbarProperties.Nav.Link>
-                <ul className="nav-menu">
-                    <li className="nav-item">
-                        <NavbarProperties.Nav.Link to="/" className="nav-links">
-                            Home
-                        </NavbarProperties.Nav.Link>
-                    </li>
-                    <li className="nav-item">
-                        <NavbarProperties.Nav.Link to="/" className="nav-links">
-                            About
-                        </NavbarProperties.Nav.Link>
-                    </li>
-                    <li className="nav-item">
-                        <NavbarProperties.Nav.Link to="/" className="nav-links">
-                            Pricing
-                        </NavbarProperties.Nav.Link>
-                    </li>
-                    <li className="nav-item">
-                        <NavbarProperties.Nav.Link to="/" className="nav-links">
-                            Sign up
-                        </NavbarProperties.Nav.Link>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    
-
-
-        </div>
-        );
-    };
-    
+    );
+}

@@ -6,7 +6,7 @@ $med-break: 992px;
 $grey: #f5f5f5;
 $red: #e74c3c;
 body{
-  font-family: ABeeZee, sans-serif
+  font-family: 'seravek-light';
 } 
 .nav-brand{
   cursor: pointer;
@@ -26,7 +26,6 @@ body{
 }
    
 // Home Page
-
 .pizza-cta{
     padding-top: 5%;
 }
@@ -54,7 +53,6 @@ body{
 
 
 //  Dropdowns
-
 input[type=date]::-webkit-inner-spin-button{
     -webkit-appearance: none;
     display: none;
@@ -102,7 +100,6 @@ input[type=date]::-webkit-calendar-picker-indicator {
   }
 
 // Tables Display
-
 .table-display-message{
     padding: 2% 0;
     text-align: center;
@@ -294,19 +291,6 @@ header{
   opacity: 0.9;
   filter: grayscale(35%);
   flex :50%;
-  
-}
-
-.head{
-  overflow: hidden;
-  background-image: url(https://www.crownsydney.com.au/getmedia/a4b64699-e7ba-459d-bc30-ab9ed96cc5f6/210420-Crown-Sydney-Restaurant-Epicurean-0520-6496x4872.jpg?width=1440);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  margin: 0 auto;
-  padding: 0 0 1vh 0;
-  opacity: 0.9;
-  filter: grayscale(35%);
 }
 
 /* Home Page
@@ -362,10 +346,10 @@ header{
   max-width: 100%;
   text-align: center;
 }
-.booking-btn {
+.booking a{
   background-color: #fdfdfd;
   border: none;
-  color: #7c6f49;
+  color: #666;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -377,11 +361,9 @@ header{
   padding: 20px 50px !important;
   letter-spacing: 3px;
   text-transform: uppercase;
-
-    &:hover{
-     color: #7c6f49;
-    background-color: #eaeaea;  
-  }
+}
+.booking a:hover{
+  background-color: #eaeaea;
 }
 .center {
   margin: 0;
@@ -392,13 +374,9 @@ header{
   transform: translate(-50%, -50%);
 }
 .container-info{
-    margin-top: 400px;
-    position: relative;
+  box-sizing: border-box;
   display: flex;
-  height: 2%;
-  flex-wrap: nowrap;
-  top: 20 px;
-  
+  height: 25%;
 }
 .container-info-header{
   margin-top: 0;
