@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import {Routes, Route} from "react-router-dom";
 import {Navbar} from "./components/navbar";
 import {Homepage} from "./components/homepage";
-
-// import Main from "./components/main";
-// import Book from "./components/book";
-// import ThankYou from "./components/thankYou";
-// import Navbar from "./components/navbar";
-// import HomePage from "./components/homepage";
+import {Menu} from "./components/menu";
+import {Login} from "./components/login";
+import {Signup} from "./components/signup";
 
 let loginStatus = false;
 
-export function isLogedIn(){
+export function isLoggedIn(){
   return loginStatus===true;
+}
+export function logIn(){
+  loginStatus = true;
+}
+export function logOut(){
+  loginStatus = false;
 }
 
 function App(){
@@ -20,38 +23,19 @@ function App(){
     <div>
       <Routes>
         <Route path="/" element={<Navbar page="homepage"/>}>
-          <Route path="" element={<Homepage/>}/>
+          <Route element={<Homepage/>}/>
         </Route>
-        
+        <Route path="/menu" element={<Navbar page="menu"/>}>
+          <Route element={<Menu/>}/>
+        </Route>
+        <Route path="/login" element={<Navbar page="login"/>}>
+          <Route element={<Login/>}/>
+        </Route>
+        <Route path="/signup" element={<Navbar page="signup"/>}>
+          <Route element={<Signup/>}/>
+        </Route>
       </Routes>
     </div>
   );
 }
 export default App;
-
-// export default _ => {
-//   const [page, setPage] = useState(0);
-
-//   return (
-//     <div>
-//       <Navbar setPage={setPage} />
- 
-//       {page === 0 ? <HomePage setPage={setPage} /> : null}
-//       {page === 1 ? <Book setPage={setPage} /> : null}
-//       {page === 2 ? <ThankYou /> : null}
-//     </div>
-//   );
-// };
-
-// {page === 0 ? <HomePage setPage={setPage} /> : null}
-
-//{page === 0 ? <Main setPage={setPage} /> : null} {page === 0 ? <div dangerouslySetInnerHTML = {HomePage} /> : null}
-/*
-function createMarkup() {
-  return {__html: 'First &middot; Second'};
-}
-
-function MyComponent() {
-  return <div dangerouslySetInnerHTML={createMarkup()} />;
-}
-*/

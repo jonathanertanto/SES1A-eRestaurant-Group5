@@ -1,45 +1,46 @@
 import React from "react";
 import {Outlet} from "react-router-dom";
 import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle} from '@material-ui/icons/';
-import { isLogedIn } from "../App";
+import { isLoggedIn } from "../App";
 
 export function Navbar(props){
     let menu, menu2;
-    if(!isLogedIn()){
-        menu = <a className={props.page==="login"? "active":""} href="#"><ExitToApp />Log In</a>;
-        menu2 = <a className={props.page==="signup"? "active":""} href="#"><HowToReg />Sign Up</a>
+    if(!isLoggedIn()){
+        menu = <a className={props.page==="login"? "active":""} href="/login"><ExitToApp />Log In</a>;
+        menu2 = <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>
     }else{
-        menu = <a className={props.page==="booking"? "active":""} href="#"><Event />Booking</a>
-        menu2 = <a className={props.page==="profile"? "active":""} href="#"><AccountCircle />Profile</a>
+        menu = <a className={props.page==="booking"? "active":""} href="/booking"><Event />Booking</a>
+        menu2 = <a className={props.page==="profile"? "active":""} href="/profile"><AccountCircle />Profile</a>
     }
     return (
         <main>
             <header>
                 <div className={props.page==="homepage"? "topnav homepage":"topnav"}>
                     <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
-                    <a className={props.page==="menu"? "active":""} href="#"><ListAlt />Menu</a>
+                    <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>
                     {menu}
                     {menu2}
                 </div>
 
-                {props.page==="homepage" &&
-                    <div>
-                        {restaurantName()}
-                        <div className="center booking">
-                            <a href="#">Book a Table</a>
-                        </div>
-                    </div>
-                }
+                {props.page==="homepage" && homepageHeader()}
             </header>
             <Outlet />
         </main>
     );
 }
 
+function homepageHeader(){
+    return (
+        <div>
+            {restaurantName()}
+            {bookingBtn()}
+        </div>
+    )
+}
 function restaurantName(){
     return(
         <div className="title">
-            <h1 className="ml5">
+            <h1 className="title-animation">
                 <span className="text-wrapper">
                     <span className="line line1"></span>
                     <span className="letters letters-left">Le Bistrot</span>
@@ -50,4 +51,14 @@ function restaurantName(){
             </h1>
         </div>
     );
+}
+function bookingBtn(){
+    let bookingUrl = "/login";
+    if(isLoggedIn())
+        bookingUrl = "/booking";
+    return(
+        <div className="center booking-button">
+            <a href={bookingUrl}>Book a Table</a>
+        </div>
+    )
 }
