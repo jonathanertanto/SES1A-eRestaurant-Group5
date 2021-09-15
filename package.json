@@ -1,0 +1,51 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "animejs": "^3.2.1",
+    "axios": "^0.21.4",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.1.1",
+    "history": "^5.0.1",
+    "rc-time-picker": "^4.0.0-alpha.2",
+    "react": "^17.0.2",
+    "react-animations": "^1.0.0",
+    "react-animejs": "^0.5.6",
+    "react-bootstrap": "^1.6.3",
+    "react-box-sizing": "^0.0.2",
+    "react-datepicker": "^4.2.1",
+    "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
+    "react-router": "^6.0.0-beta.4",
+    "react-router-dom": "^6.0.0-beta.4",
+    "react-scripts": "4.0.3",
+    "reactstrap": "^8.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
