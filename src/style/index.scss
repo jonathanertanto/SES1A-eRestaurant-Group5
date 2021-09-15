@@ -10,7 +10,6 @@ $white: #ffffff;
 $small-break: 770px;
 $med-break: 992px;
 html *{
-  box-sizing: border-box;
   font-family: 'seravek-light';
 }
 body{
@@ -18,7 +17,6 @@ body{
   margin: 0;
   padding: 0;
   align-items: center;
-  // font-family: 'seravek-light';
 }
 *, *:before, *:after {
   box-sizing: inherit;
@@ -182,9 +180,7 @@ header{
 }
 .info-box{
   position: relative;
-  display: inline-block;
-  width: 100px;
-  height: 100px;
+  display: flex;
   flex: 50%;
 }
 .up{
