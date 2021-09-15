@@ -26,7 +26,7 @@ function restaurantInfo(){
 function restaurantTime(){
     return(
         <div className="info-box left">
-            <a href={bookingUrl}><img class="info-box" src="https://www.crownsydney.com.au/getmedia/ad5ae0e2-2872-4fbe-bf54-601b12baee97/210420-Crown-Sydney-Restaurant-Epicurean-0099-6496x4872.jpg" alt="Press to go to booking page"/></a>
+            <a href={bookingUrl}><img className="info-box" src="https://www.crownsydney.com.au/getmedia/ad5ae0e2-2872-4fbe-bf54-601b12baee97/210420-Crown-Sydney-Restaurant-Epicurean-0099-6496x4872.jpg" alt="Press to go to booking page"/></a>
             <div className="info-box-text center">
                 <a href={bookingUrl}>Lunch = 12:00 - 15:00</a> <br/>
                 <a href={bookingUrl}>Dinner = 18:00 - 23:00</a>
@@ -37,7 +37,7 @@ function restaurantTime(){
 function menuHyperLink(){
     return(
         <div className="info-box right">
-            <a href="/menu"><img class="info-box" src="https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg" alt="Press to go to menu page"/></a>
+            <a href="/menu"><img className="info-box" src="https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg" alt="Press to go to menu page"/></a>
             <div className="info-box-text center">
                 <a href="/menu">Dinning</a>
             </div>

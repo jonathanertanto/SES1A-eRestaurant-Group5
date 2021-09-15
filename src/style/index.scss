@@ -9,6 +9,9 @@ $white: #ffffff;
 // -----GLOBAL STYLES-----
 $small-break: 770px;
 $med-break: 992px;
+html{
+  box-sizing: border-box;
+}
 html *{
   font-family: 'seravek-light';
 }
@@ -223,6 +226,23 @@ header{
   background-color: #eaeaeacc;
 }
 
+//-----SIGN UP-----
+.form-signup, .form-signin{
+  max-width: 450px;
+  padding: 15px;
+  margin: auto;
+  margin-top: 10px;
+  text-align: center;
+}
+.left-field{
+ float: left;
+ margin-right: 0px;
+ width: 50%;
+}
+.right-field{
+ display: grid;
+}
+
 // -----SIGN IN-----
 .form-signin h3{
   margin-bottom: 10px;
@@ -244,24 +264,6 @@ header{
  border-top-right-radius: 0;
  border-top-left-radius:  0;
 }
-
-//-----SIGN UP-----
-.form-signup, .form-signin{
-  max-width: 450px;
-  padding: 15px;
-  margin: auto;
-  margin-top: 10px;
-  text-align: center;
-}
-.left-field{
- float: left;
- margin-right: 0px;
- width: 50%;
-}
-.right-field{
- display: grid;
-}
-
 
 .nav-brand{
   cursor: pointer;

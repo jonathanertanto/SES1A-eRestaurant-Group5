@@ -1,4 +1,5 @@
 import React from "react";
+import {logIn} from "../App.js";
 
 export function Signup(){
     return(
@@ -65,11 +66,15 @@ function rememberMe(){
 }
 function signupBtn(){
     return(
-        <button className="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+        <button className="w-100 btn btn-lg btn-primary" onClick={newCustomer} >Sign Up</button>
     );
 }
 function loginLink(){
     return(
         <a href="/login">Already have an account</a>
     );
+}
+
+function newCustomer(){
+    logIn();
 }

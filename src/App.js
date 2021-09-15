@@ -6,16 +6,15 @@ import {Menu} from "./components/menu";
 import {Login} from "./components/login";
 import {Signup} from "./components/signup";
 
-let loginStatus = false;
-
 export function isLoggedIn(){
-  return loginStatus===true;
+  const loginStatus = localStorage.getItem("loginStatus") === 'true';
+  return loginStatus;
 }
 export function logIn(){
-  loginStatus = true;
+  localStorage.setItem("loginStatus", true);
 }
 export function logOut(){
-  loginStatus = false;
+  localStorage.setItem("loginStatus", false);
 }
 
 function App(){
