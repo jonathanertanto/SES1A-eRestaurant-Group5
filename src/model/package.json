@@ -1,5 +1,10 @@
 {
   "dependencies": {
+    "express": "^4.17.1",
     "mongoose": "^6.0.6"
+  },
+  "scripts":{
+    "start": "node app.js",
+    "build": "cd src && npm install && npm run build"
   }
 }

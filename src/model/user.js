@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
     username:{
         type: String,
-        required: [true, "Username cannot be empty!"]
+        required: [true, "Username cannot be empty!"],
+        unique: true
     },
     password:{
         type: String,
@@ -12,7 +13,8 @@ const UserSchema = new mongoose.Schema({
     },
     email:{
         type: String,
-        required: [true, "Email address cannot be empty!"]
+        required: [true, "Email address cannot be empty!"],
+        unique: true
     },
     firstName:{
         type: String,
@@ -29,7 +31,8 @@ const UserSchema = new mongoose.Schema({
     },
     userType:{
         type: String,
-        required: [true, "User type must be defined!"]
+        required: [true, "User type must be defined!"],
+        maxlength: 2
     }
 });
 

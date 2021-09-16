@@ -23,12 +23,16 @@ export function Signup(){
 
     const [contactNumber, setContactNumber] = useState(null);
     useEffect(() => {}, [contactNumber]);
-
+    
     function newCustomer(){
-        if(!(username && password && email && username && firstName && dateOfBirth && contactNumber))
+        if(!(username && password && email && firstName && dateOfBirth && contactNumber))
             return alert("Please fill in all of the non-optional data!");
         if(password.length < 8)
             return alert("Password should be at least 8 characters!");
+        
+        fetch(`http://localhost:3001/api/signup?username=${username}&password=${password}&email=${email}&firstName=${firstName}&lastName=${lastName}&dateOfBirth=${dateOfBirth}&contactNumber=${contactNumber}`)
+            .then(res => res.json())
+            .then(data => console.log(data));
         
         logIn();
         window.location.href='/';
