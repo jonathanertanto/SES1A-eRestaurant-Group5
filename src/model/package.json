@@ -4,7 +4,7 @@
     "mongoose": "^6.0.6"
   },
   "scripts":{
-    "start": "node app.js",
-    "build": "cd src && npm install && npm run build"
+    "start": "node src/model/app.js",
+    "build": "cd && npm install && npm run build"
   }
 }
