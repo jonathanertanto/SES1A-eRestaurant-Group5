@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     username:{
         type: String,
         required: [true, "Username cannot be empty!"]
@@ -32,21 +32,5 @@ const userSchema = new mongoose.Schema({
         required: [true, "User type must be defined!"]
     }
 });
-var User = mongoose.model("UserSchema", userSchema);
 
-export {userSchema};
-
-export function newUser(un, pass, em, fn, ln, dob, cn, ut){
-    const user = new User({
-        username: un,
-        password: pass,
-        email: em,
-        firstName: fn,
-        lastName: ln,
-        dateOfBirth: dob,
-        contactNumber: cn,
-        userType: ut
-    });
-    user.save();
-    return user;
-};
+mongoose.model("User", UserSchema);

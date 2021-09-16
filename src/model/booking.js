@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
-const bookingSchema = new mongoose.Schema({
+const BookingSchema = new mongoose.Schema({
     date: {
         type: Date,
         required: [true, "Date cannot be empty!"]
     }
 });
-export {bookingSchema};
+
+mongoose.model("Booking", BookingSchema);
