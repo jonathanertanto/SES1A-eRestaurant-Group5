@@ -1,11 +1,11 @@
 import React from "react";
-import {isLoggedIn} from "../App";
+import {getUserID} from "../App";
 
 let bookingUrl = "/login";
 
 export function Homepage(){
-    if(isLoggedIn())
-        bookingUrl = "/booking";
+    if(getUserID())
+        bookingUrl = "/reservation";
 
     return(
         <section>

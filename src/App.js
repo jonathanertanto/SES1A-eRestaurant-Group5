@@ -1,12 +1,14 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom";
-import {Navbar} from "./components/navbar";
-import {Homepage} from "./components/homepage";
-import {Menu} from "./components/menu";
-import {Login} from "./components/login";
-import {Signup} from "./components/signup";
+import {Navbar} from "./view/navbar";
+import {Homepage} from "./view/homepage";
+import {Menu} from "./view/menu";
+import {Login} from "./view/login";
+import {Signup} from "./view/signup";
+import {Book} from "./view/book";
+import {Profile} from "./view/profile";
 
-export function isLoggedIn(){
+export function getUserID(){
   const rememberMe = localStorage.getItem("rememberMe") === true;
   if(rememberMe)
     return (localStorage.getItem("userID"));
@@ -37,8 +39,16 @@ function App(){
         <Route path="/signup" element={<Navbar page="signup"/>}>
           <Route element={<Signup/>}/>
         </Route>
+        <Route path="/reservation" element={<Navbar page="reservation"/>}>
+          <Route element={<Book/>}/>
+        </Route>
+        <Route path="/profile" element={<Navbar page="profile"/>}>
+          <Route element={<Profile/>}/>
+        </Route>
+        <Route path="*" element={<Navbar/>}/>
       </Routes>
     </div>
   );
 }
+
 export default App;

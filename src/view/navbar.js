@@ -1,16 +1,14 @@
 import React from "react";
 import {Outlet} from "react-router-dom";
-import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle} from '@material-ui/icons/';
-import { isLoggedIn, logOut } from "../App";
+import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle, MeetingRoom} from '@material-ui/icons/';
+import { getUserID, logOut } from "../App";
 
 export function Navbar(props){
-    let menu, menu2;
-    if(!isLoggedIn()){
+    let menu;
+    if(!getUserID()){
         menu = <a className={props.page==="login"? "active":""} href="/login"><ExitToApp />Log In</a>;
-        menu2 = <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>
     }else{
-        menu = <a className={props.page==="booking"? "active":""} href="/booking"><Event />Booking</a>
-        menu2 = <a className={props.page==="profile"? "active":""} href="/" onClick={logOut} ><AccountCircle />Profile</a>
+        menu = <a className={props.page==="reservation"? "active":""} href="/reservation"><Event />Reservation</a>
     }
     return (
         <main>
@@ -19,7 +17,18 @@ export function Navbar(props){
                     <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
                     <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>
                     {menu}
-                    {menu2}
+                    {getUserID() &&
+                        <div className="topnav-dropdown">
+                            <button className={props.page==="profile"? "topnav-dropbtn-active topnav-dropbtn":"topnav-dropbtn"} ><AccountCircle /></button>
+                            <div className="topnav-dropdown-content">
+                                <a href="/profile"><AccountCircle />Profile</a>
+                                <a href="/" onClick={logOut}><MeetingRoom />Log Out</a>
+                            </div>
+                        </div> 
+                    }
+                    {!getUserID() &&
+                        <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>
+                    }
                 </div>
 
                 {props.page==="homepage" && homepageHeader()}
@@ -54,8 +63,8 @@ function restaurantName(){
 }
 function bookingBtn(){
     let bookingUrl = "/login";
-    if(isLoggedIn())
-        bookingUrl = "/booking";
+    if(getUserID())
+        bookingUrl = "/reservation";
     return(
         <div className="center booking-button">
             <a href={bookingUrl}>Book a Table</a>

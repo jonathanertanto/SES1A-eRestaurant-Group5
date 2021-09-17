@@ -9,10 +9,11 @@ import {
   Input,
   Button
 } from "reactstrap";
+import '../style/reservation.css';
 
 import Table from "./table";
 
-export default props => {
+export function Book(props){
   const [totalTables, setTotalTables] = useState([]);
 
   // User's selections
@@ -37,33 +38,15 @@ export default props => {
   // List of potential locations
   const [locations] = useState(["Any Location", "Patio", "Inside", "Bar"]);
   const [times] = useState([
-    "9AM",
-    "10AM",
-    "11AM",
-    "12PM",
-    "1PM",
-    "2PM",
-    "3PM",
-    "4PM",
-    "5PM"
+    "9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"
   ]);
   // Basic reservation "validation"
   const [reservationError, setReservationError] = useState(false);
 
   const getDate = _ => {
     const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
     ];
     const date =
       months[selection.date.getMonth()] +
@@ -264,25 +247,11 @@ export default props => {
   };
 
   return (
-    <div>
+    <section className="reservation">
+      <h1>RESERVATION</h1>
+      
       <Row noGutters className="text-center align-items-center pizza-cta">
         <Col>
-          <p className="looking-for-pizza">
-            {!selection.table.id ? "Book a Table" : "Confirm Reservation"}
-            <i
-              className={
-                !selection.table.id
-                  ? "fas fa-chair pizza-slice"
-                  : "fas fa-clipboard-check pizza-slice"
-              }
-            ></i>
-          </p>
-          <p className="selected-table">
-            {selection.table.id
-              ? "You are booking table " + selection.table.name
-              : null}
-          </p>
-
           {reservationError ? (
             <p className="reservation-error">
               * Please fill out all of the details.
@@ -452,6 +421,6 @@ export default props => {
           </Row>
         </div>
       )}
-    </div>
+    </section>
   );
 };

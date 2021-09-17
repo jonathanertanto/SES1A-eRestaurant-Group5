@@ -28,7 +28,7 @@ export function Signup(){
     }
     
     function newCustomer(){
-        if(!(username && password && email && firstName && dateOfBirth && contactNumber))
+        if(!(username && email && firstName && dateOfBirth && contactNumber))
             return alert("Please fill in all of the non-optional data!");
         if(password.length < 8)
             return alert("Password should be at least 8 characters!");
@@ -85,7 +85,7 @@ export function Signup(){
             <div className="checkbox mb-3">
                 <input type="checkbox" value="remember-me" onChange={handleChange}/> Remember me
             </div>
-            <button className="w-100 btn btn-lg btn-primary" onClick={newCustomer}>Sign Up</button>
+            <button className="w-100 btn-lg" onClick={newCustomer}>Sign Up</button>
             {loginLink()}
         </section>
     );

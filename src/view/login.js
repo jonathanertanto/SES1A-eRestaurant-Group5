@@ -50,7 +50,7 @@ export function Login(){
             <div className="checkbox mb-3">
                 <label> <input type="checkbox" value="remember-me" onChange={handleChange}/> Remember me </label>
             </div>
-            <button className="w-100 btn btn-lg btn-primary" onClick={signIn}>Login</button>
+            <button className="w-100 btn-lg" onClick={signIn}>Login</button>
             {signupLink()}
         </section>
     );

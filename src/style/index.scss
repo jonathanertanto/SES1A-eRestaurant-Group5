@@ -5,7 +5,6 @@ $kindofblack: #0a0a0a;
 $geryish: #343434;
 $white: #ffffff;
 
-
 // -----GLOBAL STYLES-----
 $small-break: 770px;
 $med-break: 992px;
@@ -55,6 +54,17 @@ h1, h2, h3{
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+button{
+    background-color: #343434;
+    color: #d4d4d4;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+}
+button:hover{
+    color: #343434;
+    background-color: #d4d4d4;
+}
 
 // -----NAVIGATION BAR----- 
 header{
@@ -68,6 +78,8 @@ header{
   opacity: 0.9;
   filter: grayscale(35%);
   flex :50%;
+  position: relative;
+  z-index: 1;
 }
 .topnav {
   overflow: hidden;
@@ -83,12 +95,56 @@ header{
   display: flex;
   align-items: center;
 }
-.topnav a:hover {
+.topnav a:hover, .topnav-dropdown:hover .topnav-dropbtn{
   border-bottom: 3px solid $kindofblack;
 }
 .topnav a.active {
   border-bottom: 3px solid $kindofblack;
   color: $kindofblack;
+}
+.topnav-dropbtn-active{
+  border-bottom: 3px solid $kindofblack !important;
+  color: $kindofblack !important;
+}
+.topnav-dropdown {
+  display: block;
+  float: left;
+  position: relative;
+}
+.topnav-dropdown .topnav-dropbtn {
+  font-size: 17px;
+  border: none;
+  outline: none;
+  color: $kindofblack;
+  padding: 20px 15px;
+  background-color: inherit;
+  margin: 0;
+}
+.topnav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #9c9c9cab;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 0;
+}
+.topnav-dropdown-content a {
+  float: none;
+  color: $kindofblack;
+  text-align: center;
+  padding: 20px 15px;
+  text-decoration: none;
+  display: block;
+  text-align: right;
+}
+.topnav-dropdown-content a:hover {
+  background-color: rgba(121, 121, 121, 0.705);
+  border-bottom: transparent;
+  display: block;
+}
+.topnav-dropdown:hover .topnav-dropdown-content {
+  display: block;
+  position: fixed;
 }
 
 // -----HOME PAGE-----
@@ -97,7 +153,7 @@ header{
 }
 .title{
   display: block;
-  margin-bottom: 21.73913043px;
+  margin-bottom: 20px;
   width: 100%;
   text-align: center;
   margin: 0;
@@ -138,7 +194,7 @@ header{
 }
 .booking-button, .homepage{
   display: block;
-  margin-bottom: 21.73913043px;
+  margin-bottom: 20px;
   max-width: 100%;
   text-align: center;
 }
@@ -302,7 +358,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
 .booking-dropdown{
     width: 85%;
     padding: 4% 0;
-    background-color: $red;
+    background-color: #343434;
     color: white;
     margin: 2% 0;
     font-family: "Roboto";
@@ -310,8 +366,9 @@ input[type=date]::-webkit-calendar-picker-indicator {
     border: none;
     border-radius: 5px;
     text-align: center;
+
     &:hover{
-        background-color: $red;
+        background-color: #343434;
         color: white;
     }
     &:focus{
@@ -344,10 +401,11 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 .tables-display {
-    background-color: $red;
+    background-color: $geryish;
     margin: 10% 2%;
     padding: 3% 5%;
     border-radius: 25px;
+    text-align: center;
 }
 
 @media (min-width: $small-break){
@@ -378,7 +436,6 @@ input[type=date]::-webkit-calendar-picker-indicator {
     border-radius: 25px;
     min-width: 80px;
 }
-
 
 .table-row{
     margin-bottom: 8px;
@@ -435,7 +492,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 .reservation-error {
-    color: #c0392b;
+    color: #5c5c5c;
     font-size: 1.1rem;
     padding-bottom: 3%;
 }
@@ -492,17 +549,19 @@ footer{
   position: sticky;
   top: 0;
   font-size: 1.3rem;
-  border-bottom: 1px solid white; }
+  border-bottom: 1px solid white; 
+}
 
 
-  .navbar-container {
+.navbar-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 80px;
-    max-width: 1500px;}
+    max-width: 1500px;
+  }
     
-    .nav-menu {
+.nav-menu {
     width: 60vw;
     display: grid;
     grid-template-columns: repeat(4, auto);
@@ -510,15 +569,18 @@ footer{
     list-style: none;
     text-align: center;
     justify-content: end;
-    margin-right: 2rem;}
+    margin-right: 2rem;
+  }
     
-    .nav-item {
-    height: 80px;}
+  .nav-item {
+    height: 80px;
+  }
     
-    .nav-links {
+  .nav-links {
     display: flex;
     align-items: center;
     text-decoration: none;
     justify-content: center;
     height: 100%;
-    padding: 0 1.5rem;}
+    padding: 0 1.5rem;
+  } 

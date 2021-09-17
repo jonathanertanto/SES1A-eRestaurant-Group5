@@ -59,6 +59,19 @@ h1, h2, h3 {
           transform: translate(-50%, -50%);
 }
 
+button {
+  background-color: #343434;
+  color: #d4d4d4;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: none;
+}
+
+button:hover {
+  color: #343434;
+  background-color: #d4d4d4;
+}
+
 header {
   overflow: hidden;
   background-image: url(https://www.crownsydney.com.au/getmedia/a4b64699-e7ba-459d-bc30-ab9ed96cc5f6/210420-Crown-Sydney-Restaurant-Epicurean-0520-6496x4872.jpg?width=1440);
@@ -73,6 +86,8 @@ header {
   -webkit-box-flex: 50%;
       -ms-flex: 50%;
           flex: 50%;
+  position: relative;
+  z-index: 1;
 }
 
 .topnav {
@@ -95,7 +110,7 @@ header {
           align-items: center;
 }
 
-.topnav a:hover {
+.topnav a:hover, .topnav-dropdown:hover .topnav-dropbtn {
   border-bottom: 3px solid #0a0a0a;
 }
 
@@ -104,13 +119,65 @@ header {
   color: #0a0a0a;
 }
 
+.topnav-dropbtn-active {
+  border-bottom: 3px solid #0a0a0a !important;
+  color: #0a0a0a !important;
+}
+
+.topnav-dropdown {
+  display: block;
+  float: left;
+  position: relative;
+}
+
+.topnav-dropdown .topnav-dropbtn {
+  font-size: 17px;
+  border: none;
+  outline: none;
+  color: #0a0a0a;
+  padding: 20px 15px;
+  background-color: inherit;
+  margin: 0;
+}
+
+.topnav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #9c9c9cab;
+  -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  right: 0;
+}
+
+.topnav-dropdown-content a {
+  float: none;
+  color: #0a0a0a;
+  text-align: center;
+  padding: 20px 15px;
+  text-decoration: none;
+  display: block;
+  text-align: right;
+}
+
+.topnav-dropdown-content a:hover {
+  background-color: rgba(121, 121, 121, 0.705);
+  border-bottom: transparent;
+  display: block;
+}
+
+.topnav-dropdown:hover .topnav-dropdown-content {
+  display: block;
+  position: fixed;
+}
+
 .homepage {
   padding: 0 0 70vh 0;
 }
 
 .title {
   display: block;
-  margin-bottom: 21.73913043px;
+  margin-bottom: 20px;
   width: 100%;
   text-align: center;
   margin: 0;
@@ -157,7 +224,7 @@ header {
 
 .booking-button, .homepage {
   display: block;
-  margin-bottom: 21.73913043px;
+  margin-bottom: 20px;
   max-width: 100%;
   text-align: center;
 }
@@ -354,7 +421,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
 .booking-dropdown {
   width: 85%;
   padding: 4% 0;
-  background-color: #e74c3c;
+  background-color: #343434;
   color: white;
   margin: 2% 0;
   font-family: "Roboto";
@@ -365,7 +432,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 .booking-dropdown:hover {
-  background-color: #e74c3c;
+  background-color: #343434;
   color: white;
 }
 
@@ -402,10 +469,11 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 .tables-display {
-  background-color: #e74c3c;
+  background-color: #343434;
   margin: 10% 2%;
   padding: 3% 5%;
   border-radius: 25px;
+  text-align: center;
 }
 
 @media (min-width: 770px) {
@@ -495,7 +563,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 .reservation-error {
-  color: #c0392b;
+  color: #5c5c5c;
   font-size: 1.1rem;
   padding-bottom: 3%;
 }
