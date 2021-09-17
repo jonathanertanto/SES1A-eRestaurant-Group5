@@ -68,33 +68,31 @@ app.get("/api/login", async (req, res) => {
     }
 });
 
-app.get("/api/signup", (req, res) => {
+app.get("/api/signup", async (req, res) => {
     try{
         const {username, password, email, firstName, lastName, dateOfBirth, contactNumber} = req.query;
         // Check for existing username
-        User.countDocuments({username: String(username)}, function(err, count){
-            if(count > 0){
-                console.log("Username already exists, please choose another username!");
-                return res.json({
-                    status: false,
-                    message: "Username already exists, please choose another username!"
-                });
-            }
-        });
+        let user = await User.findOne({username: String(username)});
+        if(user){
+            console.log("Username already exists, please choose another username!");
+            return res.json({
+                status: false,
+                message: "Username already exists, please choose another username!"
+            });
+        }
 
         // Check for existing email
-        User.countDocuments({email: String(email)}, function(err2, count2){
-            if(count2 > 0){
-                console.log("Email already exists, please choose another email!");
-                return res.json({
-                    status: false,
-                    message: "Email already exists, please choose another email!"
-                });
-            }
-        });
+        user = await User.findOne({email: String(email)});
+        if(user){
+            console.log("Email already exists, please choose another email!");
+            return res.json({
+                status: false,
+                message: "Email already exists, please choose another email!"
+            });
+        }
 
         // Insertion of User entity
-        const user = new User({
+        user = new User({
             username: String(username),
             email: String(email),
             password: String(password),

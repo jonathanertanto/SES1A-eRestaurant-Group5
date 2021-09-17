@@ -7,9 +7,6 @@ export function Login(){
     const [password, setPassword] = useState(null);
     useEffect(() => {}, [password]);
 
-    const [data, setData] = useState(null);
-    useEffect(() => {}, []);
-
     let rememberMe = false;
     function handleChange(e){
         rememberMe = e.target.checked;
@@ -21,21 +18,20 @@ export function Login(){
         }
         
         fetch(`/api/login?username=${username}&email=${username}&password=${password}`)
-            .then((res) => res.json())
-            .then((data) => setData(data));
-
-        alert(data);
-        // if(!data.status){
-        //     alert("Invalid username/email and/or password!");
-        // }else{
-        //     localStorage.setItem("rememberMe", rememberMe);
-        //     if(rememberMe){
-        //         localStorage.setItem("userID", data.userID);
-        //     }else{
-        //         sessionStorage.setItem("userID", data.userID);
-        //     }
-        //     window.location.href='/';
-        // }
+            .then((res) => { return res.json(); } )
+            .then((data) => {
+                if(!data.status){
+                    alert("Invalid username/email and/or password!");
+                }else{
+                    localStorage.setItem("rememberMe", rememberMe);
+                    if(rememberMe){
+                        localStorage.setItem("userID", data.userID);
+                    }else{
+                        sessionStorage.setItem("userID", data.userID);
+                    }
+                    window.location.href='/';
+                }
+            });
     }
 
     return(

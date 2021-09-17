@@ -22,9 +22,6 @@ export function Signup(){
     const [contactNumber, setContactNumber] = useState(null);
     useEffect(() => {}, [contactNumber]);
 
-    const [data, setData] = useState(null);
-    useEffect(() => {}, []);
-
     let rememberMe = false;
     function handleChange(e){
         rememberMe = e.target.checked;
@@ -37,22 +34,21 @@ export function Signup(){
             return alert("Password should be at least 8 characters!");
         
         fetch(`/api/signup?username=${username}&password=${password}&email=${email}&firstName=${firstName}&lastName=${lastName}&dateOfBirth=${dateOfBirth}&contactNumber=${contactNumber}`)
-            .then((res) => res.json())
-            .then((data) => setData(data));
-        
-        // if(!data.status){
-        //     alert(data.message);
-        // }else{
-        //     localStorage.setItem("rememberMe", rememberMe);
-        //     if(rememberMe){
-        //         localStorage.setItem("userID", data.userID);
-        //     }else{
-        //         sessionStorage.setItem("userID", data.userID);
-        //     }
-        //     // window.location.href='/';
-        // }
+            .then((res) => { return res.json(); } )
+            .then((data) => {
+                if(!data.status){
+                    alert(data.message);
+                }else{
+                    localStorage.setItem("rememberMe", rememberMe);
+                    if(rememberMe){
+                        localStorage.setItem("userID", data.userID);
+                    }else{
+                        sessionStorage.setItem("userID", data.userID);
+                    }
+                    window.location.href='/';
+                }
+            });
     }
-
     return(
         <section className="form-signup">
             {title()}
