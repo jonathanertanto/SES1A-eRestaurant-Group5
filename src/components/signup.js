@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {logIn} from "../App.js";
-
 
 export function Signup(){
     const [username, setUsername] = useState(null);
@@ -23,6 +21,14 @@ export function Signup(){
 
     const [contactNumber, setContactNumber] = useState(null);
     useEffect(() => {}, [contactNumber]);
+
+    const [data, setData] = useState(null);
+    useEffect(() => {}, []);
+
+    let rememberMe = false;
+    function handleChange(e){
+        rememberMe = e.target.checked;
+    }
     
     function newCustomer(){
         if(!(username && password && email && firstName && dateOfBirth && contactNumber))
@@ -30,12 +36,21 @@ export function Signup(){
         if(password.length < 8)
             return alert("Password should be at least 8 characters!");
         
-        fetch(`http://localhost:3001/api/signup?username=${username}&password=${password}&email=${email}&firstName=${firstName}&lastName=${lastName}&dateOfBirth=${dateOfBirth}&contactNumber=${contactNumber}`)
-            .then(res => res.json())
-            .then(data => console.log(data));
+        fetch(`/api/signup?username=${username}&password=${password}&email=${email}&firstName=${firstName}&lastName=${lastName}&dateOfBirth=${dateOfBirth}&contactNumber=${contactNumber}`)
+            .then((res) => res.json())
+            .then((data) => setData(data));
         
-        logIn();
-        window.location.href='/';
+        // if(!data.status){
+        //     alert(data.message);
+        // }else{
+        //     localStorage.setItem("rememberMe", rememberMe);
+        //     if(rememberMe){
+        //         localStorage.setItem("userID", data.userID);
+        //     }else{
+        //         sessionStorage.setItem("userID", data.userID);
+        //     }
+        //     // window.location.href='/';
+        // }
     }
 
     return(
@@ -71,7 +86,9 @@ export function Signup(){
                     <label for="contact_number">Contact Number</label>
                 </div>
             </section>
-            {rememberMe()}
+            <div className="checkbox mb-3">
+                <input type="checkbox" value="remember-me" onChange={handleChange}/> Remember me
+            </div>
             <button className="w-100 btn btn-lg btn-primary" onClick={newCustomer}>Sign Up</button>
             {loginLink()}
         </section>
@@ -84,15 +101,6 @@ function title(){
             <h3>with</h3>
             <h2>Le Bistrot d'Andre</h2>
         </section>
-    );
-}
-function rememberMe(){
-    return(
-        <div className="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"/> Remember me
-            </label>
-        </div>
     );
 }
 function loginLink(){

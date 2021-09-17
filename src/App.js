@@ -7,14 +7,18 @@ import {Login} from "./components/login";
 import {Signup} from "./components/signup";
 
 export function isLoggedIn(){
-  const loginStatus = localStorage.getItem("loginStatus") === 'true';
-  return loginStatus;
-}
-export function logIn(){
-  localStorage.setItem("loginStatus", true);
+  const rememberMe = localStorage.getItem("rememberMe") === true;
+  if(rememberMe)
+    return (localStorage.getItem("userID"));
+  else
+    return (sessionStorage.getItem("userID"));
 }
 export function logOut(){
-  localStorage.setItem("loginStatus", false);
+  const rememberMe = localStorage.getItem("rememberMe") === true;
+  if(rememberMe)
+    localStorage.removeItem("userID");
+  else
+    sessionStorage.removeItem("userID");
 }
 
 function App(){

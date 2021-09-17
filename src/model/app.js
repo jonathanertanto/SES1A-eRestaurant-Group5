@@ -5,7 +5,6 @@ const port = process.env.PORT || 3001;
 const router = express.Router();
 const app = express();
 const mongoose = require('mongoose');
-const bcrypt = require ("bcryptjs");
 require('./user');
 require('./customer');
 require('./booking');
@@ -27,58 +26,106 @@ app.use(express.static(path.resolve(__dirname, '../index.js')));
 app.use(express.json());
 
 app.get("/api", (req, res) => {
-    res.json({message: "Le Bistrot d'Andre back-end server"});
+    res.json({
+        status: "success",
+        message: "Le Bistrot d'Andre back-end server"
+    });
 });
 
 app.get("/api/login", async (req, res) => {
     try{
-        
-    }catch(error){
-        console.log(error);
-    }
-});
-
-app.get("/api/signup", async (req, res) => {
-    try{
-        const {username, password: plainTextPassword, email, firstName, lastName, dateOfBirth, contactNumber} = req.query;
-        const pass = await bcrypt.hash(plainTextPassword,10);
-
-        User.countDocuments({username: String(username)}, function(err, count){
-            if(count > 0){
-                console.log("Username already exists, please choose another username!");
-                res.json({
-                    status: "success",
-                    error: "Username already exists, please choose another username!"
-                });
-            }else{
-                User.countDocuments({email: String(email)}, function(err2, count2){
-                    if(count2 > 0){
-                        console.log("Email already exists, please choose another email!");
-                    }else{
-                        const user = new User({
-                            username: String(username),
-                            email: String(email),
-                            password: String(pass),
-                            firstName: String(firstName),
-                            lastName: String(lastName),
-                            dateOfBirth: Date.parse(String(dateOfBirth)),
-                            contactNumber: String(contactNumber),
-                            userType: 'C'
-                        });
-                        // user.save();
-                        console.log(`${user.username} is successfully saved into the user database`);
-                        const customer = new Customer({
-                            _id: user._id,
-                            personalInformation: user
-                        });
-                        // customer.save();
-                        console.log(`${user.username} is successfully saved into the customer database`);
-                    }
+        const {username, email, password} = req.query;
+        let user = await User.findOne({username: String(username)});
+        if(!user){
+            console.log("Invalid username. Searching for email...");
+            user = await User.findOne({email: String(email)});
+        }
+        if(!user){
+            console.log("Invalid username/email!");
+            return res.json({
+                status: false,
+                message: "Invalid username/email and/or password!"
+            });
+        }else{
+            if(String(password) === String(user.password)){
+                console.log("Login successful!");
+                return res.json({
+                    status: true,
+                    userID: user._id
                 });
             }
+        }
+        console.log("Invalid password");
+        return res.json({
+            status: false,
+            message: "Invalid username/email and/or password!"
         });
     }catch(error){
         console.log(error);
+        res.json({
+            status: false
+        });
+    }
+});
+
+app.get("/api/signup", (req, res) => {
+    try{
+        const {username, password, email, firstName, lastName, dateOfBirth, contactNumber} = req.query;
+        // Check for existing username
+        User.countDocuments({username: String(username)}, function(err, count){
+            if(count > 0){
+                console.log("Username already exists, please choose another username!");
+                return res.json({
+                    status: false,
+                    message: "Username already exists, please choose another username!"
+                });
+            }
+        });
+
+        // Check for existing email
+        User.countDocuments({email: String(email)}, function(err2, count2){
+            if(count2 > 0){
+                console.log("Email already exists, please choose another email!");
+                return res.json({
+                    status: false,
+                    message: "Email already exists, please choose another email!"
+                });
+            }
+        });
+
+        // Insertion of User entity
+        const user = new User({
+            username: String(username),
+            email: String(email),
+            password: String(password),
+            firstName: String(firstName),
+            lastName: String(lastName),
+            dateOfBirth: Date.parse(String(dateOfBirth)),
+            contactNumber: String(contactNumber),
+            userType: 'C'
+        });
+        user.save();
+        console.log(`${user.username} is successfully saved into the user database`);
+
+        // Insertion of Customer entity
+        const customer = new Customer({
+            _id: user._id,
+            personalInformation: user
+        });
+        customer.save();
+        console.log(`${user.username} is successfully saved into the customer database`);
+
+        // Successful Message
+        return res.json({
+            status: true,
+            message: `${user.username} is successfully saved into the customer database`
+        });
+    }catch(error){
+        console.log(error);
+        res.json({
+            status: false,
+            message: error
+        });
     }
 });
 

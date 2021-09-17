@@ -1,16 +1,63 @@
-import React from "react";
-import {logIn} from "../App.js";
+import React, {useEffect, useState} from "react";
 
 export function Login(){
+    const [username, setUsername] = useState(null);
+    useEffect(() => {}, [username]);
+
+    const [password, setPassword] = useState(null);
+    useEffect(() => {}, [password]);
+
+    const [data, setData] = useState(null);
+    useEffect(() => {}, []);
+
+    let rememberMe = false;
+    function handleChange(e){
+        rememberMe = e.target.checked;
+    }
+
+    function signIn(){
+        if(!(username && password)){
+            return alert("Invalid username/email and/or password!");
+        }
+        
+        fetch(`/api/login?username=${username}&email=${username}&password=${password}`)
+            .then((res) => res.json())
+            .then((data) => setData(data));
+
+        alert(data);
+        // if(!data.status){
+        //     alert("Invalid username/email and/or password!");
+        // }else{
+        //     localStorage.setItem("rememberMe", rememberMe);
+        //     if(rememberMe){
+        //         localStorage.setItem("userID", data.userID);
+        //     }else{
+        //         sessionStorage.setItem("userID", data.userID);
+        //     }
+        //     window.location.href='/';
+        // }
+    }
+
     return(
         <section className="form-signin">
             {title()}
-            {dataFields()}            
-            {rememberMe()}
-            {loginBtn()}
+            <section>
+                <div className="form-floating">
+                    <input type="text" className="form-control" id="floatingInput" onChange={event => setUsername(event.target.value)} placeholder="username"/>
+                    <label for="floatingInput">Email Address/Username</label>
+                </div>
+                <div className="form-floating">
+                    <input type="password" className="form-control" id="floatingPassword" onChange={event => setPassword(event.target.value)} placeholder="Password"/>
+                <   label for="floatingPassword">Password</label>
+                </div>
+            </section>  
+            <div className="checkbox mb-3">
+                <label> <input type="checkbox" value="remember-me" onChange={handleChange}/> Remember me </label>
+            </div>
+            <button className="w-100 btn btn-lg btn-primary" onClick={signIn}>Login</button>
             {signupLink()}
         </section>
-    )
+    );
 }
 function title(){
     return(
@@ -20,42 +67,9 @@ function title(){
         </section>
     )
 }
-function dataFields(){
-    return(
-        <section>
-            <div className="form-floating">
-                <input type="text" className="form-control" id="floatingInput" placeholder="username"/>
-                <label for="floatingInput">Email Address/Username</label>
-            </div>
-            <div className="form-floating">
-                <input type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
-            <   label for="floatingPassword">Password</label>
-            </div>
-        </section>
-    )
-}
-function rememberMe(){
-    return (
-        <div className="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"/> Remember me
-            </label>
-        </div>
-    );
-}
-function loginBtn(){
-    return (
-        <button className="w-100 btn btn-lg btn-primary" onClick={login}>Login</button>
-    );
-}
 function signupLink(){
     return(
         <a href="/signup">Create new account</a>
     );
     
-}
-
-function login(){
-    logIn();
-    window.location.href='/';
 }

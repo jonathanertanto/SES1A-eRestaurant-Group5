@@ -1,7 +1,7 @@
 import React from "react";
 import {Outlet} from "react-router-dom";
 import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle} from '@material-ui/icons/';
-import { isLoggedIn } from "../App";
+import { isLoggedIn, logOut } from "../App";
 
 export function Navbar(props){
     let menu, menu2;
@@ -10,7 +10,7 @@ export function Navbar(props){
         menu2 = <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>
     }else{
         menu = <a className={props.page==="booking"? "active":""} href="/booking"><Event />Booking</a>
-        menu2 = <a className={props.page==="profile"? "active":""} href="/profile"><AccountCircle />Profile</a>
+        menu2 = <a className={props.page==="profile"? "active":""} href="/" onClick={logOut} ><AccountCircle />Profile</a>
     }
     return (
         <main>
