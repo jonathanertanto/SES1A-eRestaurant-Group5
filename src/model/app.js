@@ -30,7 +30,6 @@ app.get("/api/profile", async (req, res) => {
         const {userID} = req.query;
         let user = await User.findOne({_id: String(userID)});
         return res.json({
-            id: user.id,
             username: user.username,
             email: user.email,
             firstName: user.firstName,
@@ -47,21 +46,30 @@ app.get("/api/profile", async (req, res) => {
 
 app.get("/api/updateuserdata", async (req, res) => {
     try{
-        const {userID, username, password, email, firstName, lastName, dateOfBirth, contactNumber} = req.query;
-
+        const {userID, username, password, validationPass, email, firstName, lastName, dateOfBirth, contactNumber} = req.query;
+        // Check password
+        let user = await User.findOne({_id: String(userID)});
+        if(!user || user.password != validationPass){
+            console.log("Incorrect Password!");
+            return res.json({
+                status: false,
+                message: "Incorrect Password!"
+            });
+        }
+        
         // Check for existing username
-        let user = await User.findOne({username: String(username)});
-        if(user){
+        user = await User.findOne({username: String(username)});
+        if(user && String(username) != user.username){
             console.log("Username already exists, please choose another username!");
             return res.json({
                 status: false,
                 message: "Username already exists, please choose another username!"
             });
-        }ƒ
+        }
 
         // Check for existing email
         user = await User.findOne({email: String(email)});
-        if(user){
+        if(user && String(email) != user.email){
             console.log("Email already exists, please choose another email!");
             return res.json({
                 status: false,
@@ -80,20 +88,86 @@ app.get("/api/updateuserdata", async (req, res) => {
         }
 
         // Update User on Database
-
+        User.updateOne({_id: String(userID)}, {
+            username: String(username),
+            email: String(email),
+            password: String(password),
+            firstName: String(firstName),
+            lastName: String(lastName),
+            dateOfBirth: Date.parse(String(dateOfBirth)),
+            contactNumber: String(contactNumber)
+        }, function(err){
+            if(err){
+                console.log(err);
+                return res.json({
+                    status: false,
+                    message: err
+                });
+            }else{
+                console.log("Successfully updated the account information");
+                return res.json({
+                    status: true,
+                    message: "Account information successfully updated!"
+                });
+            }
+        });
     }catch(error){
         console.log(error);
+        return res.json({
+            status: false,
+            message: err
+        });
     }
 });
 
-app.get("/api/deleteaccount", async (req, res) => {
+app.get("/api/deleteuser", async (req, res) => {
     try{
-        const {userID} = req.query;
+        const {userID, password} = req.query;
+        // Check password
+        const user = await User.findOne({_id: String(userID)});
+        if(!user || user.password != password){
+            console.log("Incorrect Password!");
+            return res.json({
+                status: false,
+                message: "Incorrect Password!"
+            });
+        }
 
         // Delete User from Database
-        
+        if(user.userType==="C"){
+            Customer.deleteOne({_id: String(userID)}, function(err){
+                if(err){
+                    console.log(err);
+                    return res.json({
+                        status: false,
+                        message: err
+                    });
+                }else{
+                    console.log("Successfully deleted the customer from database");
+                }
+            });
+        }
+        User.deleteOne({_id: String(userID)}, function(err){
+            if(err){
+                console.log(err);
+                return res.json({
+                    status: false,
+                    message: err
+                });
+            }else{
+                console.log("Successfully deleted the user from database");
+                return res.json({
+                    status: true,
+                    message: "Account successfully deleted!"
+                });
+            }
+        });
     }catch(error){
         console.log(error);
+        return res.json({
+            status: false,
+            message: err
+        });
     }
 });
 
@@ -192,7 +266,8 @@ app.get("/api/signup", async (req, res) => {
         // Successful Message
         return res.json({
             status: true,
-            message: `${user.username} is successfully saved into the customer database`
+            message: `${user.username} is successfully saved into the customer database`,
+            userID: user._id
         });
     }catch(error){
         console.log(error);

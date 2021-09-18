@@ -21,6 +21,7 @@ export function logOut(){
     localStorage.removeItem("userID");
   else
     sessionStorage.removeItem("userID");
+  window.location.href='/';
 }
 
 function App(){

@@ -65,6 +65,36 @@ button:hover{
     color: #343434;
     background-color: #d4d4d4;
 }
+.right-side-button{
+  text-align: right;
+}
+
+// -----POPUP WINDOW-----
+.form-popup {
+  display: none;
+  position: fixed;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  padding: auto;
+}
+.form-popup h2{
+  font-weight: 700;
+}
+.form-container {
+  width: 72.5vw;
+  padding: 10px;
+  background-color: white;
+}
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  outline: none;
+}
 
 // -----NAVIGATION BAR----- 
 header{
