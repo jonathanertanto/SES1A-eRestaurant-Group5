@@ -110,7 +110,20 @@ function personalInformation(title, data){
                 <div className="col-sm-3">
                     <h6 className="mb-0">{title}</h6>
                 </div>
-                <input className="col-sm-9 text-secondary" value={data} />
+                <input className="col-sm-9 text-secondary" type="text" value={data} />
+            </div>
+            <hr/>
+        </secion>
+    );
+}
+function dateField(title, data){
+    return(
+        <secion>
+            <div className="row">
+                <div className="col-sm-3">
+                    <h6 className="mb-0">{title}</h6>
+                </div>
+                <input className="col-sm-9 text-secondary" type="date" value={data} />
             </div>
             <hr/>
         </secion>

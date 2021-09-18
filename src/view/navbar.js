@@ -12,14 +12,14 @@ export function Navbar(props){
     }
     return (
         <main>
-            <header>
+            <header className={props.page==="homepage"? "" : "content-navbar"} >
                 <div className={props.page==="homepage"? "topnav homepage":"topnav"}>
                     <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
                     <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>
                     {menu}
                     {getUserID() &&
                         <div className="topnav-dropdown">
-                            <button className={props.page==="profile"? "topnav-dropbtn-active topnav-dropbtn":"topnav-dropbtn"} ><AccountCircle /></button>
+                            <button className={props.page==="profile"? "topnav-dropbtn-active topnav-dropbtn":"topnav-dropbtn"} ><AccountCircle />Account</button>
                             <div className="topnav-dropdown-content">
                                 <a href="/profile"><AccountCircle />Profile</a>
                                 <a href="/" onClick={logOut}><MeetingRoom />Log Out</a>
@@ -30,7 +30,7 @@ export function Navbar(props){
                         <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>
                     }
                 </div>
-
+                
                 {props.page==="homepage" && homepageHeader()}
             </header>
             <Outlet />
