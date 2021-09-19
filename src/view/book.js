@@ -37,9 +37,8 @@ export function Book(props){
 
   // List of potential locations
   const [locations] = useState(["Any Location", "Patio", "Inside", "Bar"]);
-  const [times] = useState([
-    "9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"
-  ]);
+  const [times] = useState(["9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"]);
+
   // Basic reservation "validation"
   const [reservationError, setReservationError] = useState(false);
 
@@ -249,7 +248,7 @@ export function Book(props){
   return (
     <section className="reservation">
       <h1>RESERVATION</h1>
-      
+
       <Row noGutters className="text-center align-items-center pizza-cta">
         <Col>
           {reservationError ? (
@@ -264,11 +263,7 @@ export function Book(props){
         <div id="reservation-stuff">
           <Row noGutters className="text-center align-items-center">
             <Col xs="12" sm="3">
-              <input
-                type="date"
-                required="required"
-                className="booking-dropdown"
-                value={selection.date.toISOString().split("T")[0]}
+              <input type="date" required="required" className="booking-dropdown" value={selection.date.toISOString().split("T")[0]}
                 onChange={e => {
                   if (!isNaN(new Date(new Date(e.target.value)))) {
                     let newSel = {

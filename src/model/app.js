@@ -8,10 +8,13 @@ const mongoose = require('mongoose');
 require('./user');
 require('./customer');
 require('./booking');
+require('./meal');
 
+// Start of Database Setup
 const User = mongoose.model("User");
 const Customer = mongoose.model("Customer");
 const Booking = mongoose.model("Booking");
+const Meal = mongoose.model("Meal");
 mongoose.connect("mongodb://localhost:27017/LeBistrotdAndreDB", {useNewUrlParser: true});
 
 mongoose.connection.on("connected", () =>{
@@ -21,15 +24,131 @@ mongoose.connection.on("connected", () =>{
 mongoose.connection.on("error",(err) => {
     console.log(err);
 })
+// End of Database Setup
 
 app.use(express.static(path.resolve(__dirname, '../index.js')));
 app.use(express.json());
+
+app.get("/api/signup", async (req, res) => {
+    try{
+        const {username, password, email, firstName, lastName, dateOfBirth, contactNumber} = req.query;
+        
+        // Check for existing username
+        let user = await User.findOne({username: String(username)});
+        if(user){
+            console.log("Username already exists, please choose another username!");
+            return res.json({
+                status: false,
+                message: "Username already exists, please choose another username!"
+            });
+        }
+
+        // Check for existing email
+        user = await User.findOne({email: String(email)});
+        if(user){
+            console.log("Email already exists, please choose another email!");
+            return res.json({
+                status: false,
+                message: "Email already exists, please choose another email!"
+            });
+        }
+
+        // Validate date of birth
+        const date = new Date();
+        if(Date.parse(String(dateOfBirth)) >= Date.parse(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()) ){
+            console.log("Invalid date of birth, please choose another date!");
+            return res.json({
+                status: false,
+                message: "Invalid date of birth, please choose another date!"
+            });
+        }
+
+        // Insertion of User entity
+        user = new User({
+            username: String(username),
+            email: String(email),
+            password: String(password),
+            firstName: String(firstName),
+            lastName: String(lastName),
+            dateOfBirth: Date.parse(String(dateOfBirth)),
+            contactNumber: String(contactNumber),
+            userType: 'C'
+        });
+        user.save();
+        console.log(`${user.username} is successfully saved into the user database`);
+
+        // Insertion of Customer entity
+        const customer = new Customer({
+            _id: user._id,
+            personalInformation: user
+        });
+        customer.save();
+        console.log(`${user.username} is successfully saved into the customer database`);
+
+        // Successful Message
+        return res.json({
+            status: true,
+            message: `${user.username} is successfully saved into the customer database`,
+            userID: user._id
+        });
+    }catch(error){
+        console.log(error);
+        res.json({
+            status: false,
+            message: error
+        });
+    }
+});
+
+app.get("/api/login", async (req, res) => {
+    try{
+        const {username, email, password} = req.query;
+        let user = await User.findOne({username: String(username)});
+        if(!user){
+            console.log("Invalid username. Searching for email...");
+            user = await User.findOne({email: String(email)});
+        }
+        if(!user){
+            console.log("Invalid username/email!");
+            return res.json({
+                status: false,
+                message: "Invalid username/email and/or password!"
+            });
+        }else{
+            if(String(password) === String(user.password)){
+                console.log("Login successful!");
+                return res.json({
+                    status: true,
+                    userID: user._id
+                });
+            }
+        }
+        console.log("Invalid password");
+        return res.json({
+            status: false,
+            message: "Invalid username/email and/or password!"
+        });
+    }catch(error){
+        console.log(error);
+        res.json({
+            status: false
+        });
+    }
+});
 
 app.get("/api/profile", async (req, res) => {
     try{
         const {userID} = req.query;
         let user = await User.findOne({_id: String(userID)});
+        if(!user){
+            return res.json({
+                status: false,
+                message: "invalid user id"
+            });
+        }
         return res.json({
+            status: true,
+            id: user._id,
             username: user.username,
             email: user.email,
             firstName: user.firstName,
@@ -41,6 +160,10 @@ app.get("/api/profile", async (req, res) => {
         });
     }catch(error){
         console.log(error);
+        return res.json({
+            status: false,
+            message: error
+        });
     }
 });
 
@@ -171,110 +294,52 @@ app.get("/api/deleteuser", async (req, res) => {
     }
 });
 
-app.get("/api/login", async (req, res) => {
+app.post("/api/addmeal", async (req, res) => {
     try{
-        const {username, email, password} = req.query;
-        let user = await User.findOne({username: String(username)});
-        if(!user){
-            console.log("Invalid username. Searching for email...");
-            user = await User.findOne({email: String(email)});
-        }
-        if(!user){
-            console.log("Invalid username/email!");
-            return res.json({
-                status: false,
-                message: "Invalid username/email and/or password!"
-            });
-        }else{
-            if(String(password) === String(user.password)){
-                console.log("Login successful!");
-                return res.json({
-                    status: true,
-                    userID: user._id
-                });
-            }
-        }
-        console.log("Invalid password");
-        return res.json({
-            status: false,
-            message: "Invalid username/email and/or password!"
+        const {image, name, description, price, cost, type} = req.body;
+
+        const meal = new Meal({
+            image: String(image),
+            name: String(name),
+            description: String(description),
+            price: Number(price),
+            cost: Number(cost),
+            menuType: type
         });
+        meal.save();
+        console.log("Successfully added the meal item");
+        return res.json({status: true});
     }catch(error){
         console.log(error);
-        res.json({
-            status: false
-        });
+        res.json({status: false});
     }
 });
-
-app.get("/api/signup", async (req, res) => {
+app.get("/api/getallmeals", async (req, res) => {
     try{
-        const {username, password, email, firstName, lastName, dateOfBirth, contactNumber} = req.query;
-        
-        // Check for existing username
-        let user = await User.findOne({username: String(username)});
-        if(user){
-            console.log("Username already exists, please choose another username!");
-            return res.json({
-                status: false,
-                message: "Username already exists, please choose another username!"
-            });
-        }
-
-        // Check for existing email
-        user = await User.findOne({email: String(email)});
-        if(user){
-            console.log("Email already exists, please choose another email!");
-            return res.json({
-                status: false,
-                message: "Email already exists, please choose another email!"
-            });
-        }
-
-        // Validate date of birth
-        const date = new Date();
-        if(Date.parse(String(dateOfBirth)) >= Date.parse(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()) ){
-            console.log("Invalid date of birth, please choose another date!");
-            return res.json({
-                status: false,
-                message: "Invalid date of birth, please choose another date!"
-            });
-        }
-
-        // Insertion of User entity
-        user = new User({
-            username: String(username),
-            email: String(email),
-            password: String(password),
-            firstName: String(firstName),
-            lastName: String(lastName),
-            dateOfBirth: Date.parse(String(dateOfBirth)),
-            contactNumber: String(contactNumber),
-            userType: 'C'
-        });
-        user.save();
-        console.log(`${user.username} is successfully saved into the user database`);
-
-        // Insertion of Customer entity
-        const customer = new Customer({
-            _id: user._id,
-            personalInformation: user
-        });
-        customer.save();
-        console.log(`${user.username} is successfully saved into the customer database`);
-
-        // Successful Message
-        return res.json({
-            status: true,
-            message: `${user.username} is successfully saved into the customer database`,
-            userID: user._id
+        Meal.find(function(err, meals){
+            if(err){
+                console.log(err);
+            }else{
+                return res.json({menuItem: meals});
+            }
         });
     }catch(error){
         console.log(error);
-        res.json({
-            status: false,
-            message: error
+    }
+})
+app.get("/api/deleteallmeal", async (req, res) => {
+    try{
+        Meal.deleteMany({}, function(err){
+            if(err){
+                console.log(err);
+            }else{
+                console.log("Successfully deleted all the meals");
+                return res.json({status: true});
+            }
         });
+    }catch(error){
+        console.log(error);
+        res.json({status: false});
     }
 });
 

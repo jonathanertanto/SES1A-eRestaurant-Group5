@@ -17,7 +17,7 @@ export function Navbar(props){
                     <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
                     <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>
                     {menu}
-                    {getUserID() &&
+                    {getUserID()?(
                         <div className="topnav-dropdown">
                             <button className={props.page==="profile"? "topnav-dropbtn-active topnav-dropbtn":"topnav-dropbtn"} ><AccountCircle />Account</button>
                             <div className="topnav-dropdown-content">
@@ -25,12 +25,9 @@ export function Navbar(props){
                                 <a href="/" onClick={logOut}><MeetingRoom />Log Out</a>
                             </div>
                         </div> 
-                    }
-                    {!getUserID() &&
-                        <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>
+                    ) : <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>
                     }
                 </div>
-                
                 {props.page==="homepage" && homepageHeader()}
             </header>
             <Outlet />
