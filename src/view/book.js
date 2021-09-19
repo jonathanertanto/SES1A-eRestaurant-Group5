@@ -1,3 +1,4 @@
+import { Title } from "@material-ui/icons";
 import React, { useState, useEffect } from "react";
 import {
   Row,
@@ -247,7 +248,7 @@ export function Book(props){
 
   return (
     <section className="reservation">
-      <h1>RESERVATION</h1>
+      {title()}
 
       <Row noGutters className="text-center align-items-center pizza-cta">
         <Col>
@@ -418,4 +419,17 @@ export function Book(props){
       )}
     </section>
   );
-};
+};  
+function title(){
+  return(
+      <div className="title2">
+          <h1 className="title-non-animation">
+              <span className="text-wrapper">
+                  <span className="line line1"></span>
+                  <span>MENU</span>
+                  <span className="line line2"></span>
+              </span>
+          </h1>
+      </div>
+  );
+}

@@ -50,8 +50,8 @@ function restaurantName(){
                 <span className="text-wrapper">
                     <span className="line line1"></span>
                     <span className="letters letters-left">Le Bistrot</span>
-                    <span className="letters ampersand"> </span>
-                    <span className="letters letters-right">d'Andre</span>
+                    <span className="letters ampersand"></span>
+                    <span className="letters letters-right"> d'Andre</span>
                     <span className="line line2"></span>
                 </span>
             </h1>

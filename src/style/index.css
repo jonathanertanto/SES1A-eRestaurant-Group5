@@ -263,6 +263,57 @@ header {
   opacity: 0;
 }
 
+.title2 {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-weight: 900;
+  font-size: 60px;
+  color: #111111;
+}
+
+.title-non-animation {
+  position: relative;
+}
+
+.title-non-animation .text-wrapper {
+  position: relative;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  padding-top: 0.1em;
+  padding-right: 0.05em;
+  padding-bottom: 0.15em;
+  line-height: 1em;
+}
+
+.title-non-animation .line {
+  position: absolute;
+  margin: auto;
+  height: 3px;
+  width: 100%;
+  background-color: #402d2d;
+  -webkit-transform-origin: 0.5 0;
+          transform-origin: 0.5 0;
+}
+
+.title-non-animation .line.line1 {
+  top: 0;
+}
+
+.title-non-animation .line.line2 {
+  bottom: 0;
+}
+
+.title-non-animation .letters {
+  display: inline-block;
+  opacity: 0;
+}
+
 .booking-button .homepage {
   display: block;
   margin-bottom: 20px;
