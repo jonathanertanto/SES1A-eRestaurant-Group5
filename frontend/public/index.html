@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <title>Le Bistrot d'Andre</title>
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Le Bistrot d'Andre eRestaurant Website."/>
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+  <script>
+      anime.timeline({loop: true})
+      .add({
+          targets: '.title-animation .line',
+          opacity: [0.5,1],
+          scaleX: [0, 1],
+          easing: "easeInOutExpo",
+          duration: 1000
+      }).add({
+          targets: '.title-animation .line',
+          duration: 1000,
+          easing: "easeOutExpo",
+          translateY: (el, i) => (-0.625 + 0.625*2*i) + "em"
+      }).add({
+          targets: '.title-animation .letters-left',
+          opacity: [0,1],
+          translateX: ["0.5em", 0],
+          easing: "easeOutExpo",
+          duration: 1500,
+          offset: '-=300'
+      }).add({
+          targets: '.title-animation .letters-right',
+          opacity: [0,1],
+          translateX: ["-0.5em", 0],
+          easing: "easeOutExpo",
+          duration: 1500,
+          offset: '-=600'
+      }).add({
+          targets: '.title-animation',
+          opacity: 0,
+          duration: 2000,
+          easing: "easeOutExpo",
+          delay: 1000
+      });
+  </script>
+
+</html>

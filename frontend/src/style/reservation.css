@@ -1,0 +1,21 @@
+.reservation {
+  margin: auto;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.reservation h1 {
+  margin-bottom: 50px;
+}
+
+.reservation-comboBox {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 20%;
+      -ms-flex: 20%;
+          flex: 20%;
+  padding: 5px;
+}
+/*# sourceMappingURL=reservation.css.map */
