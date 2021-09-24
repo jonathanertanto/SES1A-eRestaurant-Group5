@@ -1,5 +1,7 @@
-const path = require('path');
-
+var path = require('path');
+require ("dotenv").config();
+var logger = require("morgan");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const port = process.env.PORT || 3001;
 const express = require('express');
@@ -16,6 +18,7 @@ const User = mongoose.model("User");
 const Customer = mongoose.model("Customer");
 const Booking = mongoose.model("Booking");
 const Meal = mongoose.model("Meal");
+
 mongoose.connect("mongodb://localhost:27017/LeBistrotdAndreDB", {useNewUrlParser: true});
 
 mongoose.connection.on("connected", () =>{
@@ -348,6 +351,29 @@ app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../index.js'));
 })
 
+
+
+var indexRouter = require("./routes/reservationRoute");
+
+//Express
+app.use(cors());
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+// Routes
+
+
+//Routes
+app.use("/availability", require ("./routes/availabilityRoute"));
+app.use ("/reserve", require ("./routes/reservationRoute"));
+
+
+
 app.listen(port, () =>{
-  console.log(`Server started on port ${port}.`);
-});
+    console.log(`Server started on port ${port}.`);
+  });
+  
+
+module.exports = app;

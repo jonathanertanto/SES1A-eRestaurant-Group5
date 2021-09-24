@@ -1,10 +1,16 @@
 {
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "debug": "^4.3.2",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mongoose": "^6.0.6"
+    "mongoose": "^6.0.6",
+    "morgan": "^1.10.0"
   },
-  "scripts":{
-    "start": "node src/model/app.js",
+  "scripts": {
+    "start": "node ./bin/www",
     "build": "cd && npm install && npm run build"
   }
 }

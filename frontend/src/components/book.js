@@ -71,7 +71,7 @@ export function Book(props){
     if (selection.time && selection.date) {
       (async _ => {
         let datetime = getDate();
-        let res = await fetch("http://localhost:3005/availability", {
+        let res = await fetch("http://localhost:3001/availability", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -106,7 +106,7 @@ export function Book(props){
       setReservationError(true);
     } else {
       const datetime = getDate();
-      let res = await fetch("http://localhost:3005/reserve", {
+      let res = await fetch("http://localhost:3001/reserve", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
