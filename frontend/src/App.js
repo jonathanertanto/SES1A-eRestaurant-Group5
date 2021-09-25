@@ -1,12 +1,12 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom";
-import {Navbar} from "./components/navbar";
-import {Homepage} from "./components/homepage";
-import {Menu} from "./components/menu";
-import {Login} from "./components/login";
-import {Signup} from "./components/signup";
-import {Book} from "./components/book";
-import {Profile} from "./components/profile";
+import {Navbar} from "./view/navbar";
+import {Homepage} from "./view/homepage";
+import {Menu} from "./view/menu";
+import {Login} from "./view/login";
+import {Signup} from "./view/signup";
+import {Book} from "./view/book";
+import {Profile} from "./view/profile";
 
 export function getUserID(){
   const rememberMe = localStorage.getItem("rememberMe") === true;
