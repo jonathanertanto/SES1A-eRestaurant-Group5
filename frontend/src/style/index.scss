@@ -437,13 +437,13 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 .booking-dropdown{
-    width: 85%;
-    padding: 4% 0;
+    width: 100%;
+    padding: 20px 0;
     background-color: #343434;
     color: white;
-    margin: 2% 0;
+    margin: 5px 0;
     font-family: "Roboto";
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     border: none;
     border-radius: 5px;
     text-align: center !important;
@@ -468,11 +468,21 @@ input[type=date]::-webkit-calendar-picker-indicator {
         color: black;
     }
 }
-@media (min-width: $small-break){
-    .booking-dropdown{
-        font-size: 1.2rem;
-    }
+@media screen and (max-width: 970px) and (min-width: 815px){
+  .booking-dropdown{
+      font-size: 1rem !important;
   }
+}
+@media screen and (max-width: 815px) and (min-width: 575px){
+  .booking-dropdown{
+      font-size: 0.7rem !important;
+  }
+}
+@media (min-width: 574px){
+  .booking-dropdown{
+      font-size: 1.2rem;
+  }
+}
 
 // Tables Display
 .table-display-message{

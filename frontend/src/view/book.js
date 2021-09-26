@@ -17,6 +17,7 @@ export const Book = (props) => {
 
     // User's selections
     const [selection, setSelection] = useState({
+        type: "Lunch",
         table: {
         name: null,
         id: null
@@ -37,7 +38,15 @@ export const Book = (props) => {
 
     // List of potential locations
     const [locations] = useState(["Any Location", "Patio", "Inside", "Bar"]);
-    const [times] = useState(["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]);
+    
+    const [times, setTimes] = useState(["11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]);
+    useEffect(() => {
+        if(selection.type === "Lunch"){
+            setTimes(["11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]);
+        }else{
+            setTimes(["18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]);
+        }
+    }, [times, selection.type])
 
     // Basic reservation "validation"
     const [reservationError, setReservationError] = useState(false);
@@ -59,7 +68,8 @@ export const Book = (props) => {
         const month = months[date.getMonth()];
         const day = date.getDate();
         const time = date.getMinutes > 0? date.getHours()+1 : (date.getHours() + 2);
-        return (month+" "+day+" "+year+" "+time+":00:00");
+        const datetime = time < 24? (month+" "+day+" "+year+" "+time+":00:00") : (month+" "+(day+1)+" "+year+" "+(time-24)+":00:00");
+        return datetime;
     }
 
     // Validate user selection date
@@ -310,7 +320,8 @@ const bookReservation = (selection, setSelection, times, locations, getEmptyTabl
 // Reservation Information Selections
 const reservationInfoSelection = (selection, setSelection, times, locations) => {
     return(
-        <Row noGutters className="text-center align-items-center">
+        <Row noGutters className="text-center align-items-center reservation">
+            {menuTypeSelection(selection, setSelection)}
             {dateSelection(selection, setSelection)}
             {timeSelection(selection, setSelection, times)}
             {locationSelection(selection, setSelection, locations)}
@@ -318,9 +329,43 @@ const reservationInfoSelection = (selection, setSelection, times, locations) => 
         </Row>
     );
 }
+const menuTypeSelection = (selection, setSelection) => {
+    const menuType = ["Lunch", "Dinner"];
+    // Generate menu type selection dropdown
+    const getMenuType = _ => {
+        let newType = [];
+        menuType.forEach(type => {
+            newType.push(
+                <DropdownItem key={type} className="booking-dropdown-item" 
+                        onClick={_=> {
+                            let newSel = {
+                                ...selection,
+                                type: type,
+                                table: {
+                                    ...selection.table
+                                },
+                                time: null
+                            };
+                            setSelection(newSel);
+                        }}>
+                    {type}
+                </DropdownItem>
+            );
+        });
+        return newType;
+    };
+    return (
+        <Col xs="12" sm="2">
+            <UncontrolledDropdown>
+                <DropdownToggle color="none" caret className="booking-dropdown"> {selection.type} </DropdownToggle>
+                <DropdownMenu right className="booking-dropdown-menu"> {getMenuType()} </DropdownMenu>
+            </UncontrolledDropdown>
+        </Col>
+    )
+}
 const dateSelection = (selection, setSelection) => {
     return(
-        <Col xs="12" sm="3">
+        <Col xs="12" sm="2">
             <input type="date" required="required" className="booking-dropdown" defaultValue={new Date().getFullYear() + "-" + (new Date().getMonth()>8?(new Date().getMonth()+1):("0" + (new Date().getMonth()+1))) + "-" + new Date().getDate()}
                 onChange={e => {
                     if (!isNaN(new Date(new Date(e.target.value)))) {
@@ -349,6 +394,7 @@ const dateSelection = (selection, setSelection) => {
     );
 }
 const timeSelection = (selection, setSelection, times) => {
+    
     // Generate time dropdown
     const getTimes = _ => {
         let newTimes = [];
@@ -376,7 +422,7 @@ const timeSelection = (selection, setSelection, times) => {
     };
 
     return(
-        <Col xs="12" sm="3">
+        <Col xs="12" sm="2">
             <UncontrolledDropdown>
                 <DropdownToggle color="none" caret className="booking-dropdown">
                     {selection.time === null ? "Select a Time" : selection.time}
@@ -517,12 +563,12 @@ const confirmationWindow = (reserve, closeForm, selection, setNote) => {
                     </div>
                     <div className="reservation confirmation-content">
                         <div className="reservation form-floating">
-                            <input type="text" className="form-control" value={selection.date.getFullYear() + "-" + (selection.date.getMonth()>8?(selection.date.getMonth()+1):("0"+(selection.date.getMonth()+1))) + "-" + selection.date.getDate()} readOnly = {true}/>
-                            <label for="floatingInput">Reservation Date</label>
+                            <input type="text" className="form-control" value={selection.type} readOnly = {true}/>
+                            <label for="floatingInput">Reservation Type</label>
                         </div>
                         <div className="reservation form-floating">
-                            <input type="text" className="form-control" value={selection.time} readOnly = {true}/>
-                            <label for="floatingInput">Reservation Time</label>
+                            <input type="text" className="form-control" value={selection.date.getFullYear() + "-" + (selection.date.getMonth()>8?(selection.date.getMonth()+1):("0"+(selection.date.getMonth()+1))) + "-" + selection.date.getDate() + " / " + selection.time} readOnly = {true}/>
+                            <label for="floatingInput">Reservation Date/Time</label>
                         </div>
                     </div>
                     <div className="reservation confirmation-content">

@@ -28,7 +28,7 @@ const restaurantTime = _ =>{
         <div className="info-box left">
             <a href={bookingUrl}><img className="info-box" src="https://www.crownsydney.com.au/getmedia/ad5ae0e2-2872-4fbe-bf54-601b12baee97/210420-Crown-Sydney-Restaurant-Epicurean-0099-6496x4872.jpg" alt="Press to go to booking page"/></a>
             <div className="info-box-text center">
-                <a href={bookingUrl}>Lunch = 09:00 - 17:00</a> <br/>
+                <a href={bookingUrl}>Lunch = 11:00 - 17:00</a> <br/>
                 <a href={bookingUrl}>Dinner = 18:00 - 23:00</a>
             </div>
         </div>

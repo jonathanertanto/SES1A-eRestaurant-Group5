@@ -5,6 +5,7 @@ import {getUserID} from "../App";
 
 export const Menu = _ =>{
     const [menuItems, setMenuItems] = useState(null);
+    
     useEffect(() => {
         const getData = async _ =>{
             // This function is just for demonstration purpose only. In real-life, it will not be implemented and the manager will need to add the meal items by themselve.
@@ -93,7 +94,7 @@ const title = _ => {
 }
 
 // These two functions are just for demonstration purpose only. In real-life, they will not be implemented and the manager will need to add the meal items by themselve.
-const setMenu = _ => {
+const setMenu = () => {
     const images = [
         "https://uppercutsteakhouse.com/wp-content/uploads/2019/09/menu-dry-agedc.jpg", "https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg",
         "https://i.pinimg.com/564x/d4/c9/31/d4c9317f618ef2eff5e74cd91240460b.jpg", "https://i.pinimg.com/564x/6c/6e/8d/6c6e8dabd1808b9b17c0f0425e812f60.jpg", 
@@ -106,7 +107,7 @@ const setMenu = _ => {
     const prices = [25, 25, 20, 27, 23, 6, 6, 5.5, 6.5, 7];
     const costs = [8, 8, 6, 9, 7, 2.5, 2.5, 2, 3, 3, 3.5];
     const types = ["all", "all", "all", "all", "all", "all", "all", "all", "all", "all"];
-
+    
     for(let i=0; i<10; ++i){
         addMealItem(images[i], names[i], descriptions[i], prices[i], costs[i], types[i]);
     }
