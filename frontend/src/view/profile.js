@@ -2,7 +2,7 @@ import React from "react";
 import '../style/profile.css';
 import {getUserID, logOut} from "../App";
 
-export function Profile(){
+export const Profile = _ => {
     const [username, setUsername] = React.useState(null);
     React.useEffect(() => {
         fetch(`/api/profile?userID=${getUserID()}`)
@@ -65,28 +65,28 @@ export function Profile(){
 
     const [buttonClicked, setButtonClicked] = React.useState(null);
     React.useEffect(() => {}, [buttonClicked]);
-    function openEditValidation(){
+    const openEditValidation = _ => {
         setButtonClicked("edit");
         openForm();
     }
-    function openDeleteValidation(){
+    const openDeleteValidation = _ => {
         setButtonClicked("delete");
         openForm();
     }
-    function openForm(){
+    const openForm = _ => {
         document.getElementById("myForm").style.display = "block";
     }
-    function closeForm() {
+    const closeForm = _ => {
         document.getElementById("myForm").style.display = "none";
     }
     
-    function accountModification(){
+    const accountModification = _ => {
         if(buttonClicked === "edit")
             editPersonalInformation();
         else
             deleteAccount();
     }
-    function editPersonalInformation(){
+    const editPersonalInformation = _ => {
         if(!(username && email && firstName && dateOfBirth && contactNumber))
             return alert("Please fill in all of the non-optional data!");
         if(password.length < 8)
@@ -101,7 +101,7 @@ export function Profile(){
                 }
             });
     }
-    function deleteAccount(){
+    const deleteAccount = _ => {
         fetch(`/api/deleteuser?userID=${getUserID()}&password=${oldPass}`)
             .then((res) => { return res.json(); } )
             .then((data) => {
@@ -151,7 +151,7 @@ export function Profile(){
     );
 }
 
-function confirmationWindow(setOldPass, accountModification, closeForm){
+const confirmationWindow = (setOldPass, accountModification, closeForm) => {
     return(
         <div className="form-popup center" id="myForm">
             <form className="form-container">
@@ -168,7 +168,7 @@ function confirmationWindow(setOldPass, accountModification, closeForm){
         </div>
     );
 }
-function normalField(title, data, setData){
+const normalField = (title, data, setData) => {
     return(
         <secion>
             <div className="row">
@@ -181,7 +181,7 @@ function normalField(title, data, setData){
         </secion>
     );
 }
-function passwordField(title, data, setData){
+const passwordField = (title, data, setData) => {
     return(
         <secion>
             <div className="row">
@@ -194,7 +194,7 @@ function passwordField(title, data, setData){
         </secion>
     );
 }
-function dateField(title, data, setData){
+const dateField = (title, data, setData) => {
     return(
         <secion>
             <div className="row">

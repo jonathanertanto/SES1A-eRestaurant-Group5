@@ -7,10 +7,11 @@ var tableSchema = new mongoose.Schema ({
     capacity: Number,
     isAvailable: Boolean,
     location: String,
-    reservation: {
-        required:false,
-        type: reservationSchema
-    }
+    // reservation: {
+    //     required:false,
+    //     type: reservationSchema
+    // }
+    reservation: BookingSchema
 });
 
 var Table = mongoose.model("Table", tableSchema);

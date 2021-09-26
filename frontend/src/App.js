@@ -8,16 +8,16 @@ import {Signup} from "./view/signup";
 import {Book} from "./view/book";
 import {Profile} from "./view/profile";
 
-export function getUserID(){
-  const rememberMe = localStorage.getItem("rememberMe") === true;
-  if(rememberMe)
+export const getUserID = _ => {
+  const rememberMe = localStorage.getItem("rememberMe");
+  if(rememberMe === "true")
     return (localStorage.getItem("userID"));
   else
     return (sessionStorage.getItem("userID"));
 }
-export function logOut(){
-  const rememberMe = localStorage.getItem("rememberMe") === true;
-  if(rememberMe)
+export const logOut = _ => {
+  const rememberMe = localStorage.getItem("rememberMe");
+  if(rememberMe === "true")
     localStorage.removeItem("userID");
   else
     sessionStorage.removeItem("userID");
@@ -51,5 +51,4 @@ function App(){
     </div>
   );
 }
-
 export default App;

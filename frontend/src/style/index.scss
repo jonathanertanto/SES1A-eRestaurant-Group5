@@ -447,6 +447,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
     border: none;
     border-radius: 5px;
     text-align: center !important;
+    justify-content: center !important;
 
     &:hover{
         background-color: #343434;

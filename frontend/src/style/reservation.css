@@ -18,4 +18,26 @@
           flex: 20%;
   padding: 5px;
 }
+
+.reservation .confirmation-content {
+  margin: 0 auto;
+  padding: 0 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.reservation .form-floating {
+  position: relative;
+  display: block;
+  -webkit-box-flex: 50%;
+      -ms-flex: 50%;
+          flex: 50%;
+  padding: 0 5px;
+  margin: 0;
+}
 /*# sourceMappingURL=reservation.css.map */

@@ -12,3 +12,17 @@
     flex: 20%;
     padding: 5px;
 }
+.reservation .confirmation-content{
+    margin: 0 auto;
+    padding: 0 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+}
+.reservation .form-floating{
+    position: relative;
+    display: block;
+    flex: 50%;
+    padding: 0 5px;
+    margin: 0;
+}

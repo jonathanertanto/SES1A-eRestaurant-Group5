@@ -521,6 +521,9 @@ input[type=date]::-webkit-calendar-picker-indicator {
   border: none;
   border-radius: 5px;
   text-align: center !important;
+  -webkit-box-pack: center !important;
+      -ms-flex-pack: center !important;
+          justify-content: center !important;
 }
 
 .booking-dropdown:hover {

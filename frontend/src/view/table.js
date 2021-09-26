@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
 
-export function Table(props){
+export const Table = (props) => {
   const getRow1 = _ => {
     let chairs = [];
     for (var i = 0; i < Math.ceil(props.chairs / 2); i++) {
@@ -33,7 +33,7 @@ export function Table(props){
         className={props.empty ? "table selectable-table" : "table"}
         onClick={_ => {
           props.empty
-            ? props.selectTable(props.name, props.id)
+            ? props.selectTable(props.name, props.id, props.chairs)
             : console.log("Tried to select a full table");
         }}
       >

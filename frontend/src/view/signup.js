@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-export function Signup(){
+export const Signup = _ => {
     const [username, setUsername] = useState(null);
     useEffect(() => {}, [username]);
 
@@ -23,11 +23,11 @@ export function Signup(){
     useEffect(() => {}, [contactNumber]);
 
     let rememberMe = false;
-    function handleChange(e){
+    const handleChange = (e) =>{
         rememberMe = e.target.checked;
     }
     
-    function newCustomer(){
+    const newCustomer = _ => {
         if(!(username && email && firstName && dateOfBirth && contactNumber))
             return alert("Please fill in all of the non-optional data!");
         if(password.length < 8)
@@ -90,7 +90,7 @@ export function Signup(){
         </section>
     );
 }
-function title(){
+const title = _ => {
     return(
         <section>
             <h1>Sign Up</h1>
@@ -99,7 +99,7 @@ function title(){
         </section>
     );
 }
-function loginLink(){
+const loginLink = _ => {
     return(
         <a href="/login">Already have an account</a>
     );

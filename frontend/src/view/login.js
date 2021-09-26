@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-export function Login(){
+export const Login = _ => {
     const [username, setUsername] = useState(null);
     useEffect(() => {}, [username]);
 
@@ -8,11 +8,11 @@ export function Login(){
     useEffect(() => {}, [password]);
 
     let rememberMe = false;
-    function handleChange(e){
+    const handleChange = (e) => {
         rememberMe = e.target.checked;
     }
 
-    function signIn(){
+    const signIn = _ =>{
         if(!(username && password)){
             return alert("Invalid username/email and/or password!");
         }
@@ -55,7 +55,7 @@ export function Login(){
         </section>
     );
 }
-function title(){
+const title = _ =>{
     return(
         <section>
             <h1>Welcome to</h1>
@@ -63,7 +63,7 @@ function title(){
         </section>
     )
 }
-function signupLink(){
+const signupLink = _ =>{
     return(
         <a href="/signup">Create new account</a>
     );

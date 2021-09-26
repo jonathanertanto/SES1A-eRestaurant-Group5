@@ -3,11 +3,10 @@ import {AddShoppingCart} from '@material-ui/icons/';
 import '../style/menu.css';
 import {getUserID} from "../App";
 
-export function Menu(){
+export const Menu = _ =>{
     const [menuItems, setMenuItems] = useState(null);
     useEffect(() => {
-        getData();
-        async function getData(){
+        const getData = async _ =>{
             // This function is just for demonstration purpose only. In real-life, it will not be implemented and the manager will need to add the meal items by themselve.
                 await fetch(`/api/deleteallmeal`);
                 setMenu();
@@ -16,19 +15,20 @@ export function Menu(){
             const data = await response.json();
             setMenuItems(data.menuItem);
         }
+        getData();
     }, []);
     
     // Order Window
-    function addOrder(event){
+    const addOrder = (event) => {
         if(!getUserID()){
             return window.location.href='/login';
         }
         openForm(event.id);
     }
-    function openForm(itemID){
+    const openForm = (itemID) => {
         document.getElementById("myForm").style.display = "block";
     }
-    function closeForm() {
+    const closeForm = _ => {
         document.getElementById("myForm").style.display = "none";
     }
     
@@ -57,7 +57,7 @@ export function Menu(){
     );
 }
 
-function orderWindow(closeForm){
+const orderWindow = (closeForm) => {
     return(
         <div className="form-popup center" id="myForm">
             <form className="form-container">
@@ -78,7 +78,7 @@ function orderWindow(closeForm){
         </div>
     );
 }
-function title(){
+const title = _ => {
     return(
         <div className="title2">
             <h1 className="title-non-animation">
@@ -93,7 +93,7 @@ function title(){
 }
 
 // These two functions are just for demonstration purpose only. In real-life, they will not be implemented and the manager will need to add the meal items by themselve.
-function setMenu(){
+const setMenu = _ => {
     const images = [
         "https://uppercutsteakhouse.com/wp-content/uploads/2019/09/menu-dry-agedc.jpg", "https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg",
         "https://i.pinimg.com/564x/d4/c9/31/d4c9317f618ef2eff5e74cd91240460b.jpg", "https://i.pinimg.com/564x/6c/6e/8d/6c6e8dabd1808b9b17c0f0425e812f60.jpg", 
@@ -111,7 +111,7 @@ function setMenu(){
         addMealItem(images[i], names[i], descriptions[i], prices[i], costs[i], types[i]);
     }
 }
-async function addMealItem(img, nm, des, prc, cst, typ){
+const addMealItem = async (img, nm, des, prc, cst, typ) => {
     const data = {
         image: img,
         name: nm,
@@ -126,8 +126,6 @@ async function addMealItem(img, nm, des, prc, cst, typ){
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-        })
-        .then((res) => { return res.json(); } )
-        .then((data) => {});
+    });
 }
 // end of comment

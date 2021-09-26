@@ -3,7 +3,7 @@ import {Outlet} from "react-router-dom";
 import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle, MeetingRoom} from '@material-ui/icons/';
 import { getUserID, logOut } from "../App";
 
-export function Navbar(props){
+export const Navbar = (props) => {
     let menu;
     if(!getUserID()){
         menu = <a className={props.page==="login"? "active":""} href="/login"><ExitToApp />Log In</a>;
@@ -35,7 +35,7 @@ export function Navbar(props){
     );
 }
 
-function homepageHeader(){
+const homepageHeader = _ => {
     return (
         <div>
             {restaurantName()}
@@ -43,7 +43,7 @@ function homepageHeader(){
         </div>
     )
 }
-function restaurantName(){
+const restaurantName = _ => {
     return(
         <div className="title">
             <h1 className="title-animation">
@@ -58,7 +58,7 @@ function restaurantName(){
         </div>
     );
 }
-function bookingBtn(){
+const bookingBtn = _ => {
     let bookingUrl = "/login";
     if(getUserID())
         bookingUrl = "/reservation";
