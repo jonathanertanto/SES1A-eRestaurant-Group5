@@ -3,37 +3,37 @@
         "name":"Table 1",
         "capacity":4,
         "isAvailable":true,
-        "location":"Bar"
+        "location":"2/1-25 Harbour St"
     },{
         "name":"Table 2",
         "capacity":7,
         "isAvailable":true,
-        "location":"Inside"
+        "location":"241 Victoria St, Darlinghurst"
     },{
         "name":"Table 3",
         "capacity":7,
         "isAvailable":true,
-        "location":"Bar"
+        "location":"2/1-25 Harbour St"
     },{
         "name":"Table 4",
         "capacity":4,
         "isAvailable":true,
-        "location":"Bar"
+        "location":"123 Victoria St, Potts Point"
     },{
         "name":"Table 5",
         "capacity":4,
         "isAvailable":true,
-        "location":"Bar"
+        "location":"2/1-25 Harbour St"
     },{
         "name":"Table 6",
         "capacity":6,
         "isAvailable":true,
-        "location":"Patio"
+        "location":"2/1-25 Harbour St"
     },{
         "name":"Table 7",
         "capacity":7,
         "isAvailable":true,
-        "location":"Patio"
+        "location":"2/1-25 Harbour St"
     },{
         "name":"Table 8",
         "capacity":6,
@@ -43,61 +43,61 @@
         "name":"Table 9",
         "capacity":6,
         "isAvailable":true,
-        "location":"Patio"
+        "location":"123 Victoria St, Potts Point"
     },{
         "name":"Table 10",
         "capacity":6,
         "isAvailable":true,
-        "location":"Patio"
+        "location":"123 Victoria St, Potts Point"
     },{
         "name":"Table 11",
         "capacity":5,
         "isAvailable":true,
-        "location":"Bar"
+        "location":"241 Victoria St, Darlinghurst"
     },{
         "name":"Table 12"
         ,"capacity":3,
         "isAvailable":true,
-        "location":"Inside"
+        "location":"2/1-25 Harbour St"
     },{
         "name":"Table 13",
         "capacity":3,
         "isAvailable":true,
-        "location":"Patio"
+        "location":"2/1-25 Harbour St"
     },{
         "name":"Table 14",
         "capacity":3,
         "isAvailable":true,
-        "location":"Bar"
+        "location":"123 Victoria St, Potts Point"
     },{
         "name":"Table 15",
         "capacity":3,
         "isAvailable":true,
-        "location":"Bar"
+        "location":"123 Victoria St, Potts Point"
     },{
         "name":"Table 16",
         "capacity":3,
         "isAvailable":true,
-        "location":"Inside"
+        "location":"2/1-25 Harbour St"
     },{
         "name":"Table 17",
         "capacity":3,
         "isAvailable":true,
-        "location":"Bar"
+        "location":"241 Victoria St, Darlinghurst"
     },{
         "name":"Table 18",
         "capacity":5,
         "isAvailable":true,
-        "location":"Patio"
+        "location":"241 Victoria St, Darlinghurst"
     },{
         "name":"Table 19",
         "capacity":7,
         "isAvailable":true,
-        "location":"Patio"
+        "location":"2/1-25 Harbour St"
     },{
         "name":"Table 20",
         "capacity":2,
         "isAvailable":true,
-        "location":"Inside"
+        "location":"123 Victoria St, Potts Point"
     }
 ]}

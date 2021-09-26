@@ -19,12 +19,12 @@ export const Book = (props) => {
     const [selection, setSelection] = useState({
         type: "Lunch",
         table: {
-        name: null,
-        id: null
+            name: null,
+            id: null
         },
         date: new Date(),
         time: null,
-        location: "Any Location",
+        location: null,
         size: 0
     });
 
@@ -37,8 +37,9 @@ export const Book = (props) => {
     const [note, setNote] = useState(null);
 
     // List of potential locations
-    const [locations] = useState(["Any Location", "Patio", "Inside", "Bar"]);
+    const [locations] = useState(["2/1-25 Harbour St", "123 Victoria St, Potts Point", "241 Victoria St, Darlinghurst"]);
     
+    // List of reservation times
     const [times, setTimes] = useState(["11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]);
     useEffect(() => {
         if(selection.type === "Lunch"){
@@ -84,7 +85,7 @@ export const Book = (props) => {
 
     useEffect(() => {
         // Check availability of tables
-        if (isSelectedDateValid() && selection.size) {
+        if (isSelectedDateValid() && selection.location && selection.size) {
             (async _ => {
                 let datetime = getDate();
                 let res = await fetch("/availability", {
@@ -102,9 +103,7 @@ export const Book = (props) => {
                 let tables = res.tables.filter(
                 table =>
                     (selection.size > 0 ? table.capacity >= selection.size && table.capacity-selection.size <=2 : true) &&
-                    (selection.location !== "Any Location"
-                    ? table.location === selection.location
-                    : true)
+                    table.location === selection.location
                 );
                 setTotalTables(tables);
             })();
@@ -146,6 +145,7 @@ export const Book = (props) => {
                 notes: note
             })
         });
+        closeForm();
         props.setPage(2);
     };
 
@@ -394,7 +394,6 @@ const dateSelection = (selection, setSelection) => {
     );
 }
 const timeSelection = (selection, setSelection, times) => {
-    
     // Generate time dropdown
     const getTimes = _ => {
         let newTimes = [];
@@ -420,7 +419,6 @@ const timeSelection = (selection, setSelection, times) => {
         });
         return newTimes;
     };
-
     return(
         <Col xs="12" sm="2">
             <UncontrolledDropdown>
@@ -462,7 +460,9 @@ const locationSelection = (selection, setSelection, locations) => {
     return (
         <Col xs="12" sm="3">
             <UncontrolledDropdown>
-                <DropdownToggle color="none" caret className="booking-dropdown"> {selection.location} </DropdownToggle>
+                <DropdownToggle color="none" caret className="booking-dropdown">
+                    {selection.location === null? "Select a Location" : selection.location}
+                </DropdownToggle>
                 <DropdownMenu right className="booking-dropdown-menu"> {getLocations()} </DropdownMenu>
             </UncontrolledDropdown>
         </Col>
@@ -513,14 +513,14 @@ const tablesSelection = (selection, isSelectedDateValid, getEmptyTables, getTabl
     return (
         <Row noGutters className="tables-display">
             <Col>
-                {selection.date && selection.time && selection.size ? (
+                {selection.date && selection.time && selection.location && selection.size ? (
                     isSelectedDateValid() ? (
                         availableTablesSelection(getEmptyTables, getTables)
                     ) : (
                         <p className="table-display-message">Reservation must be at least 1 hour before from the current date and time!</p>
                     )
                 ) : (
-                    <p className="table-display-message">Please select the date, time, and party size for your reservation!</p>
+                    <p className="table-display-message">Please select the date, time, location, and party size for your reservation!</p>
                 )}
             </Col>
         </Row>
@@ -583,7 +583,7 @@ const confirmationWindow = (reserve, closeForm, selection, setNote) => {
                     </div>
                     <div className="form-floating">
                         <input type="text" className="form-control" placeholder="Note" onChange={event => setNote(event.target.value)} />
-                        <label for="floatingInput">Note</label>
+                        <label for="floatingInput">Note (optional)</label>
                     </div>
                     <div className="right-side-button">
                         <button type="button" onClick={reserve} >Book</button>
