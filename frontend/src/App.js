@@ -1,12 +1,12 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom";
-import {Navbar} from "./view/navbar";
-import {Homepage} from "./view/homepage";
-import {Menu} from "./view/menu";
-import {Login} from "./view/login";
-import {Signup} from "./view/signup";
-import {Book} from "./view/book";
-import {Profile} from "./view/profile";
+import {Navbar} from "./component/Navbar";
+import {Homepage} from "./component/Homepage";
+import {Menu} from "./component/Menu";
+import {Login} from "./component/Login";
+import {Signup} from "./component/Signup";
+import {Book} from "./component/book";
+import {Profile} from "./component/profile";
 
 export const getUserID = _ => {
   const rememberMe = localStorage.getItem("rememberMe");

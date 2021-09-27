@@ -29,6 +29,9 @@ export const Login = _ => {
                     }else{
                         sessionStorage.setItem("userID", data.userID);
                     }
+
+                    
+
                     window.location.href='/';
                 }
             });

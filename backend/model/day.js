@@ -2,7 +2,10 @@ var mongoose = require ("mongoose");
 const tableSchema = require ("./table").schema;
 
 var daySchema = new mongoose.Schema ({
-    date: Date,
+    date: {
+        type: Date,
+        required: true
+    },
     tables: [tableSchema]
 });
 

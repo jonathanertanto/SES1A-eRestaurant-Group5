@@ -195,6 +195,9 @@ const passwordField = (title, data, setData) => {
     );
 }
 const dateField = (title, data, setData) => {
+    if(!getUserID())
+        return window.location.href="/login";
+        
     return(
         <secion>
             <div className="row">

@@ -6,13 +6,12 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem
-    // Input,
-    // Button
 }from "reactstrap";
 import '../style/reservation.css';
 import {Table} from "./table";
+import {getUserID} from "../App.js";
 
-export const Book = (props) => {
+export const Book = _ => {
     const [totalTables, setTotalTables] = useState([]);
 
     // User's selections
@@ -29,11 +28,6 @@ export const Book = (props) => {
     });
 
     // User's booking details
-    const [booking, setBooking] = useState({
-        name: "",
-        phone: "",
-        email: ""
-    });
     const [note, setNote] = useState(null);
 
     // List of potential locations
@@ -48,9 +42,6 @@ export const Book = (props) => {
             setTimes(["18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]);
         }
     }, [times, selection.type])
-
-    // Basic reservation "validation"
-    const [reservationError, setReservationError] = useState(false);
 
     // Get date and time selected by user
     const getDate = _ => {
@@ -83,6 +74,7 @@ export const Book = (props) => {
         return tables.length;
     };
 
+    // Get Available Tables
     useEffect(() => {
         // Check availability of tables
         if (isSelectedDateValid() && selection.location && selection.size) {
@@ -99,11 +91,11 @@ export const Book = (props) => {
                 });
                 res = await res.json();
 
-                // Filter available tables with location and group size criteria
-                let tables = res.tables.filter(
+                // Sort available tables ascending according to the capacity and filter them with the location and group size criteria
+                let tables = res.tables.sort((a,b) => a.capacity > b.capacity ? 1 : (b.capacity > a.capacity) ? -1 : 0).filter(
                 table =>
-                    (selection.size > 0 ? table.capacity >= selection.size && table.capacity-selection.size <=2 : true) &&
-                    table.location === selection.location
+                    (selection.size > 0 ? table.capacity >= selection.size && table.capacity-selection.size <=3 : true) &&
+                    table.location === selection.location && table.isAvailable
                 );
                 setTotalTables(tables);
             })();
@@ -113,40 +105,17 @@ export const Book = (props) => {
 
     // Create new reservation
     const reserve = async _ => {
-        // if(
-        //     (booking.name.length === 0) |
-        //     (booking.phone.length === 0) |
-        //     (booking.email.length === 0)
-        // ){
-        //     console.log("Incomplete Details");
-        //     setReservationError(true);
-        // }else{
-        //     const datetime = getDate();
-        //     let res = await fetch("/reserve", {
-        //         method: "POST",
-        //         headers: {"Content-Type": "application/json"},
-        //         body: JSON.stringify({
-        //             ...booking,
-        //             date: datetime,
-        //             table: selection.table.id
-        //         })
-        //     });
-        //     res = await res.text();
-        //     console.log("Reserved: " + res);
-        //     props.setPage(2);
-        // }
         await fetch("/reserve", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
+                ...selection,
                 date: getDate(),
-                table: selection.table.id,
-                party_size: selection.size,
-                notes: note
+                notes: note,
+                userID: getUserID()
             })
         });
         closeForm();
-        props.setPage(2);
     };
 
     // Generating tables from available tables state
@@ -206,90 +175,14 @@ export const Book = (props) => {
         bookTable();
     };
 
+    if(!getUserID())
+        return window.location.href="/login";
+
     return (
         <section className="reservation">
             {confirmationWindow(reserve, closeForm, selection, setNote)}
             {title()}
-            {/* <Row noGutters className="text-center align-items-center pizza-cta">
-            <Col>
-                {reservationError ? (
-                <p className="reservation-error">
-                    * Please fill out all of the details.
-                </p>
-                ) : null}
-            </Col>
-            </Row> */}
             {bookReservation(selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid)}
-            
-            {/* {!selection.table.id ? (
-                bookReservation(selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid)
-            ) : (
-                <div id="confirm-reservation-stuff">
-                    <Row
-                    noGutters
-                    className="text-center justify-content-center reservation-details-container"
-                    >
-                    <Col xs="12" sm="3" className="reservation-details">
-                        <Input
-                        type="text"
-                        bsSize="lg"
-                        placeholder="Name"
-                        className="reservation-input"
-                        value={booking.name}
-                        onChange={e => {
-                            setBooking({
-                            ...booking,
-                            name: e.target.value
-                            });
-                        }}
-                        />
-                    </Col>
-                    <Col xs="12" sm="3" className="reservation-details">
-                        <Input
-                        type="text"
-                        bsSize="lg"
-                        placeholder="Phone Number"
-                        className="reservation-input"
-                        value={booking.phone}
-                        onChange={e => {
-                            setBooking({
-                            ...booking,
-                            phone: e.target.value
-                            });
-                        }}
-                        />
-                    </Col>
-                    <Col xs="12" sm="3" className="reservation-details">
-                        <Input
-                        type="text"
-                        bsSize="lg"
-                        placeholder="Email"
-                        className="reservation-input"
-                        value={booking.email}
-                        onChange={e => {
-                            setBooking({
-                            ...booking,
-                            email: e.target.value
-                            });
-                        }}
-                        />
-                    </Col>
-                    </Row>
-                    <Row noGutters className="text-center">
-                    <Col>
-                        <Button
-                        color="none"
-                        className="book-table-btn"
-                        onClick={_ => {
-                            reserve();
-                        }}
-                        >
-                        Book Now
-                        </Button>
-                    </Col>
-                    </Row>
-                </div>
-            )} */}
         </section>
     );
 };
@@ -582,8 +475,8 @@ const confirmationWindow = (reserve, closeForm, selection, setNote) => {
                         </div>
                     </div>
                     <div className="form-floating">
-                        <input type="text" className="form-control" placeholder="Note" onChange={event => setNote(event.target.value)} />
-                        <label for="floatingInput">Note (optional)</label>
+                        <input type="text" className="form-control" placeholder="Notes" onChange={event => setNote(event.target.value)} />
+                        <label for="floatingInput">Notes (optional)</label>
                     </div>
                     <div className="right-side-button">
                         <button type="button" onClick={reserve} >Book</button>
