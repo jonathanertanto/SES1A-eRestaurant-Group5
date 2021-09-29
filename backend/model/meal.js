@@ -16,6 +16,11 @@ const mealSchema = new mongoose.Schema({
         type: Number,
         required: [true, "Meal cost cannot be empty"]
     },
+    type:{
+        type: String,
+        required: [true, "Meal must be either a food or a drink"],
+        maxLength: 1
+    },
     menuType:{
         type: String,
         required: [true, "Menu type cannot be empty"],

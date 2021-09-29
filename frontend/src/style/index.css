@@ -542,11 +542,11 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 .booking-dropdown-item:hover {
-  background-color: white;
+  background-color: rgba(121, 121, 121, 0.705);
 }
 
 .booking-dropdown-item:active {
-  background-color: white;
+  background-color: rgba(121, 121, 121, 0.705);
   color: black;
 }
 
@@ -566,6 +566,16 @@ input[type=date]::-webkit-calendar-picker-indicator {
   .booking-dropdown {
     font-size: 1.2rem;
   }
+}
+
+.booking-dropdown-menu {
+  text-align: center;
+  width: 100%;
+  position: relative;
+  background-color: #d1d1d1;
+  -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.445);
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.445);
+  z-index: 1;
 }
 
 .table-display-message {

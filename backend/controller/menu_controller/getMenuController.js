@@ -7,7 +7,7 @@ const Meal = mongoose.model("Meal");
 
 router.get("/", async (req, res) => {
     try{
-        Meal.find({}).sort('_id').exec( (err, meals) => {
+        Meal.find({}).sort([['type', -1]]).exec( (err, meals) => {
             if(err){
                 console.log(err);
             }else{

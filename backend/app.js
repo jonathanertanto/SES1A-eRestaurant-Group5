@@ -46,6 +46,7 @@ app.use("/api/cancelreservation", require("./controller/booking_controller/cance
 app.use("/api/addmeal", require("./controller/menu_controller/addMealController"));
 app.use("/api/getallmeals", require("./controller/menu_controller/getMenuController"));
 app.use("/api/deleteallmeal", require("./controller/menu_controller/deleteMenuController"));
+app.use("/api/gettestingmenu", require("./controller/menu_controller/getTestingMenuController"));
 
 //-----RANDOM DIRECTORY-----
 app.get('*', (req, res) => {

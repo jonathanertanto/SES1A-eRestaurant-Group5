@@ -101,13 +101,13 @@ export const Book = _ => {
             (async _ => {
                 let datetime = getDate();
                 let res = await fetch("/availability", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    date: datetime
-                })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        date: datetime
+                    })
                 });
                 res = await res.json();
 
@@ -288,7 +288,7 @@ const menuTypeSelection = (selection, setSelection) => {
         <Col xs="12" sm="2">
             <UncontrolledDropdown>
                 <DropdownToggle color="none" caret className="booking-dropdown"> {selection.type} </DropdownToggle>
-                <DropdownMenu right className="booking-dropdown-menu"> {getMenuType()} </DropdownMenu>
+                <DropdownMenu className="booking-dropdown-menu"> {getMenuType()} </DropdownMenu>
             </UncontrolledDropdown>
         </Col>
     )
@@ -355,7 +355,7 @@ const timeSelection = (selection, setSelection, times) => {
                 <DropdownToggle color="none" caret className="booking-dropdown">
                     {selection.time === null ? "Select a Time" : selection.time}
                 </DropdownToggle>
-                <DropdownMenu right className="booking-dropdown-menu"> {getTimes()} </DropdownMenu>
+                <DropdownMenu className="booking-dropdown-menu"> {getTimes()} </DropdownMenu>
             </UncontrolledDropdown>
         </Col>
     );
@@ -393,7 +393,7 @@ const locationSelection = (selection, setSelection, locations) => {
                 <DropdownToggle color="none" caret className="booking-dropdown">
                     {selection.location === null? "Select a Location" : selection.location}
                 </DropdownToggle>
-                <DropdownMenu right className="booking-dropdown-menu"> {getLocations()} </DropdownMenu>
+                <DropdownMenu className="booking-dropdown-menu"> {getLocations()} </DropdownMenu>
             </UncontrolledDropdown>
         </Col>
     )
@@ -432,7 +432,7 @@ const partySizeSelection = (selection, setSelection) => {
                 <DropdownToggle color="none" caret className="booking-dropdown">
                     {selection.size === 0 ? "Select a Party Size" : selection.size.toString()}
                 </DropdownToggle>
-                <DropdownMenu right className="booking-dropdown-menu"> {getSizes()} </DropdownMenu>
+                <DropdownMenu className="booking-dropdown-menu"> {getSizes()} </DropdownMenu>
             </UncontrolledDropdown>
         </Col>
     );

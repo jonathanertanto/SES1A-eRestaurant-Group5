@@ -461,10 +461,10 @@ input[type=date]::-webkit-calendar-picker-indicator {
         outline: none;
     }
     &-item:hover{
-        background-color: white;
+        background-color: rgba(121, 121, 121, 0.705);
     }
     &-item:active {
-        background-color: white;
+        background-color: rgba(121, 121, 121, 0.705);
         color: black;
     }
 }
@@ -482,6 +482,16 @@ input[type=date]::-webkit-calendar-picker-indicator {
   .booking-dropdown{
       font-size: 1.2rem;
   }
+}
+
+.booking-dropdown-menu{
+  text-align: center;
+  width: 100%;
+  position: relative;
+  // background-color: #9c9c9cc2;
+  background-color: rgb(209, 209, 209);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.445);
+  z-index: 1;
 }
 
 // Tables Display

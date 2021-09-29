@@ -2,23 +2,94 @@ import React, {useState, useEffect} from "react";
 import {AddShoppingCart} from '@material-ui/icons/';
 import '../style/menu.css';
 import {getUserID} from "../App";
+import {
+    Row,
+    Col,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+}from "reactstrap";
 
 export const Menu = _ =>{
-    const [menuItems, setMenuItems] = useState(null);
+    // User's booking details
+    const [booking, setBooking] = useState("I");
+    const [table, setTable] = useState("I");
+    useEffect(() => {
+        const getData = async _ =>{
+            const res = await fetch("/api/getreservation", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userID: getUserID()
+                })
+            });
+            const data = await res.json();
+            setBooking(data.booking);
+            setTable(data.table);
+        };
+        if(getUserID())
+            getData();
+    }, []);
+
+    // User's selection
+    const [selection, setSelection] = useState({
+        menuType: "",
+        mealType: "All Types of Meal",
+    });
+
+    useEffect(() => {
+        if(table==="I" || table===""){
+            return selection.menuType = "All Types of Menu"
+        }
+        if(new Date(String(table.date)).getHours() >= 18){
+            selection.menuType = "Lunch";
+        }else{
+            selection.menuType = "Dinner";
+        }
+        // eslint-disable-next-line
+    }, [table]);
+
+    // Menu details
+    const [foods, setFoods] = useState(null);
+    const [drinks, setDrinks] = useState(null);
     
     useEffect(() => {
         const getData = async _ =>{
-            // This function is just for demonstration purpose only. In real-life, it will not be implemented and the manager will need to add the meal items by themselve.
-                await fetch(`/api/deleteallmeal`);
-                setMenu();
-            // End of comment
-            const response = await fetch(`/api/getallmeals`);
-            const data = await response.json();
-            setMenuItems(data.menuItem);
+            try{
+                //This line is just for demonstration purpose only. In real-life, it will not be implemented and the manager will need to add the meal items by themselve.
+                const response = await fetch(`/api/gettestingmenu`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                // This is the code that will be use during deployment
+                // const response = await fetch(`/api/getallmeals`);
+                const data = await response.json();
+                let items = data.menuItem;
+                if(selection.menuType !== "All Types of Menu"){
+                    items = data.menuItem.filter(
+                        item => item.menuType === "all"? true : selection.menuType.toLowerCase() === item.menuType
+                    );
+                }
+                const foods = items.filter(
+                    food => food.type === 'f'
+                );
+                const drinks = items.filter(
+                    drink => drink.type === 'd'
+                );
+                setFoods(foods);
+                setDrinks(drinks);
+            }catch(err){
+                console.log(err);
+            }
         }
         getData();
-    }, []);
-    
+    }, [selection.menuType]);
+
     // Order Window
     const addOrder = (event) => {
         if(!getUserID()){
@@ -37,23 +108,47 @@ export const Menu = _ =>{
         <section className="menu">
             {orderWindow(closeForm)}
             {title()}
-            {menuItems && (
-                <div className="menuItems menu-list">
-                    {menuItems.map((meal, index) => (
-                        <div key={index} className="menu-item">
-                            <div className="meal-selection-container">
-                                <img src={meal.image} className="menu-item img" alt={meal.name}/>
-                                <div className="meal-selection">
-                                    <button id={meal._id} onClick={addOrder} type="button" ><AddShoppingCart />Order</button>
+            {selectionDropdown(selection, setSelection)}
+            {foods && (selection.mealType === "Foods" || selection.mealType === "All Types of Meal" ) ? (
+                <section>
+                    <h2>FOODS</h2>
+                    <div className="foods menu-list">
+                        {foods.map((meal, index) => (
+                            <div key={index} className="menu-item">
+                                <div className="meal-selection-container">
+                                    <img src={meal.image} className="menu-item img" alt={meal.name}/>
+                                    <div className="meal-selection">
+                                        <button id={meal._id} onClick={addOrder} type="button" ><AddShoppingCart />Order</button>
+                                    </div>
                                 </div>
+                                <div className="name">{meal.name}</div>
+                                <div className="description">{meal.description}</div>
+                                <div className="price">${meal.price}</div>
                             </div>
-                            <div className="name">{meal.name}</div>
-                            <div className="description">{meal.description}</div>
-                            <div className="price">${meal.price}</div>
-                        </div>
-                    ))}
-                </div>
-            )}
+                        ))}
+                    </div>
+                </section>
+            ):<div></div>}
+            {drinks && (selection.mealType === "Drinks" || selection.mealType === "All Types of Meal" ) ? (
+                <section>
+                    <h2>DRINKS</h2>
+                    <div className="drinks menu-list">
+                        {drinks.map((meal, index) => (
+                            <div key={index} className="menu-item">
+                                <div className="meal-selection-container">
+                                    <img src={meal.image} className="menu-item img" alt={meal.name}/>
+                                    <div className="meal-selection">
+                                        <button id={meal._id} onClick={addOrder} type="button" ><AddShoppingCart />Order</button>
+                                    </div>
+                                </div>
+                                <div className="name">{meal.name}</div>
+                                <div className="description">{meal.description}</div>
+                                <div className="price">${meal.price}</div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            ) : <div></div>}
         </section>
     );
 }
@@ -92,41 +187,73 @@ const title = _ => {
         </div>
     );
 }
-
-// These two functions are just for demonstration purpose only. In real-life, they will not be implemented and the manager will need to add the meal items by themselve.
-const setMenu = () => {
-    const images = [
-        "https://uppercutsteakhouse.com/wp-content/uploads/2019/09/menu-dry-agedc.jpg", "https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg",
-        "https://i.pinimg.com/564x/d4/c9/31/d4c9317f618ef2eff5e74cd91240460b.jpg", "https://i.pinimg.com/564x/6c/6e/8d/6c6e8dabd1808b9b17c0f0425e812f60.jpg", 
-        "https://i.pinimg.com/474x/96/44/81/964481b56cc24fb0b5cb26163d8c7d1e.jpg", "https://i.pinimg.com/564x/fa/19/22/fa1922802ace93daf1b828251071c4ed.jpg", 
-        "https://i.pinimg.com/564x/2d/7d/6c/2d7d6ce126fc1e27234546ec516b4b3b.jpg", "https://i.pinimg.com/564x/90/0e/4b/900e4b973211894ab95539ad8319b061.jpg",
-        "https://i.pinimg.com/564x/b9/33/1d/b9331d3bda91816550a2f92adbc99219.jpg", "https://i.pinimg.com/564x/f4/0d/5e/f40d5eb9df1742ab0eee40fc4bb86277.jpg"
-    ];
-    const names = ["Meal 1", "Meal 2", "Meal 3", "Meal 4", "Meal 5", "Drink 1", "Drink 2", "Drink 3", "Drink 4", "Drink 5"];
-    const descriptions = ["Description 1", "Description 2", "Description 3", "Description 4", "Description 5", "Description 6", "Description 7",  "Description 8", "Description 9", "Description 10"];
-    const prices = [25, 25, 20, 27, 23, 6, 6, 5.5, 6.5, 7];
-    const costs = [8, 8, 6, 9, 7, 2.5, 2.5, 2, 3, 3, 3.5];
-    const types = ["all", "all", "all", "all", "all", "all", "all", "all", "all", "all"];
-    
-    for(let i=0; i<10; ++i){
-        addMealItem(images[i], names[i], descriptions[i], prices[i], costs[i], types[i]);
-    }
+const selectionDropdown = (selection, setSelection) => {
+    return (
+        <Row noGutters className="menu-dropdown">
+            {menuTypeSelection(selection, setSelection)}
+            {mealTypeSelection(selection, setSelection)}
+        </Row>
+    );
 }
-const addMealItem = async (img, nm, des, prc, cst, typ) => {
-    const data = {
-        image: img,
-        name: nm,
-        description: des,
-        price: prc,
-        cost: cst,
-        type: typ
-    }
-    await fetch('/api/addmeal', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
+const menuTypeSelection = (selection, setSelection) => {
+    const menuTypes = ["All Types of Menu", "Lunch", "Dinner"];
+    // Generate menu type selection dropdown
+    const getMenuType = _ => {
+        let newType = [];
+        menuTypes.forEach(type => {
+            newType.push(
+                <DropdownItem key={type} className="booking-dropdown-item" 
+                        onClick={_=> {
+                            let newSel = {
+                                ...selection,
+                                menuType: type
+                            };
+                            setSelection(newSel);
+                        }}
+                        >
+                    {type}
+                </DropdownItem>
+            );
+        });
+        return newType;
+    };
+    return (
+        <Col xs="12" sm="6">
+            <UncontrolledDropdown>
+                <DropdownToggle color="none" caret className="booking-dropdown"> {selection.menuType} </DropdownToggle>
+                <DropdownMenu className="booking-dropdown-menu"> {getMenuType()} </DropdownMenu>
+            </UncontrolledDropdown>
+        </Col>
+    )
 }
-// end of comment
+const mealTypeSelection = (selection, setSelection) => {
+    const menuType = ["All Types of Meal", "Foods", "Drinks"];
+    // Generate menu type selection dropdown
+    const getMealType = _ => {
+        let newType = [];
+        menuType.forEach(type => {
+            newType.push(
+                <DropdownItem key={type} className="booking-dropdown-item" 
+                        onClick={_=> {
+                            let newSel = {
+                                ...selection,
+                                mealType: type
+                            };
+                            setSelection(newSel);
+                        }}
+                        >
+                    {type}
+                </DropdownItem>
+            );
+        });
+        return newType;
+    };
+    return (
+        <Col xs="12" sm="6">
+            <UncontrolledDropdown>
+                <DropdownToggle color="none" caret className="booking-dropdown"> {selection.mealType} </DropdownToggle>
+                <DropdownMenu className="booking-dropdown-menu"> {getMealType()} </DropdownMenu>
+            </UncontrolledDropdown>
+        </Col>
+    )
+}
