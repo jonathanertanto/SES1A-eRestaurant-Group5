@@ -16,33 +16,6 @@ router.get("/", function (req,res,next){
 */
 
 router.post ("/", (req,res,next) => {
-    // Day.find({date: req.body.date }, (err,days) => {
-    //     if (!err){
-    //         if (days.length > 0) {
-    //             let day = days[0];
-    //             day.tables.forEach (table => {
-    //                 //making sure that the table is indeed the correct table
-    //                 if (table._id == req.body.table){
-    //                     table.reservation = new Reservation({
-    //                         number_of_people: req.body.party_size,
-    //                         notes: req.body.notes
-    //                     });
-    //                     table.isAvailable = false;   //table has now been reserved and is no longer available
-    //                     day.save(err => {
-    //                         if (err) {
-    //                             console.log (err);
-    //                         } else {
-    //                             console.log ("Reserved");
-    //                             return res.status(200).send("Added Reservation");
-    //                         }
-    //                     });
-    //                 }
-    //             });
-    //         } else {
-    //             console.log ("Day not found");
-    //         }
-    //     }
-    // });
     Day.updateOne({date: Date.parse(String(req.body.date)), "tables._id": String(req.body.table.id)}, {
         $set: {
             "tables.$.isAvailable": false

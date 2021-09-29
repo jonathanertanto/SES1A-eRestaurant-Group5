@@ -38,7 +38,8 @@ app.use("/api/deleteuser", require("./controller/user_controller/deleteUserContr
 //-----BOOKING-----
 const indexRouter = require("./controller/booking_controller/reservationController");
 app.use("/availability", require ("./controller/booking_controller/availabilityController"));
-app.use ("/reserve", require ("./controller/booking_controller/reservationController"));
+app.use("/reserve", require ("./controller/booking_controller/reservationController"));
+app.use("/api/getreservation", require("./controller/booking_controller/getReservationController"));
 
 //-----MENU-----
 app.use("/api/addmeal", require("./controller/menu_controller/addMealController"));

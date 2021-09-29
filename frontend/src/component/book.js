@@ -30,6 +30,26 @@ export const Book = _ => {
     // User's booking details
     const [note, setNote] = useState(null);
 
+    const [booking, setBooking] = useState("n");
+    const [table, setTable] = useState("n");
+    useEffect(() => {
+        const getData = async _ =>{
+            const res = await fetch("/api/getreservation", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userID: getUserID()
+                })
+            });
+            const data = await res.json();
+            setBooking(data.booking);
+            setTable(data.table);
+        };
+        getData();
+    }, []);
+
     // List of potential locations
     const [locations] = useState(["2/1-25 Harbour St", "123 Victoria St, Potts Point", "241 Victoria St, Darlinghurst"]);
     
@@ -176,13 +196,13 @@ export const Book = _ => {
     };
 
     if(!getUserID())
-        return window.location.href="/login";
+        return window.location.href="/login";    
 
     return (
         <section className="reservation">
-            {confirmationWindow(reserve, closeForm, selection, setNote)}
-            {title()}
-            {bookReservation(selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid)}
+            {!booking?
+                createNewBooking(reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid):
+                showReservation(booking, table)}
         </section>
     );
 };
@@ -198,6 +218,16 @@ const title = _ => {
                 </span>
             </h1>
         </div>
+    );
+}
+
+const createNewBooking = (reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid) => {
+    return(
+        <section className="reservation">
+            {confirmationWindow(reserve, closeForm, selection, setNote)}
+            {title()}
+            {bookReservation(selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid)}
+        </section>
     );
 }
 
@@ -484,5 +514,72 @@ const confirmationWindow = (reserve, closeForm, selection, setNote) => {
                     </div>
             </form>
         </div>
+    );
+}
+
+// Show Active Booking
+const showReservation = (booking, table) => {
+    return(
+        <section className="reservation">
+            {title()}
+            <div className="container">
+                    <div className="main-body">
+                        <div className="row gutters-sm">
+                            <div className="col-md-4 mb-3">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="d-flex flex-column align-items-center text-center">
+                                            <img src="https://i.pinimg.com/564x/4a/11/52/4a11522384a4d2266e482d0b1fa339a7.jpg" alt="Meal" width="200" height="200"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-8">
+                                <div className="card mb-3">
+                                    <div className="card-body">
+                                        {tableInformation(table)}
+                                        {bookingInformation(booking)}
+                                        <div className="column right-side-button">
+                                            {/* <button class="btn-lg" >Edit</button> */}
+                                            <button class="btn-lg" >Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    )
+}
+
+const tableInformation = (table) => {
+    const items = [];
+    items.push(normalField("Table Number", table.name));
+    items.push(normalField("Table Capacity", table.capacity));
+    items.push(normalField("Reservation Type", new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch"));
+    items.push(normalField("Reservation Date/Time", new Date(String(table.date)) ));
+    items.push(normalField("Reservation Location", table.location));
+    return items;
+}
+
+const bookingInformation = (booking) => {
+    const items = [];
+    items.push(normalField("Reservation Party Size", booking.number_of_people));
+    items.push(normalField("Notes", String(booking.notes) === "null" ? " " : booking.notes));
+    return items;
+}
+
+const normalField = (title, data) => {
+    return(
+        <secion>
+            <div className="row">
+                <div className="col-sm-3" style={{textAlign: "left"}} >
+                    <h6 className="mb-0">{title}</h6>
+                </div>
+                <input className="col-sm-9 text-secondary" type="text" value={data} readOnly />
+            </div>
+            <hr/>
+        </secion>
     );
 }
