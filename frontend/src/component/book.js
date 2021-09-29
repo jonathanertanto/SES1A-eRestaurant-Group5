@@ -30,8 +30,8 @@ export const Book = _ => {
     // User's booking details
     const [note, setNote] = useState(null);
 
-    const [booking, setBooking] = useState("n");
-    const [table, setTable] = useState("n");
+    const [booking, setBooking] = useState("");
+    const [table, setTable] = useState("");
     useEffect(() => {
         const getData = async _ =>{
             const res = await fetch("/api/getreservation", {
@@ -136,6 +136,7 @@ export const Book = _ => {
             })
         });
         closeForm();
+        window.location.reload();
     };
 
     // Generating tables from available tables state
@@ -197,7 +198,7 @@ export const Book = _ => {
 
     if(!getUserID())
         return window.location.href="/login";    
-
+    
     return (
         <section className="reservation">
             {!booking?
@@ -519,6 +520,28 @@ const confirmationWindow = (reserve, closeForm, selection, setNote) => {
 
 // Show Active Booking
 const showReservation = (booking, table) => {
+    const cancelReservation = _ => {
+        fetch("/api/cancelreservation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                reservation: booking._id,
+                table: table._id,
+                date: table.date
+            })
+        })
+            .then((res) => {return res.json(); })
+            .then((data) => {
+                if(!data.status){
+                    alert("Failed to cancel reservation!");
+                }else{
+                    window.location.reload();
+                }
+            });
+    }
+
     return(
         <section className="reservation">
             {title()}
@@ -529,7 +552,7 @@ const showReservation = (booking, table) => {
                                 <div className="card">
                                     <div className="card-body">
                                         <div className="d-flex flex-column align-items-center text-center">
-                                            <img src="https://i.pinimg.com/564x/4a/11/52/4a11522384a4d2266e482d0b1fa339a7.jpg" alt="Meal" width="200" height="200"/>
+                                            <img src="https://i.pinimg.com/564x/4a/11/52/4a11522384a4d2266e482d0b1fa339a7.jpg" alt="Meal" className="meal-logo" width="200" height="200"/>
                                         </div>
                                     </div>
                                 </div>
@@ -541,7 +564,7 @@ const showReservation = (booking, table) => {
                                         {bookingInformation(booking)}
                                         <div className="column right-side-button">
                                             {/* <button class="btn-lg" >Edit</button> */}
-                                            <button class="btn-lg" >Cancel</button>
+                                            <button class="btn-lg" onClick={cancelReservation} >Cancel</button>
                                         </div>
                                     </div>
                                 </div>
