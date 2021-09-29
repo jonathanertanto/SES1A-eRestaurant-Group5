@@ -8,7 +8,7 @@ import {
     DropdownItem
 }from "reactstrap";
 import '../style/reservation.css';
-import {Table} from "./table";
+import {Table} from "./Table";
 import {getUserID} from "../App.js";
 
 export const Book = _ => {
@@ -30,8 +30,8 @@ export const Book = _ => {
     // User's booking details
     const [note, setNote] = useState(null);
 
-    const [booking, setBooking] = useState("");
-    const [table, setTable] = useState("");
+    const [booking, setBooking] = useState("I");
+    const [table, setTable] = useState("I");
     useEffect(() => {
         const getData = async _ =>{
             const res = await fetch("/api/getreservation", {
@@ -201,9 +201,15 @@ export const Book = _ => {
     
     return (
         <section className="reservation">
-            {!booking?
-                createNewBooking(reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid):
-                showReservation(booking, table)}
+            {booking? (
+                booking === "I"? (
+                    <div></div>
+                ) : (
+                    showReservation(booking, table, getCurrentDate)
+                )
+            ):
+                createNewBooking(reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid, getDate)
+            }
         </section>
     );
 };
@@ -222,10 +228,10 @@ const title = _ => {
     );
 }
 
-const createNewBooking = (reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid) => {
+const createNewBooking = (reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid, getDate) => {
     return(
         <section className="reservation">
-            {confirmationWindow(reserve, closeForm, selection, setNote)}
+            {confirmationWindow(reserve, closeForm, selection, setNote, getDate)}
             {title()}
             {bookReservation(selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid)}
         </section>
@@ -470,7 +476,7 @@ const availableTablesSelection = (getEmptyTables, getTables) => {
 }
 
 // Booking Confirmation
-const confirmationWindow = (reserve, closeForm, selection, setNote) => {
+const confirmationWindow = (reserve, closeForm, selection, setNote, getDate) => {
     return(
         <div className="form-popup center" id="myForm">
             <form className="form-container">
@@ -491,7 +497,7 @@ const confirmationWindow = (reserve, closeForm, selection, setNote) => {
                             <label for="floatingInput">Reservation Type</label>
                         </div>
                         <div className="reservation form-floating">
-                            <input type="text" className="form-control" value={selection.date.getFullYear() + "-" + (selection.date.getMonth()>8?(selection.date.getMonth()+1):("0"+(selection.date.getMonth()+1))) + "-" + selection.date.getDate() + " / " + selection.time} readOnly = {true}/>
+                            <input type="text" className="form-control" value={new Date(getDate())} readOnly = {true}/>
                             <label for="floatingInput">Reservation Date/Time</label>
                         </div>
                     </div>
@@ -519,8 +525,16 @@ const confirmationWindow = (reserve, closeForm, selection, setNote) => {
 }
 
 // Show Active Booking
-const showReservation = (booking, table) => {
+const showReservation = (booking, table, getCurrentDate) => {
     const cancelReservation = _ => {
+        const date = new Date(String(table.date));
+        if(date < new Date(getCurrentDate())){
+            return alert("Reservation cancellation must be at least 1 hour before!");
+        }
+        const confirmation = window.confirm("Are you sure to cancel the reservation?");
+        if(!confirmation){
+            return console.log();
+        }
         fetch("/api/cancelreservation", {
             method: "POST",
             headers: {
