@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const UserSchema = require('./user');
-const ReservationSchema = require('./reservation');
+const UserSchema = require('./User');
+const ReservationSchema = require('./Reservation');
 
 const customerSchema = new mongoose.Schema({
     personalInformation: UserSchema,

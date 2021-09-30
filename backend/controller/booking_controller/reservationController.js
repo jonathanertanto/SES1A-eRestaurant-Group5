@@ -4,7 +4,7 @@ const mongoose = require ("mongoose");
 
 const Day = require ("../../model/day").model;
 const Table = require ("../../model/table").model;
-require ("../../model/reservation");
+require ("../../model/Reservation");
 const Reservation = mongoose.model("Reservation");
 
 //Used for testing whether I could connect to a REST API using Postman (an app for receiving these requests)

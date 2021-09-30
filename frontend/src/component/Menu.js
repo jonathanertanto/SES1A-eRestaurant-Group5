@@ -127,9 +127,27 @@ export const Menu = _ =>{
     const openForm = _ => {
         document.getElementById("myForm").style.display = "block";
     }
-    const orderMeal = _ => {
+    const orderMeal = async _ => {
         if(!Number.isFinite(Number(selection.quantity)) || Number(selection.quantity)%1 !== 0 || Number(selection.quantity) === 0 ){
             return alert("Please fill in the quantity with a non decimal number larger than 0!");
+        }
+        const res = await fetch("/api/ordermeal", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                quantity: selection.quantity,
+                notes: selection.notes,
+                meal: selection.meal._id,
+                reservation: reservation._id
+            })
+        });
+        const data = await res.json();
+        if(!data.status){
+            alert("Failed to order meal!");
+        }else{
+            alert("Successfully added meal order!")
         }
     }
     const closeForm = _ => {
@@ -221,7 +239,7 @@ const orderWindow = (selection, setSelection, closeForm, orderMeal) => {
                     <label for="floatingInput">Notes (optional)</label>
                 </div>
                 <div className="right-side-button">
-                    <button type="button" onClick={orderMeal} >Next</button>
+                    <button type="button" onClick={orderMeal} >Order</button>
                     <button type="button" onClick={closeForm} >Cancel</button>
                 </div>
             </form>

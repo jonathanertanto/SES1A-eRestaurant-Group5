@@ -2,9 +2,9 @@ var express = require ("express");
 var router = express.Router();
 var mongoose = require ("mongoose");
 
-require('../../model/user');
+require('../../model/User');
 const User = mongoose.model("User");
-require('../../model/customer');
+require('../../model/Customer');
 const Customer = mongoose.model("Customer");
 
 router.get("/", async (req, res) => {

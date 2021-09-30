@@ -3,7 +3,7 @@ var router = express.Router();
 var mongoose = require ("mongoose");
 
 const Table = require ("../../model/table").model;
-require ("../../model/reservation");
+require ("../../model/Reservation");
 const Reservation = mongoose.model("Reservation");
 
 router.post("/", async (req, res) => {

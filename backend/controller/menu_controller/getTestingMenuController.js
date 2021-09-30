@@ -7,7 +7,7 @@ const Meal = mongoose.model("Meal");
 
 router.post("/", async (req, res) => {
     try{
-        Meal.deleteMany({}, function(err){
+        Meal.deleteMany({}, async (err) => {
             if(err){
                 console.log(err);
             }else{

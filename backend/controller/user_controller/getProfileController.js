@@ -2,7 +2,7 @@ var express = require ("express");
 var router = express.Router();
 var mongoose = require ("mongoose");
 
-require('../../model/user');
+require('../../model/User');
 const User = mongoose.model("User");
 
 router.get("/", async (req, res) => {
