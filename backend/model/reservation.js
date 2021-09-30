@@ -7,6 +7,7 @@ const ReservationSchema = new mongoose.Schema({
         min: [1, "Number of people must be at least 1!"]
     },
     notes: String,
+    completeness: Boolean,
     table: String,
     user: String
 });

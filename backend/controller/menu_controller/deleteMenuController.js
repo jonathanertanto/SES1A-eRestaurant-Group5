@@ -2,12 +2,12 @@ var express = require ("express");
 var router = express.Router();
 var mongoose = require ("mongoose");
 
-require('../../model/meal');
+require('../../model/Meal');
 const Meal = mongoose.model("Meal");
 
 router.get("/", async (req, res) => {
     try{
-        Meal.deleteMany({}, function(err){
+        Meal.deleteMany({}, (err) => {
             if(err){
                 console.log(err);
             }else{

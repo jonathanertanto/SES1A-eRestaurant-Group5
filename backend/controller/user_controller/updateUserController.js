@@ -4,8 +4,6 @@ var mongoose = require ("mongoose");
 
 require('../../model/User');
 const User = mongoose.model("User");
-require('../../model/Customer');
-const Customer = mongoose.model("Customer");
 
 router.get("/", async (req, res) => {
     try{
@@ -68,13 +66,6 @@ router.get("/", async (req, res) => {
                 });
             }else{
                 console.log("Successfully updated the user's information!");
-                
-                if(user.userType==="C"){
-                    const customer = await Customer.findOne({ _id: String(userID) });
-                    customer.personalInformation = await User.findOne({_id: String(userID)});
-                    const updated = await customer.save();
-                    console.log("Successfully updated the customers's information!");
-                }
                 return res.json({
                     status: true,
                     message: "Account information successfully updated!"

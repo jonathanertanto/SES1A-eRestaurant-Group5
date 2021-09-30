@@ -26,6 +26,10 @@ router.post("/", async (req, res) => {
         });
     }catch(error){
         console.log(error);
+        return res.status(200).json({
+            booking: "",
+            table: ""
+        });
     }
 });
 

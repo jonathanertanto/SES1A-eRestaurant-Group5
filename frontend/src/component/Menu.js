@@ -128,7 +128,7 @@ export const Menu = _ =>{
         document.getElementById("myForm").style.display = "block";
     }
     const orderMeal = async _ => {
-        if(!Number.isFinite(Number(selection.quantity)) || Number(selection.quantity)%1 !== 0 || Number(selection.quantity) === 0 ){
+        if(!Number.isFinite(Number(selection.quantity)) || Number(selection.quantity)%1 !== 0 || Number(selection.quantity) <= 0 ){
             return alert("Please fill in the quantity with a non decimal number larger than 0!");
         }
         const res = await fetch("/api/ordermeal", {
@@ -147,7 +147,9 @@ export const Menu = _ =>{
         if(!data.status){
             alert("Failed to order meal!");
         }else{
-            alert("Successfully added meal order!")
+            alert("Successfully added meal order!");
+            closeForm();
+            window.location.href="/reservation";
         }
     }
     const closeForm = _ => {

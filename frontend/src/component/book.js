@@ -50,6 +50,26 @@ export const Book = _ => {
         getData();
     }, []);
 
+    const [orders, setOrders] = useState("");
+    const [meals, setMeals] = useState("");
+    useEffect(() => {
+        const getData = async _ =>{
+            const res = await fetch("/api/getorders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    reservation: booking._id
+                })
+            });
+            const data = await res.json();
+            setOrders(data.orders);
+            setMeals(data.meals);
+        };
+        getData();
+    }, [booking]);
+
     // List of potential locations
     const [locations] = useState(["2/1-25 Harbour St", "123 Victoria St, Potts Point", "241 Victoria St, Darlinghurst"]);
     
@@ -205,7 +225,7 @@ export const Book = _ => {
                 booking === "I"? (
                     <div></div>
                 ) : (
-                    showReservation(booking, table, getCurrentDate)
+                    showReservation(booking, table, getCurrentDate, orders, meals)
                 )
             ):
                 createNewBooking(reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid, getDate)
@@ -525,7 +545,7 @@ const confirmationWindow = (reserve, closeForm, selection, setNote, getDate) => 
 }
 
 // Show Active Booking
-const showReservation = (booking, table, getCurrentDate) => {
+const showReservation = (booking, table, getCurrentDate, orders, meals) => {
     const cancelReservation = _ => {
         const date = new Date(String(table.date));
         if(date < new Date(getCurrentDate())){
@@ -562,27 +582,30 @@ const showReservation = (booking, table, getCurrentDate) => {
             <div className="container">
                     <div className="main-body">
                         <div className="row gutters-sm">
-                            <div className="col-md-4 mb-3">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <div className="d-flex flex-column align-items-center text-center">
-                                            <img src="https://i.pinimg.com/564x/4a/11/52/4a11522384a4d2266e482d0b1fa339a7.jpg" alt="Meal" className="meal-logo" width="200" height="200"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-8">
+
+                            <div className="col-md-6">
                                 <div className="card mb-3">
                                     <div className="card-body">
                                         {tableInformation(table)}
                                         {bookingInformation(booking)}
                                         <div className="column right-side-button">
-                                            {/* <button class="btn-lg" >Edit</button> */}
-                                            <button class="btn-lg" onClick={cancelReservation} >Cancel</button>
+                                            {/* <button className="btn-lg" >Edit</button> */}
+                                            <button className="btn-lg" onClick={cancelReservation} >Cancel Reservation</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="col-md-6 mb-3">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="d-flex flex-column align-items-center text-center">
+                                            {invoice(orders, meals)}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -605,6 +628,55 @@ const bookingInformation = (booking) => {
     items.push(normalField("Reservation Party Size", booking.number_of_people));
     items.push(normalField("Notes", String(booking.notes) === "null" ? " " : booking.notes));
     return items;
+}
+
+const invoice = (orders, meals) => {
+    const invoiceItems = [];
+    let totalCost = 0;
+    for(let i=0; i<meals.length; ++i){
+        invoiceItems.push(invoiceItem(orders[i], meals[i]));
+        totalCost += Number(meals[i].price) * Number(orders[i].quantity);
+    }
+    return(
+        <section className="invoice" >
+            <div className="container mb-4">
+                <div className="table-responsive">
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col" className="col-5 text-center">Name</th>
+                                <th scope="col" className="col-1 text-center">Quantity</th>
+                                <th scope="col" className="col-3 text-center">Notes</th>
+                                <th scope="col" className="col-2 text-center">Price</th>
+                                <th className="col-1"> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {invoiceItems}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><strong>Total</strong></td>
+                                <td className="text-right"><strong>${totalCost}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    );
+}
+const invoiceItem = (order, meal) => {
+    return(
+        <tr>
+            <td>{meal.name}</td>
+            <td><input className="form-control text-center" type="text" value={order.quantity} /></td>
+            <td><input className="form-control text-center" type="text" value={order.notes} /></td>
+            <td className="text-right">${Number(meal.price) * Number(order.quantity)}</td>
+            <td className="text-right"><button className="btn btn-sm btn-danger"><i className="fa fa-trash"></i> </button> </td>
+        </tr>
+    )
 }
 
 const normalField = (title, data) => {

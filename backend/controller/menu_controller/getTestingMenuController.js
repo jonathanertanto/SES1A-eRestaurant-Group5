@@ -2,11 +2,17 @@ var express = require ("express");
 var router = express.Router();
 var mongoose = require ("mongoose");
 
-require('../../model/meal');
+require('../../model/Meal');
 const Meal = mongoose.model("Meal");
 
 router.post("/", async (req, res) => {
     try{
+        const data = await Meal.find({});
+
+        if(data.length > 0){
+            return res.json({menuItem: data.sort((a, b) => (a.type > b.type) ? -1: 1)});
+        }
+
         Meal.deleteMany({}, async (err) => {
             if(err){
                 console.log(err);

@@ -4,8 +4,6 @@ var mongoose = require ("mongoose");
 
 require('../../model/User');
 const User = mongoose.model("User");
-require('../../model/Customer');
-const Customer = mongoose.model("Customer");
 
 router.get("/", async (req, res) => {
     try{
@@ -54,14 +52,6 @@ router.get("/", async (req, res) => {
         });
         user.save();
         console.log(`${user.username} is successfully saved into the user database`);
-
-        // Insertion of Customer entity
-        const customer = new Customer({
-            _id: user._id,
-            personalInformation: user
-        });
-        customer.save();
-        console.log(`${user.username} is successfully saved into the customer database`);
 
         // Successful Message
         return res.json({

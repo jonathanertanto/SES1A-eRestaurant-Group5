@@ -2,7 +2,7 @@ var express = require ("express");
 var router = express.Router();
 var mongoose = require ("mongoose");
 
-require('../../model/meal');
+require('../../model/Meal');
 const Meal = mongoose.model("Meal");
 
 router.post("/", async (req, res) => {

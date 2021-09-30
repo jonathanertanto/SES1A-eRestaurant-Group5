@@ -4,8 +4,6 @@ var mongoose = require ("mongoose");
 
 require('../../model/User');
 const User = mongoose.model("User");
-require('../../model/Customer');
-const Customer = mongoose.model("Customer");
 
 router.get("/", async (req, res) => {
     try{
@@ -21,19 +19,6 @@ router.get("/", async (req, res) => {
         }
 
         // Delete User from Database
-        if(user.userType==="C"){
-            Customer.deleteOne({_id: String(userID)}, function(err){
-                if(err){
-                    console.log(err);
-                    return res.json({
-                        status: false,
-                        message: err
-                    });
-                }else{
-                    console.log("Successfully deleted the customer from database");
-                }
-            });
-        }
         User.deleteOne({_id: String(userID)}, function(err){
             if(err){
                 console.log(err);
@@ -43,11 +28,11 @@ router.get("/", async (req, res) => {
                 });
             }else{
                 console.log("Successfully deleted the user from database");
-                return res.json({
-                    status: true,
-                    message: "Account successfully deleted!"
-                });
             }
+        });
+        return res.json({
+            status: true,
+            message: "Account successfully deleted!"
         });
     }catch(error){
         console.log(error);

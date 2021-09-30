@@ -2,7 +2,6 @@ import React from "react";
 import {Outlet} from "react-router-dom";
 import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle, MeetingRoom} from '@material-ui/icons/';
 import { getUserID, logOut } from "../App";
-
 export const Navbar = (props) => {
     let menu;
     if(!getUserID()){
