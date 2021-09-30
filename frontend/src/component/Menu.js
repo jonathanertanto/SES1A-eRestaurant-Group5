@@ -12,9 +12,18 @@ import {
 }from "reactstrap";
 
 export const Menu = _ =>{
+    // User's selection
+    const [selection, setSelection] = useState({
+        menuType: "",
+        mealType: "All Types of Meal",
+        meal: null,
+        quantity: 0,
+        notes: ""
+    });
+
     // User's booking details
-    const [booking, setBooking] = useState("I");
-    const [table, setTable] = useState("I");
+    const [reservation, setReservation] = useState("");
+    const [table, setTable] = useState("");
     useEffect(() => {
         const getData = async _ =>{
             const res = await fetch("/api/getreservation", {
@@ -27,27 +36,32 @@ export const Menu = _ =>{
                 })
             });
             const data = await res.json();
-            setBooking(data.booking);
+            setReservation(data.booking);
             setTable(data.table);
+            if(data.table === ""){
+                return;
+            }
+            let newSelection = {
+                menuType: (new Date(String(data.table.date)).getHours() >= 18? "Dinner":"Lunch"),
+                mealType: "All Types of Meal",
+                meal: null,
+                quantity: 0,
+                notes: ""
+            }
+            setSelection(newSelection);
         };
         if(getUserID())
             getData();
     }, []);
 
-    // User's selection
-    const [selection, setSelection] = useState({
-        menuType: "",
-        mealType: "All Types of Meal",
-    });
-
     useEffect(() => {
-        if(table==="I" || table===""){
+        if(table===""){
             return selection.menuType = "All Types of Menu"
         }
         if(new Date(String(table.date)).getHours() >= 18){
-            selection.menuType = "Lunch";
-        }else{
             selection.menuType = "Dinner";
+        }else{
+            selection.menuType = "Lunch";
         }
         // eslint-disable-next-line
     }, [table]);
@@ -90,23 +104,47 @@ export const Menu = _ =>{
         getData();
     }, [selection.menuType]);
 
+    const getReservationMenuType = _ => {
+        return new Date(String(table.date)).getHours() >= 18 ?  "Dinner" : "Lunch";
+    }
+
     // Order Window
-    const addOrder = (event) => {
+    const addOrder = (meal) => {
         if(!getUserID()){
+            alert("Please log to an account first before accessing this feature!");
             return window.location.href='/login';
         }
-        openForm(event.id);
+        if(reservation === ""){
+            alert("You have no active reservation at the moment. Please book a table first before ordering a meal!");
+            return window.location.href='/reservation'
+        }
+        if(!(getReservationMenuType().toLowerCase() === meal.menuType || meal.menuType === "all")){
+            return alert("Please select the meal according to your reservation menu type!");
+        }
+        selection.meal = meal;
+        openForm();
     }
-    const openForm = (itemID) => {
+    const openForm = _ => {
         document.getElementById("myForm").style.display = "block";
+    }
+    const orderMeal = _ => {
+        if(!Number.isFinite(Number(selection.quantity)) || Number(selection.quantity)%1 !== 0 || Number(selection.quantity) === 0 ){
+            return alert("Please fill in the quantity with a non decimal number larger than 0!");
+        }
     }
     const closeForm = _ => {
         document.getElementById("myForm").style.display = "none";
+        let newSel = {
+            ...selection,
+            quantity: 0,
+            notes: ""
+        };
+        setSelection(newSel);
     }
     
     return(
         <section className="menu">
-            {orderWindow(closeForm)}
+            {orderWindow(selection, setSelection, closeForm, orderMeal)}
             {title()}
             {selectionDropdown(selection, setSelection)}
             {foods && (selection.mealType === "Foods" || selection.mealType === "All Types of Meal" ) ? (
@@ -118,7 +156,7 @@ export const Menu = _ =>{
                                 <div className="meal-selection-container">
                                     <img src={meal.image} className="menu-item img" alt={meal.name}/>
                                     <div className="meal-selection">
-                                        <button id={meal._id} onClick={addOrder} type="button" ><AddShoppingCart />Order</button>
+                                        <button onClick={_=>{addOrder(meal)}} type="button" ><AddShoppingCart />Order</button>
                                     </div>
                                 </div>
                                 <div className="name">{meal.name}</div>
@@ -138,7 +176,7 @@ export const Menu = _ =>{
                                 <div className="meal-selection-container">
                                     <img src={meal.image} className="menu-item img" alt={meal.name}/>
                                     <div className="meal-selection">
-                                        <button id={meal._id} onClick={addOrder} type="button" ><AddShoppingCart />Order</button>
+                                        <button onClick={_=>{addOrder(meal)}} type="button" ><AddShoppingCart />Order</button>
                                     </div>
                                 </div>
                                 <div className="name">{meal.name}</div>
@@ -153,21 +191,37 @@ export const Menu = _ =>{
     );
 }
 
-const orderWindow = (closeForm) => {
+const orderWindow = (selection, setSelection, closeForm, orderMeal) => {
     return(
         <div className="form-popup center" id="myForm">
             <form className="form-container">
                 <h2>Please input the quantity and additional notes for the meal order!</h2>
                 <div className="form-floating">
-                    <input type="text" className="form-control" placeholder="Quantity" required />
+                    <input type="text" className="form-control" value={selection.quantity} placeholder="Quantity" required 
+                        onChange={event => {
+                            let newSel = {
+                                ...selection,
+                                quantity: event.target.value
+                            };
+                            setSelection(newSel);
+                        }} 
+                    />
                     <label for="floatingInput">Quantity</label>
                 </div>
                 <div className="form-floating">
-                    <input type="text" className="form-control" placeholder="Note" />
-                    <label for="floatingInput">Note</label>
+                    <input type="text" className="form-control" value={selection.notes} placeholder="Notes" 
+                        onChange={event => {
+                            let newSel = {
+                                ...selection,
+                                notes: event.target.value
+                            };
+                            setSelection(newSel);
+                        }} 
+                    />
+                    <label for="floatingInput">Notes (optional)</label>
                 </div>
                 <div className="right-side-button">
-                    <button type="button" >Next</button>
+                    <button type="button" onClick={orderMeal} >Next</button>
                     <button type="button" onClick={closeForm} >Cancel</button>
                 </div>
             </form>
