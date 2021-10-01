@@ -6,7 +6,7 @@ import {Menu} from "./component/Menu";
 import {Login} from "./component/Login";
 import {Signup} from "./component/SignUp";
 import {Book} from "./reservation/component/Book";
-import {Profile} from "./component/Profile";
+import {Profile} from "./profile/component/Profile";
 
 export const getUserID = _ => {
   const rememberMe = localStorage.getItem("rememberMe");
