@@ -17,13 +17,13 @@ export const Invoice = (props) => {
 }
 
 const invoiceInformation = (orders, meals) => {
+    let componentRef;
     const invoiceItems = [];
     let totalCost = 0;
     for(let i=0; i<meals.length; ++i){
         invoiceItems.push(mealItem(orders[i], meals[i]));
         totalCost += Number(meals[i].price) * Number(orders[i].quantity);
     }
-    let componentRef;
 
     return(
         <section className="invoice" >
@@ -63,6 +63,7 @@ const invoiceInformation = (orders, meals) => {
         </section>
     );
 }
+
 const mealItem = (order, meal) => {
     const handleQtyChange = (e) => {
         order.quantity = e.target.value;

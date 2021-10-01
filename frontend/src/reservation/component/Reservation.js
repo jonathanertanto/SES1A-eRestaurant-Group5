@@ -1,6 +1,8 @@
 import React from "react";
 import '../style/reservation.css';
+import {Title} from "./Title";
 import {Invoice} from "./Invoice";
+import {TextField} from "./TextField";
 
 export const Reservation = (props) => {
     const cancelReservation = _ => {
@@ -35,7 +37,7 @@ export const Reservation = (props) => {
 
     return(
         <section className="reservation">
-            {props.title()}
+            {<Title />}
             <div className="container">
                 <div className="main-body">
                     <div className="row gutters-sm">
@@ -64,31 +66,17 @@ export const Reservation = (props) => {
 
 const tableInformation = (table) => {
     const items = [];
-    items.push(normalField("Table Number", table.name));
-    items.push(normalField("Table Capacity", table.capacity));
-    items.push(normalField("Reservation Type", new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch"));
-    items.push(normalField("Reservation Date/Time", new Date(String(table.date)) ));
-    items.push(normalField("Reservation Location", table.location));
+    items.push(TextField("Table Number", table.name));
+    items.push(TextField("Table Capacity", table.capacity));
+    items.push(TextField("Reservation Type", new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch"));
+    items.push(TextField("Reservation Date/Time", new Date(String(table.date)) ));
+    items.push(TextField("Reservation Location", table.location));
     return items;
 }
 
 const bookingInformation = (booking) => {
     const items = [];
-    items.push(normalField("Reservation Party Size", booking.number_of_people));
-    items.push(normalField("Notes", String(booking.notes) === "null" ? " " : booking.notes));
+    items.push(TextField("Reservation Party Size", booking.number_of_people));
+    items.push(TextField("Notes", String(booking.notes) === "null" ? " " : booking.notes));
     return items;
-}
-
-const normalField = (title, data) => {
-    return(
-        <secion>
-            <div className="row">
-                <div className="col-sm-3" style={{textAlign: "left"}} >
-                    <h6 className="mb-0">{title}</h6>
-                </div>
-                <input className="col-sm-9 text-secondary" type="text" value={data} readOnly />
-            </div>
-            <hr/>
-        </secion>
-    );
 }

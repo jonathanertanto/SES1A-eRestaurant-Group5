@@ -10,7 +10,9 @@ import {
 import '../style/reservation.css';
 import {Table} from "./Table";
 import {getUserID} from "../../App.js";
+import {Title} from "./Title";
 import {Reservation} from "./Reservation";
+import {Confirmation} from "./Confirmation";
 
 export const Book = _ => {
     const [totalTables, setTotalTables] = useState([]);
@@ -110,12 +112,11 @@ export const Book = _ => {
         return (new Date(getDate())).getTime() >= (new Date(getCurrentDate())).getTime();
     }
     
+    // Get Available Tables
     const getEmptyTables = _ => {
         let tables = totalTables.filter(table => table.isAvailable);
         return tables.length;
     };
-
-    // Get Available Tables
     useEffect(() => {
         // Check availability of tables
         if (isSelectedDateValid() && selection.location && selection.size) {
@@ -217,6 +218,7 @@ export const Book = _ => {
         bookTable();
     };
 
+    // If Unauthorised users try to open
     if(!getUserID())
         return window.location.href="/login";    
     
@@ -226,7 +228,7 @@ export const Book = _ => {
                 booking === "I"? (
                     <div></div>
                 ) : (
-                    <Reservation title={title} booking={booking} table={table} getCurrentDate={getCurrentDate} orders={orders} meals={meals} />
+                    <Reservation booking={booking} table={table} getCurrentDate={getCurrentDate} orders={orders} meals={meals} />
                 )
             ):
                 createNewBooking(reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid, getDate)
@@ -235,25 +237,11 @@ export const Book = _ => {
     );
 };
 
-const title = _ => {
-    return(
-        <div className="title2">
-            <h1 className="title-non-animation">
-                <span className="text-wrapper">
-                    <span className="line line1"></span>
-                    <span>RESERVATION</span>
-                    <span className="line line2"></span>
-                </span>
-            </h1>
-        </div>
-    );
-}
-
 const createNewBooking = (reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid, getDate) => {
     return(
         <section className="reservation">
-            {confirmationWindow(reserve, closeForm, selection, setNote, getDate)}
-            {title()}
+            {<Confirmation reserve={reserve} closeForm={closeForm} selection={selection} setNote={setNote} getDate={getDate} />}
+            {<Title />}
             {bookReservation(selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid)}
         </section>
     );
@@ -493,54 +481,5 @@ const availableTablesSelection = (getEmptyTables, getTables) => {
         ) : (
             <p className="table-display-message">No Available Tables!</p>
         )
-    );
-}
-
-// Booking Confirmation
-const confirmationWindow = (reserve, closeForm, selection, setNote, getDate) => {
-    return(
-        <div className="form-popup center" id="myForm">
-            <form className="form-container">
-                    <h2>Reservation Confirmation</h2>
-                    <div className="reservation confirmation-content">
-                        <div className="form-floating">
-                            <input type="text" className="form-control" value={selection.table.name} readOnly = {true}/>
-                            <label for="floatingInput">Table Number</label>
-                        </div>
-                        <div className="reservation form-floating">
-                        <input type="text" className="form-control" value={selection.table.capacity} readOnly = {true}/>
-                        <label for="floatingInput">Table Capacity</label>
-                        </div>
-                    </div>
-                    <div className="reservation confirmation-content">
-                        <div className="reservation form-floating">
-                            <input type="text" className="form-control" value={selection.type} readOnly = {true}/>
-                            <label for="floatingInput">Reservation Type</label>
-                        </div>
-                        <div className="reservation form-floating">
-                            <input type="text" className="form-control" value={new Date(getDate())} readOnly = {true}/>
-                            <label for="floatingInput">Reservation Date/Time</label>
-                        </div>
-                    </div>
-                    <div className="reservation confirmation-content">
-                        <div className="reservation form-floating">
-                            <input type="text" className="form-control" value={selection.location} readOnly = {true}/>
-                            <label for="floatingInput">Reservation Location</label>
-                        </div>
-                        <div className="reservation form-floating">
-                            <input type="text" className="form-control" value={selection.size} readOnly = {true}/>
-                            <label for="floatingInput">Reservation Party Size</label>
-                        </div>
-                    </div>
-                    <div className="form-floating">
-                        <input type="text" className="form-control" placeholder="Notes" onChange={event => setNote(event.target.value)} />
-                        <label for="floatingInput">Notes (optional)</label>
-                    </div>
-                    <div className="right-side-button">
-                        <button type="button" onClick={reserve} >Book</button>
-                        <button type="button" onClick={closeForm} >Cancel</button>
-                    </div>
-            </form>
-        </div>
     );
 }
