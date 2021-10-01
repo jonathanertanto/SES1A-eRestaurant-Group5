@@ -2,11 +2,11 @@ import React from "react";
 import {Routes, Route} from "react-router-dom";
 import {Navbar} from "./component/Navbar";
 import {Homepage} from "./component/Homepage";
-import {Menu} from "./component/Menu";
-import {Login} from "./component/Login";
-import {Signup} from "./component/SignUp";
+import {Menu} from "./menu/component/Menu";
 import {Book} from "./reservation/component/Book";
 import {Profile} from "./profile/component/Profile";
+import {Login} from "./component/Login";
+import {Signup} from "./component/SignUp";
 
 export const getUserID = _ => {
   const rememberMe = localStorage.getItem("rememberMe");

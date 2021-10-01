@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {AddShoppingCart} from '@material-ui/icons/';
 import '../style/menu.css';
-import {getUserID} from "../App";
+import {getUserID} from "../../App";
 import {
     Row,
     Col,
@@ -10,6 +9,9 @@ import {
     DropdownMenu,
     DropdownItem
 }from "reactstrap";
+import {Title} from "./Title";
+import {Meal} from "./Meal";
+import {Order} from "./Order";
 
 export const Menu = _ =>{
     // User's selection
@@ -164,103 +166,19 @@ export const Menu = _ =>{
     
     return(
         <section className="menu">
-            {orderWindow(selection, setSelection, closeForm, orderMeal)}
-            {title()}
+            {Order(selection, setSelection, closeForm, orderMeal)}
+            {Title()}
             {selectionDropdown(selection, setSelection)}
             {foods && (selection.mealType === "Foods" || selection.mealType === "All Types of Meal" ) ? (
-                <section>
-                    <h2>FOODS</h2>
-                    <div className="foods menu-list">
-                        {foods.map((meal, index) => (
-                            <div key={index} className="menu-item">
-                                <div className="meal-selection-container">
-                                    <img src={meal.image} className="menu-item img" alt={meal.name}/>
-                                    <div className="meal-selection">
-                                        <button onClick={_=>{addOrder(meal)}} type="button" ><AddShoppingCart />Order</button>
-                                    </div>
-                                </div>
-                                <div className="name">{meal.name}</div>
-                                <div className="description">{meal.description}</div>
-                                <div className="price">${meal.price}</div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            ):<div></div>}
+                Meal("FOODS", foods, addOrder)
+            ) : <div></div>}
             {drinks && (selection.mealType === "Drinks" || selection.mealType === "All Types of Meal" ) ? (
-                <section>
-                    <h2>DRINKS</h2>
-                    <div className="drinks menu-list">
-                        {drinks.map((meal, index) => (
-                            <div key={index} className="menu-item">
-                                <div className="meal-selection-container">
-                                    <img src={meal.image} className="menu-item img" alt={meal.name}/>
-                                    <div className="meal-selection">
-                                        <button onClick={_=>{addOrder(meal)}} type="button" ><AddShoppingCart />Order</button>
-                                    </div>
-                                </div>
-                                <div className="name">{meal.name}</div>
-                                <div className="description">{meal.description}</div>
-                                <div className="price">${meal.price}</div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                Meal("DRINKS", drinks, addOrder)
             ) : <div></div>}
         </section>
     );
 }
 
-const orderWindow = (selection, setSelection, closeForm, orderMeal) => {
-    return(
-        <div className="form-popup center" id="myForm">
-            <form className="form-container">
-                <h2>Please input the quantity and additional notes for the meal order!</h2>
-                <div className="form-floating">
-                    <input type="text" className="form-control" value={selection.quantity} placeholder="Quantity" required 
-                        onChange={event => {
-                            let newSel = {
-                                ...selection,
-                                quantity: event.target.value
-                            };
-                            setSelection(newSel);
-                        }} 
-                    />
-                    <label for="floatingInput">Quantity</label>
-                </div>
-                <div className="form-floating">
-                    <input type="text" className="form-control" value={selection.notes} placeholder="Notes" 
-                        onChange={event => {
-                            let newSel = {
-                                ...selection,
-                                notes: event.target.value
-                            };
-                            setSelection(newSel);
-                        }} 
-                    />
-                    <label for="floatingInput">Notes (optional)</label>
-                </div>
-                <div className="right-side-button">
-                    <button type="button" onClick={orderMeal} >Order</button>
-                    <button type="button" onClick={closeForm} >Cancel</button>
-                </div>
-            </form>
-        </div>
-    );
-}
-const title = _ => {
-    return(
-        <div className="title2">
-            <h1 className="title-non-animation">
-                <span className="text-wrapper">
-                    <span className="line line1"></span>
-                    <span>MENU</span>
-                    <span className="line line2"></span>
-                </span>
-            </h1>
-        </div>
-    );
-}
 const selectionDropdown = (selection, setSelection) => {
     return (
         <Row noGutters className="menu-dropdown">
