@@ -648,13 +648,15 @@ const invoice = (orders, meals) => {
                                 <th scope="col" className="col-5 text-center">Name</th>
                                 <th scope="col" className="col-1 text-center">Quantity</th>
                                 <th scope="col" className="col-3 text-center">Notes</th>
-                                <th scope="col" className="col-2 text-center">Price</th>
+                                <th scope="col" className="col-1 text-center">Price</th>
+                                <th className="col-1"> </th>
                                 <th className="col-1"> </th>
                             </tr>
                         </thead>
                         <tbody>
                             {invoiceItems}
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -674,6 +676,29 @@ const invoiceItem = (order, meal) => {
     }
     const handleNotesChange = (e) => {
         order.notes = e.target.value;
+    }
+    const updateData = _ => {
+        if(!Number.isFinite(Number(order.quantity)) || Number(order.quantity)%1 !== 0 || Number(order.quantity) <= 0 ){
+            return alert("Please fill in the quantity with a non decimal number larger than 0!");
+        }
+        fetch("/api/updateorder", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                orderID: order._id,
+                quantity: order.quantity,
+                notes: order.notes
+            })
+        })
+            .then((res) => {return res.json(); })
+            .then((data) => {
+                alert(data.message);
+                if(data.status){
+                    window.location.reload();
+                }
+            });
     }
     const removeItem = _ => {
         if(!Number.isFinite(Number(order.quantity)) || Number(order.quantity)%1 !== 0 || Number(order.quantity) <= 0 ){
@@ -704,6 +729,7 @@ const invoiceItem = (order, meal) => {
             <td><input className="form-control text-center" type="text" placeholder={order.quantity} onChange={handleQtyChange}/></td>
             <td><input className="form-control text-center" type="text" placeholder={order.notes} onChange={handleNotesChange} /></td>
             <td className="text-right">${Number.isFinite(Number(order.quantity))? Number(meal.price) * Number(order.quantity):0}</td>
+            <td className="text-right"><button onClick={updateData} >Edit</button> </td>
             <td className="text-right"><button className="btn btn-sm btn-danger" onClick={removeItem} ><i className="fa fa-trash"></i> </button> </td>
         </tr>
     )
