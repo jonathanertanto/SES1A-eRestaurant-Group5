@@ -20,7 +20,7 @@ const invoiceInformation = (orders, meals) => {
     const invoiceItems = [];
     let totalCost = 0;
     for(let i=0; i<meals.length; ++i){
-        invoiceItems.push(invoiceItem(orders[i], meals[i]));
+        invoiceItems.push(mealItem(orders[i], meals[i]));
         totalCost += Number(meals[i].price) * Number(orders[i].quantity);
     }
     let componentRef;
@@ -63,7 +63,7 @@ const invoiceInformation = (orders, meals) => {
         </section>
     );
 }
-const invoiceItem = (order, meal) => {
+const mealItem = (order, meal) => {
     const handleQtyChange = (e) => {
         order.quantity = e.target.value;
     }

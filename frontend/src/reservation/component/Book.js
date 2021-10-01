@@ -9,8 +9,8 @@ import {
 }from "reactstrap";
 import '../style/reservation.css';
 import {Table} from "./Table";
-import {getUserID} from "../App.js";
-import {Invoice} from "./Invoice";
+import {getUserID} from "../../App.js";
+import {Reservation} from "./Reservation";
 
 export const Book = _ => {
     const [totalTables, setTotalTables] = useState([]);
@@ -226,7 +226,7 @@ export const Book = _ => {
                 booking === "I"? (
                     <div></div>
                 ) : (
-                    showReservation(booking, table, getCurrentDate, orders, meals)
+                    <Reservation title={title} booking={booking} table={table} getCurrentDate={getCurrentDate} orders={orders} meals={meals} />
                 )
             ):
                 createNewBooking(reserve, closeForm, setNote, selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid, getDate)
@@ -542,97 +542,5 @@ const confirmationWindow = (reserve, closeForm, selection, setNote, getDate) => 
                     </div>
             </form>
         </div>
-    );
-}
-
-// Show Active Booking
-const showReservation = (booking, table, getCurrentDate, orders, meals) => {
-    const cancelReservation = _ => {
-        const date = new Date(String(table.date));
-        if(date < new Date(getCurrentDate())){
-            return alert("Reservation cancellation must be at least 1 hour before!");
-        }
-        const confirmation = window.confirm("Are you sure to cancel the reservation?");
-        if(!confirmation){
-            return console.log();
-        }
-        fetch("/api/cancelreservation", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                reservation: booking._id,
-                table: table._id,
-                date: table.date
-            })
-        })
-            .then((res) => {return res.json(); })
-            .then((data) => {
-                if(!data.status){
-                    alert("Failed to cancel reservation!");
-                }else{
-                    window.location.reload();
-                }
-            });
-    }
-
-    return(
-        <section className="reservation">
-            {title()}
-            <div className="container">
-                    <div className="main-body">
-                        <div className="row gutters-sm">
-
-                            <div className="col-md-6">
-                                <div className="card mb-3">
-                                    <div className="card-body">
-                                        {tableInformation(table)}
-                                        {bookingInformation(booking)}
-                                        <div className="column right-side-button">
-                                            {/* <button className="btn-lg" >Edit</button> */}
-                                            <button className="btn-lg" onClick={cancelReservation} >Cancel Reservation</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <Invoice orders={orders} meals={meals} />
-
-                        </div>
-                    </div>
-                </div>
-        </section>
-    )
-}
-
-const tableInformation = (table) => {
-    const items = [];
-    items.push(normalField("Table Number", table.name));
-    items.push(normalField("Table Capacity", table.capacity));
-    items.push(normalField("Reservation Type", new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch"));
-    items.push(normalField("Reservation Date/Time", new Date(String(table.date)) ));
-    items.push(normalField("Reservation Location", table.location));
-    return items;
-}
-
-const bookingInformation = (booking) => {
-    const items = [];
-    items.push(normalField("Reservation Party Size", booking.number_of_people));
-    items.push(normalField("Notes", String(booking.notes) === "null" ? " " : booking.notes));
-    return items;
-}
-
-const normalField = (title, data) => {
-    return(
-        <secion>
-            <div className="row">
-                <div className="col-sm-3" style={{textAlign: "left"}} >
-                    <h6 className="mb-0">{title}</h6>
-                </div>
-                <input className="col-sm-9 text-secondary" type="text" value={data} readOnly />
-            </div>
-            <hr/>
-        </secion>
     );
 }
