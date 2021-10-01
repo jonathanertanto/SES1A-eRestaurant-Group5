@@ -1,6 +1,7 @@
 import React from "react";
 import '../style/reservation.css';
 import ReactToPrint from 'react-to-print';
+import { Discount } from "./Discount";
 
 export const Invoice = (props) => {
     return(
@@ -19,14 +20,26 @@ export const Invoice = (props) => {
 const invoiceInformation = (orders, meals) => {
     let componentRef;
     const invoiceItems = [];
-    let totalCost = 0;
+    let totalPayment = 0, discount = 0, subTotalCost = 0;
     for(let i=0; i<meals.length; ++i){
         invoiceItems.push(mealItem(orders[i], meals[i]));
-        totalCost += Number(meals[i].price) * Number(orders[i].quantity);
+        subTotalCost += Number(meals[i].price) * Number(orders[i].quantity);
+        totalPayment = subTotalCost - discount;
     }
+    
+    const applyDiscount = _ =>{
 
+    }
+    const openDiscountForm = _ => {
+        document.getElementById("discountForm").style.display = "block";
+    }
+    const closeDiscountForm = _ => {
+        document.getElementById("discountForm").style.display = "none";
+    }
+    
     return(
         <section className="invoice" >
+            {Discount(applyDiscount, closeDiscountForm)}
             <div className="container mb-4">
 
                 <div id="invoiceComp" ref={(response) => (componentRef = response)} className="table-responsive">
@@ -43,24 +56,58 @@ const invoiceInformation = (orders, meals) => {
                         </thead>
                         <tbody>
                             {invoiceItems}
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><strong>Total</strong></td>
-                                <td className="text-right"><strong>${Number.isFinite(totalCost)?totalCost:0}</strong></td>
-                            </tr>
+                            {subTotal(subTotalCost)}
+                            {discountOffer(discount)}
+                            {total(totalPayment)}
                         </tbody>
                     </table>
                 </div>
-
-                <ReactToPrint
-                    content={() => componentRef}
-                    trigger={() => <button >Print to PDF</button>}
-                />
+                <div>
+                    <ReactToPrint
+                        content={() => componentRef}
+                        trigger={() => <button >Print to PDF</button>}
+                    />
+                    <button style={{marginLeft:10}} onClick={openDiscountForm} >Apply Discount</button>
+                </div>
             </div>
         </section>
+    );
+}
+
+const subTotal = (subTotalCost) => {
+    return(
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Sub Total</strong></td>
+            <td className="text-right"><strong>${Number.isFinite(subTotalCost)?subTotalCost:0}</strong></td>
+        </tr>
+    );
+}
+const discountOffer = (discount) =>{
+    return(
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Discount</strong></td>
+            <td className="text-right"><strong>${Number.isFinite(discount)?discount:0}</strong></td>
+        </tr>
+    );
+}
+const total = (totalPayment) =>{
+    return(
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Total</strong></td>
+            <td className="text-right"><strong>${Number.isFinite(totalPayment)?totalPayment:0}</strong></td>
+        </tr>
     );
 }
 

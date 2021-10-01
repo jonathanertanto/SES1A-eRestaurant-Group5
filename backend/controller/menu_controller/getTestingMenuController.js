@@ -13,14 +13,6 @@ router.post("/", async (req, res) => {
             return res.json({menuItem: data.sort((a, b) => (a.type > b.type) ? -1: 1)});
         }
 
-        Meal.deleteMany({}, async (err) => {
-            if(err){
-                console.log(err);
-            }else{
-                console.log("Successfully deleted all the meals");
-            }
-        });
-
         const images = [
             "https://uppercutsteakhouse.com/wp-content/uploads/2019/09/menu-dry-agedc.jpg", "https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg",
             "https://i.pinimg.com/564x/d4/c9/31/d4c9317f618ef2eff5e74cd91240460b.jpg", "https://i.pinimg.com/564x/6c/6e/8d/6c6e8dabd1808b9b17c0f0425e812f60.jpg", 

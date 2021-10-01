@@ -53,6 +53,9 @@ app.use("/api/getorders", require("./controller/order_controller/getOrdersContro
 app.use("/api/updateorder", require("./controller/order_controller/updateOrderController"));
 app.use("/api/removeorder", require("./controller/order_controller/removeOrderController"));
 
+//-----DISCOUNTS-----
+app.use("/api/gettestingdiscount", require("./controller/discount_controller/getTestingDiscountController"));
+
 //-----RANDOM DIRECTORY-----
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../index.js'));

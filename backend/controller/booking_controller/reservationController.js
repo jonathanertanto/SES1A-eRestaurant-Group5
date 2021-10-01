@@ -41,6 +41,7 @@ router.post ("/", (req,res,next) => {
             const reservation = new Reservation({
                 number_of_people: Number(req.body.size),
                 notes: String(req.body.notes),
+                discount: "",
                 completeness: false,
                 table: String(req.body.table.id),
                 user: String(req.body.userID)
