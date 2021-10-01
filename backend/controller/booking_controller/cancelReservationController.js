@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
         Order.deleteMany({_reservation: String(req.body.reservation)}, (err) => {
             if(err){
                 console.log(err);
-                return res.status(200).json({status: false});
+                return res.status(400).json({status: false});
             }else{
                 console.log("Successfully deleted the reservation's meal order(s)!");
             }
@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
         Table.deleteOne({_id: String(req.body.table)}, (err) => {
             if(err){
                 console.log(err);
-                return res.status(200).json({status: false});
+                return res.status(400).json({status: false});
             }else{
                 console.log("Successfully deleted the table from database!");
             }
@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
         }, (err) => {
             if(err){
                 console.log(err);
-                return res.status(200).json({status: false});
+                return res.status(400).json({status: false});
             }else{
                 console.log("Successfully change table status to available!");
             }
@@ -50,6 +50,7 @@ router.post("/", async (req, res) => {
         return res.status(200).json({status: true});
     }catch(error){
         console.log(error);
+        return res.status(400).json({status: false});
     }
 });
 module.exports = router;

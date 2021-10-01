@@ -637,6 +637,7 @@ const invoice = (orders, meals) => {
         invoiceItems.push(invoiceItem(orders[i], meals[i]));
         totalCost += Number(meals[i].price) * Number(orders[i].quantity);
     }
+
     return(
         <section className="invoice" >
             <div className="container mb-4">
@@ -658,7 +659,7 @@ const invoice = (orders, meals) => {
                                 <td></td>
                                 <td></td>
                                 <td><strong>Total</strong></td>
-                                <td className="text-right"><strong>${totalCost}</strong></td>
+                                <td className="text-right"><strong>${Number.isFinite(totalCost)?totalCost:0}</strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -668,13 +669,42 @@ const invoice = (orders, meals) => {
     );
 }
 const invoiceItem = (order, meal) => {
+    const handleQtyChange = (e) => {
+        order.quantity = e.target.value;
+    }
+    const handleNotesChange = (e) => {
+        order.notes = e.target.value;
+    }
+    const removeItem = _ => {
+        if(!Number.isFinite(Number(order.quantity)) || Number(order.quantity)%1 !== 0 || Number(order.quantity) <= 0 ){
+            return alert("Please fill in the quantity with a non decimal number larger than 0!");
+        }
+        fetch("/api/removeorder", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                orderID: order._id,
+                quantity: order.quantity
+            })
+        })
+            .then((res) => {return res.json(); })
+            .then((data) => {
+                alert(data.message);
+                if(data.status){
+                    window.location.reload();
+                }
+            });
+    }
+
     return(
         <tr>
             <td>{meal.name}</td>
-            <td><input className="form-control text-center" type="text" value={order.quantity} /></td>
-            <td><input className="form-control text-center" type="text" value={order.notes} /></td>
-            <td className="text-right">${Number(meal.price) * Number(order.quantity)}</td>
-            <td className="text-right"><button className="btn btn-sm btn-danger"><i className="fa fa-trash"></i> </button> </td>
+            <td><input className="form-control text-center" type="text" placeholder={order.quantity} onChange={handleQtyChange}/></td>
+            <td><input className="form-control text-center" type="text" placeholder={order.notes} onChange={handleNotesChange} /></td>
+            <td className="text-right">${Number.isFinite(Number(order.quantity))? Number(meal.price) * Number(order.quantity):0}</td>
+            <td className="text-right"><button className="btn btn-sm btn-danger" onClick={removeItem} ><i className="fa fa-trash"></i> </button> </td>
         </tr>
     )
 }

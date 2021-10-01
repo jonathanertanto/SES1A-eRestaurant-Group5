@@ -50,6 +50,7 @@ app.use("/api/gettestingmenu", require("./controller/menu_controller/getTestingM
 //-----ORDER-----
 app.use("/api/ordermeal", require("./controller/order_controller/orderMealController"));
 app.use("/api/getorders", require("./controller/order_controller/getOrdersController"));
+app.use("/api/removeorder", require("./controller/order_controller/removeOrderController"));
 
 //-----RANDOM DIRECTORY-----
 app.get('*', (req, res) => {
