@@ -10,6 +10,7 @@ import {
 import '../style/reservation.css';
 import {Table} from "./Table";
 import {getUserID} from "../App.js";
+import ReactToPrint from 'react-to-print';
 
 export const Book = _ => {
     const [totalTables, setTotalTables] = useState([]);
@@ -629,7 +630,6 @@ const bookingInformation = (booking) => {
     items.push(normalField("Notes", String(booking.notes) === "null" ? " " : booking.notes));
     return items;
 }
-
 const invoice = (orders, meals) => {
     const invoiceItems = [];
     let totalCost = 0;
@@ -637,15 +637,17 @@ const invoice = (orders, meals) => {
         invoiceItems.push(invoiceItem(orders[i], meals[i]));
         totalCost += Number(meals[i].price) * Number(orders[i].quantity);
     }
+    let componentRef;
 
     return(
         <section className="invoice" >
             <div className="container mb-4">
-                <div className="table-responsive">
+
+                <div id="invoiceComp" ref={(response) => (componentRef = response)} className="table-responsive">
                     <table className="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col" className="col-5 text-center">Name</th>
+                                <th scope="col" className="col-5 text-center">Meal Name</th>
                                 <th scope="col" className="col-1 text-center">Quantity</th>
                                 <th scope="col" className="col-3 text-center">Notes</th>
                                 <th scope="col" className="col-1 text-center">Price</th>
@@ -666,6 +668,11 @@ const invoice = (orders, meals) => {
                         </tbody>
                     </table>
                 </div>
+
+                <ReactToPrint
+                    content={() => componentRef}
+                    trigger={() => <button >Print to PDF</button>}
+                />
             </div>
         </section>
     );
