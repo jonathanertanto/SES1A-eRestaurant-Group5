@@ -117,8 +117,7 @@ export const Menu = _ =>{
             return window.location.href='/login';
         }
         if(reservation === ""){
-            alert("You have no active reservation at the moment. Please book a table first before ordering a meal!");
-            return window.location.href='/reservation'
+            return alert("You have no active reservation at the moment. Please book a table first before ordering a meal!");
         }
         if(!(getReservationMenuType().toLowerCase() === meal.menuType || meal.menuType === "all")){
             return alert("Please select the meal according to your reservation menu type!");
@@ -151,7 +150,6 @@ export const Menu = _ =>{
         }else{
             alert("Successfully added meal order!");
             closeForm();
-            window.location.href="/reservation";
         }
     }
     const closeForm = _ => {

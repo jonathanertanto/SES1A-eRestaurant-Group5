@@ -80,7 +80,7 @@ export const Discount = (totalPayment, meals) => {
     return(
         <div id="discountForm" className="form-popup center">
             <form className="form-container">
-                {list(discounts, totalPayment, reservation)}
+                {list(discounts, reservation)}
                 <div className="right-side-button">
                     <button type="button" onClick={closeDiscountForm} >Cancel</button>
                 </div>
@@ -89,10 +89,10 @@ export const Discount = (totalPayment, meals) => {
     );
 }
 
-const list = (discounts, totalPayment, reservation) => {
+const list = (discounts, reservation) => {
     const items = [];
     for(let i=0; i<discounts.length; ++i){
-        items.push(item(discounts[i], totalPayment, reservation));
+        items.push(item(discounts[i], reservation));
     }
 
     return (
@@ -121,7 +121,7 @@ const list = (discounts, totalPayment, reservation) => {
     );
 }
 
-const item = (discount, totalPayment, reservation) => {
+const item = (discount, reservation) => {
     const applyDiscount = _ =>{
         fetch("/api/applydiscount", {
             method: "POST",

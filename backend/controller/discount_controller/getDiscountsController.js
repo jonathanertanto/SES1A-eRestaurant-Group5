@@ -29,13 +29,13 @@ router.post("/", async (req, res) => {
         const data = {
             start_date: [`${year}-09-20`, `${year}-10-20`, `${year}-09-30`, `${year}-09-30`, `${year}-09-30`],
             end_date: [`${year}-09-30`,`${year}-10-30`, `${year}-10-30`, `${year}-10-30`, `${year}-10-30`],
-            description: ["Discount 20%", "Discount 5%", "Discount $5", "Discount $10 on drinks", "Free Drink 1"],
+            description: ["Discount 20% on foods only", "Discount 5% on all meals", "Discount $5 on all meals", "Discount $10 on drinks only", "Free 1 quantity of Drink 1"],
             min_transaction: [40, 20, 20, 0, 50],
             nominal: [20, 5, 5, 10, 1],
             type: ["P", "P", "N", "N", "Q"],
             meal: ["", "", "", "", "615603c46ba5684e703fd31f"],
             menuType: ["A", "A", "L", "D", "A"],
-            mealType: ["A", "L", "D", "A", "A"]
+            mealType: ["F", "A", "A", "D", "D"]
         }
         const newDiscounts = [];
         for(let i=0; i<5; ++i){
