@@ -54,7 +54,8 @@ app.use("/api/updateorder", require("./controller/order_controller/updateOrderCo
 app.use("/api/removeorder", require("./controller/order_controller/removeOrderController"));
 
 //-----DISCOUNTS-----
-app.use("/api/gettestingdiscount", require("./controller/discount_controller/getTestingDiscountController"));
+app.use("/api/getdiscounts", require("./controller/discount_controller/getDiscountsController"));
+app.use("/api/applydiscount", require("./controller/discount_controller/applyDiscountController"));
 
 //-----RANDOM DIRECTORY-----
 app.get('*', (req, res) => {

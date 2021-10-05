@@ -13,7 +13,7 @@ const DiscountSchema = new mongoose.Schema({
     method_of_use: String,
     nominal: {
         type: Number,
-        required: [true, "Discount should includes a nominal!"]
+        required: [true, "Discount should includes a quantity!"]
     },
     type: {
         type: String,
@@ -23,9 +23,12 @@ const DiscountSchema = new mongoose.Schema({
     meal: String,
     menuType:{
         type: String,
-        required: [true, "Discount can be only applied for foods or drinks only, but also can be used for both"]
+        required: [true, "Discount can be only applied for lunch or dinner only, but also can be used for both"]
     },
-    users: [String]
+    mealType:{
+        type: String,
+        required: [true, "Discount can be only applied for foods or drinks only, but also can be used for both"]
+    }
 });
 
 mongoose.model("Discount", DiscountSchema);

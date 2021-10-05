@@ -1,23 +1,49 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import '../style/reservation.css';
 import ReactToPrint from 'react-to-print';
 import { Discount } from "./Discount";
+import { getUserID } from "../../App";
 
 export const Invoice = (props) => {
+    const [reservation, setReservation] = useState("I");
+    useEffect(() => {
+        const getData = async _ =>{
+            const res = await fetch("/api/getreservation", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userID: getUserID()
+                })
+            });
+            const data = await res.json();
+            setReservation(data.booking);
+        };
+        getData();
+    }, []);
+
+    const appliedDiscount = _ => {
+        if(reservation === "I" || reservation === ""){
+            return;
+        }
+        return (reservation.discount.length > 0);
+    }
+
     return(
         <div className="col-md-6 mb-3">
             <div className="card">
                 <div className="card-body">
                     <div className="d-flex flex-column align-items-center text-center">
-                        {invoiceInformation(props.orders, props.meals)}
+                        {invoiceInformation(props.orders, props.meals, appliedDiscount)}
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-const invoiceInformation = (orders, meals) => {
+const invoiceInformation = (orders, meals, appliedDiscount) => {
     let componentRef;
     const invoiceItems = [];
     let totalPayment = 0, discount = 0, subTotalCost = 0;
@@ -27,29 +53,27 @@ const invoiceInformation = (orders, meals) => {
         totalPayment = subTotalCost - discount;
     }
     
-    const applyDiscount = _ =>{
-
-    }
     const openDiscountForm = _ => {
+        if(appliedDiscount === true){
+            alert("You can only use one discount offer per reservation!");
+        }
         document.getElementById("discountForm").style.display = "block";
-    }
-    const closeDiscountForm = _ => {
-        document.getElementById("discountForm").style.display = "none";
     }
     
     return(
         <section className="invoice" >
-            {Discount(applyDiscount, closeDiscountForm)}
+            {Discount(totalPayment, meals)}
             <div className="container mb-4">
 
                 <div id="invoiceComp" ref={(response) => (componentRef = response)} className="table-responsive">
                     <table className="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col" className="col-5 text-center">Meal Name</th>
+                                <th scope="col" className="col-4 text-center">Meal Name</th>
                                 <th scope="col" className="col-1 text-center">Quantity</th>
                                 <th scope="col" className="col-3 text-center">Notes</th>
                                 <th scope="col" className="col-1 text-center">Price</th>
+                                <th scope="col" className="col-1 text-center">Total</th>
                                 <th className="col-1"> </th>
                                 <th className="col-1"> </th>
                             </tr>
@@ -81,6 +105,7 @@ const subTotal = (subTotalCost) => {
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
             <td><strong>Sub Total</strong></td>
             <td className="text-right"><strong>${Number.isFinite(subTotalCost)?subTotalCost:0}</strong></td>
         </tr>
@@ -93,6 +118,7 @@ const discountOffer = (discount) =>{
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
             <td><strong>Discount</strong></td>
             <td className="text-right"><strong>${Number.isFinite(discount)?discount:0}</strong></td>
         </tr>
@@ -101,6 +127,7 @@ const discountOffer = (discount) =>{
 const total = (totalPayment) =>{
     return(
         <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -169,6 +196,7 @@ const mealItem = (order, meal) => {
             <td>{meal.name}</td>
             <td><input className="form-control text-center" type="text" placeholder={order.quantity} onChange={handleQtyChange}/></td>
             <td><input className="form-control text-center" type="text" placeholder={order.notes} onChange={handleNotesChange} /></td>
+            <td className="text-right">${meal.price}</td>
             <td className="text-right">${Number.isFinite(Number(order.quantity))? Number(meal.price) * Number(order.quantity):0}</td>
             <td className="text-right"><button onClick={updateData} >Edit</button> </td>
             <td className="text-right"><button className="btn btn-sm btn-danger" onClick={removeItem} ><i className="fa fa-trash"></i> </button> </td>
