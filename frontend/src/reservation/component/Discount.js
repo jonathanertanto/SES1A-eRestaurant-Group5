@@ -27,35 +27,8 @@ export const Discount = (totalPayment, meals) => {
     const closeDiscountForm = _ => {
         document.getElementById("discountForm").style.display = "none";
     }
-    // Get Current Date and time rounded up (no minutes and seconds)
-    const getCurrentDate = _ => {
-        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = months[date.getMonth()];
-        const day = date.getDate();
-        const time = date.getMinutes > 0? date.getHours() : (date.getHours() + 1);
-        const datetime = time < 24? (month+" "+day+" "+year+" "+time+":00:00") : (month+" "+(day+1)+" "+year+" "+(time-24)+":00:00");
-        return datetime;
-    }
     // Get and filter available discount offers to fit the user's reservation and orders
     useEffect(()=>{
-        const hasMeal = (meal) => {
-            for(let i=0; i<meals.length; ++i){
-                if(String(meals[i]._id) === String(meal)){
-                    return true;
-                }
-            }
-            return false;
-        }
-        const hasMealType = (type) => {
-            for(let i=0; i<meals.length; ++i){
-                if(String(meals[i].type).toUpperCase() === String(type).toUpperCase()){
-                    return true;
-                }
-            }
-            return false;
-        }
         const getData = async _ => {
             const res = await fetch("/api/getdiscounts", {
                 method: "POST",
@@ -67,20 +40,20 @@ export const Discount = (totalPayment, meals) => {
                 })
             });
             const data = await res.json();
+            if(!data.status){
+                return setDiscounts("");
+            }
             setDiscounts(data.discounts.filter(data => 
-                (new Date(String(data.end_date)).getTime() > new Date(getCurrentDate()).getTime()) && 
-                (Number(totalPayment) >= Number(data.min_transaction)) &&
-                (String(data.meal)!=="" ? hasMeal(data.meal) : true) &&
-                (String(data.menuType)==="A" ? true : (new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") ) &&
-                (String(data.mealType)==="A" ? true : hasMealType(data.mealType))
+                (new Date(String(data.end_date)).getTime() > new Date(String(table.date)).getTime()) &&
+                (String(data.menuType)==="A" ? true : (new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") )
             ));
         }
         getData();
-    }, [table, totalPayment, meals]);
+    }, [table, meals]);
     return(
         <div id="discountForm" className="form-popup center">
             <form className="form-container">
-                {list(discounts, reservation)}
+                {list(discounts, reservation, totalPayment, meals)}
                 <div className="right-side-button">
                     <button type="button" onClick={closeDiscountForm} >Cancel</button>
                 </div>
@@ -89,10 +62,10 @@ export const Discount = (totalPayment, meals) => {
     );
 }
 
-const list = (discounts, reservation) => {
+const list = (discounts, reservation, totalPayment, meals) => {
     const items = [];
     for(let i=0; i<discounts.length; ++i){
-        items.push(item(discounts[i], reservation));
+        items.push(item(discounts[i], reservation, totalPayment, meals));
     }
 
     return (
@@ -105,10 +78,11 @@ const list = (discounts, reservation) => {
                             <tr>
                                 <th scope="col" className="col-2 text-center">Name</th>
                                 <th scope="col" className="col-4 text-center">Description</th>
-                                <th scope="col" className="col-3 text-center">Valid Until</th>
+                                <th scope="col" className="col-1 text-center">Meal Type</th>
+                                <th scope="col" className="col-1 text-center">Nominal</th>
                                 <th scope="col" className="col-1 text-center">Min. Transaction</th>
-                                <th className="col-1">Nominal</th>
-                                <th className="col-1"> </th>
+                                <th scope="col" className="col-2 text-center">Valid Until</th>
+                                <th scope="col" className="col-1"> </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -121,8 +95,29 @@ const list = (discounts, reservation) => {
     );
 }
 
-const item = (discount, reservation) => {
+const item = (discount, reservation, totalPayment, meals) => {
     const applyDiscount = _ =>{
+        // Check if the reservation, meals, and discount variables are empty or not
+        if(reservation === "I" || reservation === "" || meals === "I" || !discount){
+            return;
+        }
+
+        // Check if the reservation has an order
+        if(meals.length <= 0){
+            return alert("Please make an order first!");
+        }
+
+        // Check if the orders has the required meal type
+        if(String(discount.meal)==="" && String(discount.mealType)!=="A" && !hasMealType(discount.mealType)){
+            return alert(`Please order a ${(String(discount.mealType).toUpperCase() === "F" ? "food" : "drink" )} first before applying this offer!`);
+        }
+
+        // Check and the total payment and the minimum transaction of the offer
+        if(Number(totalPayment) < Number(discount.min_transaction)){
+            return alert("Please order more meals or choose different offer!\r\nYour orders do not meet the minimum transaction of the discount offer!");
+        }
+        const status = String(discount.meal)!=="" && !hasMeal(discount.meal);
+
         fetch("/api/applydiscount", {
             method: "POST",
             headers: {
@@ -130,7 +125,9 @@ const item = (discount, reservation) => {
             },
             body: JSON.stringify({
                 reservationID: reservation._id,
-                discountID: discount._id
+                discountID: discount._id,
+                mealID: discount.meal,
+                status: status
             })
         })
             .then((res) => {return res.json(); })
@@ -141,15 +138,32 @@ const item = (discount, reservation) => {
                 }
             });
     }
+    const hasMeal = (meal) => {
+        for(let i=0; i<meals.length; ++i){
+            if(String(meals[i]._id) === String(meal)){
+                return true;
+            }
+        }
+        return false;
+    }
+    const hasMealType = (type) => {
+        for(let i=0; i<meals.length; ++i){
+            if(String(meals[i].type).toUpperCase() === String(type).toUpperCase()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     return(
         <tr>
             <td>{discount.name}</td>
             <td>{discount.description}</td>
-            <td>{new Date(String(discount.end_date)).toString()}</td>
-            <td>${discount.min_transaction}</td>
+            <td>{String(discount.mealType).toUpperCase() === "A" ? "All" : String(discount.mealType).toUpperCase() === "F"? "Food" : "Drink" }</td>
             <td>{(String(discount.type)==="N"&&"$")+discount.nominal+(String(discount.type)==="P"?"%":"")}</td>
+            <td>${discount.min_transaction}</td>
+            <td>{new Date(String(discount.end_date)).toString()}</td>
             <td className="text-right"><button onClick={applyDiscount}>Apply</button> </td>
         </tr>
-    )
+    );
 }

@@ -19,7 +19,7 @@ export const Menu = _ =>{
         menuType: "",
         mealType: "All Types of Meal",
         meal: null,
-        quantity: 0,
+        quantity: 1,
         notes: ""
     });
 
@@ -47,7 +47,7 @@ export const Menu = _ =>{
                 menuType: (new Date(String(data.table.date)).getHours() >= 18? "Dinner":"Lunch"),
                 mealType: "All Types of Meal",
                 meal: null,
-                quantity: 0,
+                quantity: 1,
                 notes: ""
             }
             setSelection(newSelection);
@@ -156,7 +156,7 @@ export const Menu = _ =>{
         document.getElementById("myForm").style.display = "none";
         let newSel = {
             ...selection,
-            quantity: 0,
+            quantity: 1,
             notes: ""
         };
         setSelection(newSel);

@@ -36,6 +36,11 @@ export const Invoice = (props) => {
     const [discountDetail, setDiscountDetail] = useState("");
     useEffect(() => {
         const getData = async _ =>{
+            if(reservation === "I" || reservation === "" || String(reservation.discount) === "" || props.meals.length <= 0 || props.orders.length <=0){
+                setDiscount(0);
+                setDiscountDetail("");
+                return;
+            }
             const res = await fetch("/api/calculatediscount", {
                 method: "POST",
                 headers: {
@@ -44,7 +49,8 @@ export const Invoice = (props) => {
                 body: JSON.stringify({
                     discountID: reservation.discount,
                     transaction: subTotalPayment,
-                    meals: props.meals
+                    meals: props.meals,
+                    orders: props.orders
                 })
             });
             const data = await res.json();
@@ -56,9 +62,8 @@ export const Invoice = (props) => {
                 setDiscountDetail("");
             }
         }
-        if(reservation !== "" && reservation !== "I")
-            getData();
-    }, [reservation, subTotalPayment, props.meals]);
+        getData();
+    }, [reservation, subTotalPayment, props.meals, props.orders]);
 
     return(
         <div className="col-md-6 mb-3">
@@ -87,12 +92,8 @@ const invoiceInformation = (orders, meals, subTotalPayment, discount, discountDe
     }
     
     const openDiscountForm = _ => {
-        if(appliedDiscount() === true){
+        if(appliedDiscount()){
             return alert("You can only use one discount offer per reservation!");
-        }
-        if(orders.length <=0){
-            alert("You need to order at least one meal first!");
-            return window.location.href = "/menu";
         }
         document.getElementById("discountForm").style.display = "block";
     }
@@ -106,11 +107,11 @@ const invoiceInformation = (orders, meals, subTotalPayment, discount, discountDe
                     <table className="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col" className="col-4 text-center">Meal Name</th>
+                                <th scope="col" className="col-3 text-center">Meal Name</th>
                                 <th scope="col" className="col-1 text-center">Quantity</th>
                                 <th scope="col" className="col-3 text-center">Notes</th>
                                 <th scope="col" className="col-1 text-center">Price</th>
-                                <th scope="col" className="col-1 text-center">Total</th>
+                                <th scope="col" className="col-2 text-center">Total</th>
                                 <th className="col-1"> </th>
                                 <th className="col-1"> </th>
                             </tr>
@@ -250,8 +251,8 @@ const discountItem = (discount, value) => {
             <td>{discount.name}</td>
             <td>1</td>
             <td>{discount.description}</td>
-            <td>{(String(discount.type)==="N"&&"$")+discount.nominal+(String(discount.type)==="P"?"%":"")}</td>
-            <td>${value}</td>
+            <td>-{(String(discount.type)==="N"&&"$")+discount.nominal+(String(discount.type)==="P"?"%":"")}</td>
+            <td>-${value}</td>
             <td></td>
             <td className="text-right"><button className="btn btn-sm btn-danger" onClick={removeItem} ><i className="fa fa-trash"></i> </button> </td>
         </tr>

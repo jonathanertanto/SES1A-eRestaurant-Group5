@@ -4,9 +4,22 @@ var mongoose = require ("mongoose");
 
 require('../../model/Reservation');
 const Reservation = mongoose.model("Reservation");
+require('../../model/Order');
+const Order = mongoose.model("Order");
 
 router.post("/", async (req, res) => {
     try{
+        if(req.body.status === true){
+            const order = new Order({
+                quantity: 1,
+                notes: "",
+                meal: req.body.mealID,
+                reservation: req.body.reservationID
+            });
+            order.save();
+            console.log("Order successfully created!");
+        }
+
         Reservation.updateOne({_id: String(req.body.reservationID)}, {
             discount: String(req.body.discountID)
         }, async (err) => {
