@@ -70,7 +70,7 @@ export const Invoice = (props) => {
             <div className="card">
                 <div className="card-body">
                     <div className="d-flex flex-column align-items-center text-center">
-                        {invoiceInformation(props.orders, props.meals, subTotalPayment, discount, discountDetail)}
+                        {invoiceInformation(reservation, props.orders, props.meals, subTotalPayment, discount, discountDetail)}
                     </div>
                 </div>
             </div>
@@ -78,7 +78,7 @@ export const Invoice = (props) => {
     );
 }
 
-const invoiceInformation = (orders, meals, subTotalPayment, discount, discountDetail) => {
+const invoiceInformation = (reservation, orders, meals, subTotalPayment, discount, discountDetail) => {
     let componentRef;
     const invoiceItems = [];
     let totalPayment = 0;
@@ -118,7 +118,7 @@ const invoiceInformation = (orders, meals, subTotalPayment, discount, discountDe
                         </thead>
                         <tbody>
                             {invoiceItems}
-                            {discountDetail===""? "" : discountItem(discountDetail, discount)}
+                            {discountDetail===""? "" : discountItem(reservation, discountDetail, discount)}
                             {subTotal(subTotalPayment)}
                             {discountOffer(discount)}
                             {total(totalPayment)}
@@ -242,9 +242,38 @@ const mealItem = (order, meal) => {
         </tr>
     )
 }
-const discountItem = (discount, value) => {
+const discountItem = (reservation, discount, value) => {
     const removeItem = _ => {
+        try{
+            // Check if discount variable exists
+            if(!discount){
+                return;
+            }
 
+            // Asking for confirmation
+            if(!(window.confirm("Are you sure to cancel the reservation?"))){
+                return;
+            }
+
+            fetch("/api/canceldiscount", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    reservationID: reservation._id
+                })
+            })
+                .then((res) => {return res.json(); })
+                .then((data) => {
+                    alert(data.message);
+                    if(data.status){
+                        window.location.reload();
+                    }
+                });
+        }catch(err){
+            alert(err);
+        }
     }
     return(
         <tr>

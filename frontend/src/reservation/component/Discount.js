@@ -97,46 +97,50 @@ const list = (discounts, reservation, totalPayment, meals) => {
 
 const item = (discount, reservation, totalPayment, meals) => {
     const applyDiscount = _ =>{
-        // Check if the reservation, meals, and discount variables are empty or not
-        if(reservation === "I" || reservation === "" || meals === "I" || !discount){
-            return;
-        }
+        try{
+            // Check if the reservation, meals, and discount variables are empty or not
+            if(reservation === "I" || reservation === "" || meals === "I" || !discount){
+                return;
+            }
 
-        // Check if the reservation has an order
-        if(meals.length <= 0){
-            return alert("Please make an order first!");
-        }
+            // Check if the reservation has an order
+            if(meals.length <= 0){
+                return alert("Please make an order first!");
+            }
 
-        // Check if the orders has the required meal type
-        if(String(discount.meal)==="" && String(discount.mealType)!=="A" && !hasMealType(discount.mealType)){
-            return alert(`Please order a ${(String(discount.mealType).toUpperCase() === "F" ? "food" : "drink" )} first before applying this offer!`);
-        }
+            // Check if the orders has the required meal type
+            if(String(discount.meal)==="" && String(discount.mealType)!=="A" && !hasMealType(discount.mealType)){
+                return alert(`Please order a ${(String(discount.mealType).toUpperCase() === "F" ? "food" : "drink" )} first before applying this offer!`);
+            }
 
-        // Check and the total payment and the minimum transaction of the offer
-        if(Number(totalPayment) < Number(discount.min_transaction)){
-            return alert("Please order more meals or choose different offer!\r\nYour orders do not meet the minimum transaction of the discount offer!");
-        }
-        const status = String(discount.meal)!=="" && !hasMeal(discount.meal);
+            // Check and the total payment and the minimum transaction of the offer
+            if(Number(totalPayment) < Number(discount.min_transaction)){
+                return alert("Please order more meals or choose different offer!\r\nYour orders do not meet the minimum transaction of the discount offer!");
+            }
+            const status = String(discount.meal)!=="" && !hasMeal(discount.meal);
 
-        fetch("/api/applydiscount", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                reservationID: reservation._id,
-                discountID: discount._id,
-                mealID: discount.meal,
-                status: status
+            fetch("/api/applydiscount", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    reservationID: reservation._id,
+                    discountID: discount._id,
+                    mealID: discount.meal,
+                    status: status
+                })
             })
-        })
-            .then((res) => {return res.json(); })
-            .then((data) => {
-                alert(data.message);
-                if(data.status){
-                    window.location.reload();
-                }
-            });
+                .then((res) => {return res.json(); })
+                .then((data) => {
+                    alert(data.message);
+                    if(data.status){
+                        window.location.reload();
+                    }
+                });
+        }catch(err){
+            alert(err);
+        }
     }
     const hasMeal = (meal) => {
         for(let i=0; i<meals.length; ++i){

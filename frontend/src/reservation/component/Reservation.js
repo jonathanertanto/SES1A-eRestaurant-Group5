@@ -12,7 +12,7 @@ export const Reservation = (props) => {
         }
         const confirmation = window.confirm("Are you sure to cancel the reservation?");
         if(!confirmation){
-            return console.log();
+            return;
         }
         fetch("/api/cancelreservation", {
             method: "POST",
