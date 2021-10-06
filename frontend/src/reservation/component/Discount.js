@@ -99,17 +99,17 @@ const item = (discount, reservation, totalPayment, meals) => {
     const applyDiscount = _ =>{
         try{
             // Check if the reservation, meals, and discount variables are empty or not
-            if(reservation === "I" || reservation === "" || meals === "I" || !discount){
+            if(reservation === "I" || reservation === "" || meals === "I" || !discount || !Number.isFinite(totalPayment)){
                 return;
             }
 
             // Check if the reservation has an order
-            if(meals.length <= 0){
+            if(meals==="" && String(discount.meal)===""){
                 return alert("Please make an order first!");
             }
 
             // Check if the orders has the required meal type
-            if(String(discount.meal)==="" && String(discount.mealType)!=="A" && !hasMealType(discount.mealType)){
+            if(meals !== "" && String(discount.meal)==="" && String(discount.mealType)!=="A" && !hasMealType(discount.mealType)){
                 return alert(`Please order a ${(String(discount.mealType).toUpperCase() === "F" ? "food" : "drink" )} first before applying this offer!`);
             }
 
@@ -117,7 +117,7 @@ const item = (discount, reservation, totalPayment, meals) => {
             if(Number(totalPayment) < Number(discount.min_transaction)){
                 return alert("Please order more meals or choose different offer!\r\nYour orders do not meet the minimum transaction of the discount offer!");
             }
-            const status = String(discount.meal)!=="" && !hasMeal(discount.meal);
+            const status = (meals === "" ? true : String(discount.meal)!=="" && !hasMeal(discount.meal));
 
             fetch("/api/applydiscount", {
                 method: "POST",
@@ -125,9 +125,9 @@ const item = (discount, reservation, totalPayment, meals) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    reservationID: reservation._id,
-                    discountID: discount._id,
-                    mealID: discount.meal,
+                    reservationID: String(reservation._id),
+                    discountID: String(discount._id),
+                    mealID: String(discount.meal),
                     status: status
                 })
             })

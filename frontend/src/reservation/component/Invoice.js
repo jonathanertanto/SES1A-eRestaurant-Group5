@@ -83,7 +83,7 @@ const invoiceInformation = (reservation, orders, meals, subTotalPayment, discoun
     const invoiceItems = [];
     let totalPayment = 0;
     for(let i=0; i<meals.length; ++i){
-        invoiceItems.push(mealItem(orders[i], meals[i]));
+        invoiceItems.push(mealItem(discountDetail, orders[i], meals[i]));
     }
     totalPayment = subTotalPayment - discount;
 
@@ -177,7 +177,7 @@ const total = (totalPayment) =>{
     );
 }
 
-const mealItem = (order, meal) => {
+const mealItem = (discountDetail, order, meal) => {
     const handleQtyChange = (e) => {
         order.quantity = e.target.value;
     }
@@ -211,14 +211,16 @@ const mealItem = (order, meal) => {
         if(!Number.isFinite(Number(order.quantity)) || Number(order.quantity)%1 !== 0 || Number(order.quantity) <= 0 ){
             return alert("Please fill in the quantity with a non decimal number larger than 0!");
         }
+
         fetch("/api/removeorder", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                orderID: order._id,
-                quantity: order.quantity
+                orderID: String(order._id),
+                quantity: Number(order.quantity),
+                discountID: (discountDetail === "" ? "" : String(discountDetail._id))
             })
         })
             .then((res) => {return res.json(); })
