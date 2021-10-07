@@ -31,8 +31,8 @@ router.post("/", async (req, res) => {
         //Codes below are just for demonstration purpose only. In imlementation, managers will have too add the discount offers manually!
             const year = new Date().getFullYear();
             const data = {
-                start_date: [`${year}-09-20`, `${year}-10-20`, `${year}-09-30`, `${year}-09-30`, `${year}-09-30`, `${year}-09-30`, `${year}-09-30`, `${year}-09-30`, `${year}-09-30`, `${year}-09-30`],
-                end_date: [`${year}-09-30`,`${year}-10-30`, `${year}-10-30`, `${year}-10-30`, `${year}-10-30`, `${year}-10-30`, `${year}-10-30`, `${year}-10-30`, `${year}-10-30`, `${year}-10-30`],
+                start_date: [`${year}-09-20`, `${year}-10-20`, `${year}-09-30`, `${year}-09-30`,`${year}-09-25`, `${year}-10-01`, `${year}-09-30`],
+                end_date: [`${year}-09-30`,`${year}-10-30`, `${year}-10-30`, `${year}-10-30`, `${year}-10-30`, `${year}-11-10`, `${year}-11-01`],
                 description: ["Discount 20% on foods only", "Discount 5% on all meals", "Discount $5 on all meals", "Discount $10 on drinks only", "Free 1 quantity of Drink 1", "Discount $10 on Meal 1", "Discount 25% on Meal 1"],
                 min_transaction: [40, 20, 20, 0, 50, 0, 0],
                 nominal: [20, 5, 5, 10, 1, 10, 25],

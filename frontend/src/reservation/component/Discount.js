@@ -141,7 +141,7 @@ const item = (discount, reservation, totalPayment, meals) => {
         }catch(err){
             alert(err);
         }
-    }// eslint-disable-next-line
+    }
     const hasMeal = _ => {
         for(let i=0; i<meals.length; ++i){
             if(String(meals[i]._id) === String(discount.meal)){

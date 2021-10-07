@@ -10,7 +10,7 @@ import {
 import '../style/reservation.css';
 import {Table} from "./Table";
 import {getUserID} from "../../App.js";
-import {Title} from "./Title";
+import {Title} from "../../component/Title.js";
 import {Reservation} from "./Reservation";
 import {Confirmation} from "./Confirmation";
 
@@ -241,7 +241,7 @@ const createNewBooking = (reserve, closeForm, setNote, selection, setSelection, 
     return(
         <section className="reservation">
             {<Confirmation reserve={reserve} closeForm={closeForm} selection={selection} setNote={setNote} getDate={getDate} />}
-            {<Title />}
+            {Title("Reservation")}
             {bookReservation(selection, setSelection, times, locations, getEmptyTables, getTables, isSelectedDateValid)}
         </section>
     );

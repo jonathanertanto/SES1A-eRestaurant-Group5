@@ -1,10 +1,10 @@
-.menu {
+.discount {
   margin: auto;
   margin-top: 10px;
   text-align: center;
 }
 
-.menu-list {
+.discount-list {
   width: 95%;
   margin: 0 auto;
   margin-bottom: 25px;
@@ -20,36 +20,36 @@
   height: 25%;
 }
 
-.menu-item {
+.discount-item {
   position: relative;
   display: block;
-  -webkit-box-flex: 20%;
-      -ms-flex: 20% 0;
-          flex: 20% 0;
+  -webkit-box-flex: 25%;
+      -ms-flex: 25% 0;
+          flex: 25% 0;
   padding: 10px 5px;
 }
 
 @media screen and (max-width: 900px) {
-  .menu-item {
-    -webkit-box-flex: 33.33%;
-        -ms-flex: 33.33% 0;
-            flex: 33.33% 0;
+  .discount-item {
+    -webkit-box-flex: 50%;
+        -ms-flex: 50% 0;
+            flex: 50% 0;
   }
 }
 
-.meal-selection-container {
+.discount-selection-container {
   position: relative;
 }
 
-.meal-selection-container:hover img {
+.discount-selection-container:hover img {
   opacity: 0.5;
 }
 
-.meal-selection-container:hover .meal-selection {
+.discount-selection-container:hover .discount-selection {
   opacity: 1;
 }
 
-.menu-item img {
+.discount-item img {
   display: block;
   width: 100% !important;
   height: 25vh !important;
@@ -65,7 +65,7 @@
           backface-visibility: hidden;
 }
 
-.meal-selection {
+.discount-selection {
   -webkit-transition: .5s ease;
   transition: .5s ease;
   opacity: 0;
@@ -77,30 +77,36 @@
   -ms-transform: translate(-50%, -50%);
 }
 
-.meal-selection button {
+.discount-selection button {
   color: #343434;
   background-color: transparent;
 }
 
-.menu-item, .name {
+.discount-item, .name {
   text-align: center;
   font-weight: 700;
+  font-size: x-large;
+  text-transform: uppercase;
+}
+
+.discount-item, .description {
+  text-align: center;
+  font-weight: 500;
   font-size: large;
   text-transform: uppercase;
 }
 
-.menu-item, .description {
-  font-weight: 500;
+.discount-item, .detail {
+  text-align: left;
   font-size: medium;
+  text-transform: none;
 }
 
-.menu-item, .price {
+.discount-item, button {
   text-align: center;
-  font-weight: 500;
-  font-size: medium;
 }
 
-.menu-dropdown {
+.discount-dropdown {
   width: 95%;
   margin: 25px auto;
   margin-bottom: 0;
@@ -110,11 +116,11 @@
           align-items: center;
 }
 
-.menu h2 {
+.discount h2 {
   width: 95%;
   margin: 25px auto;
   margin-bottom: -50px;
   text-align: left;
   font-weight: 700;
 }
-/*# sourceMappingURL=menu.css.map */
+/*# sourceMappingURL=discount.css.map */

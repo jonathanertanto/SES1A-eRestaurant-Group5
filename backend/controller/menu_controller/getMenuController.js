@@ -5,7 +5,7 @@ var mongoose = require ("mongoose");
 require('../../model/Meal');
 const Meal = mongoose.model("Meal");
 
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
     try{
         Meal.find({}).sort([['type', -1]]).exec( (err, meals) => {
             if(err){

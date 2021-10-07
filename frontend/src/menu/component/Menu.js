@@ -9,7 +9,7 @@ import {
     DropdownMenu,
     DropdownItem
 }from "reactstrap";
-import {Title} from "./Title";
+import {Title} from "../../component/Title.js";
 import {Meal} from "./Meal";
 import {Order} from "./Order";
 
@@ -165,7 +165,7 @@ export const Menu = _ =>{
     return(
         <section className="menu">
             {Order(selection, setSelection, closeForm, orderMeal)}
-            {Title()}
+            {Title("Menu")}
             {selectionDropdown(selection, setSelection)}
             {foods && (selection.mealType === "Foods" || selection.mealType === "All Types of Meal" ) ? (
                 Meal("FOODS", foods, addOrder)

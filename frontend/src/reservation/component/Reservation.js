@@ -1,6 +1,6 @@
 import React from "react";
 import '../style/reservation.css';
-import {Title} from "./Title";
+import {Title} from "../../component/Title.js";
 import {Invoice} from "./Invoice";
 import {TextField} from "./TextField";
 
@@ -37,7 +37,7 @@ export const Reservation = (props) => {
 
     return(
         <section className="reservation">
-            {<Title />}
+            {Title("Reservation")}
             <div className="container">
                 <div className="main-body">
                     <div className="row gutters-sm">

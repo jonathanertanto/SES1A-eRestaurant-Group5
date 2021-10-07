@@ -13,13 +13,7 @@ export const Navbar = (props) => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
-    let menu;
-    if(!getUserID()){
-        menu = <a className={props.page==="login"? "active":""} href="/login"><ExitToApp />Log In</a>;
-    }else{
-        menu = <a className={props.page==="reservation"? "active":""} href="/reservation"><Event />Reservation</a>
-    }
+    
     const maxWidth = 900;
     return (
         <main>
@@ -30,8 +24,9 @@ export const Navbar = (props) => {
                         <div className={windowDimensions.width < maxWidth && "topnav-dropdown-content"}>
                             <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
                             <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>
-                            {menu}
-                            {getUserID() && <a className={props.page==="discount"? "active":""} href="/discount"><LocalOffer />Discount</a> }
+                            {getUserID() && <a className={props.page==="reservation"? "active":""} href="/reservation"><Event />Reservation</a>}
+                            <a className={props.page==="discount"? "active":""} href="/discount"><LocalOffer />Discount</a>
+                            {!getUserID() && <a className={props.page==="login"? "active":""} href="/login"><ExitToApp />Log In</a>}
                             {getUserID()?(
                                 <div className={windowDimensions.width >= maxWidth && "topnav-dropdown"}>
                                     {windowDimensions.width >= maxWidth && <button className={props.page==="profile"? "topnav-dropbtn-active topnav-dropbtn":"topnav-dropbtn"} ><AccountCircle />Account</button>}
