@@ -9,7 +9,8 @@ const Order = mongoose.model("Order");
 
 router.post("/", async (req, res) => {
     try{
-        if(req.body.status === true){
+        console.log("pass");
+        if(req.body.status){
             const order = new Order({
                 quantity: 1,
                 notes: "",
@@ -24,13 +25,13 @@ router.post("/", async (req, res) => {
             discount: String(req.body.discountID)
         }, async (err) => {
             if(err){
-                console.log(err);
+                console.log("Failed to apply discount");
                 return res.status(400).json({status: false, message: err});
             }else{
                 console.log("Discount successfully applied!");
-                return res.status(200).json({status: true, message: "Discount successfully applied!"});
             }
         });
+        return res.status(200).json({status: true, message: "Discount successfully applied!"});
     }catch(error){
         console.log(error);
         return res.status(400).json({status: false, message: error});

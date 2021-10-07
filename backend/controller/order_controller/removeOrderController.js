@@ -30,13 +30,22 @@ router.post("/", async (req, res) => {
                     return res.status(400).json({status: false, message: err});
                 }else{
                     console.log("Successfully updated the order's quantity!");
-                    return res.status(200).json({status: true, message: "Successfully updated the order's quantity!"});
                 }
             });
         }else{
+            Order.deleteOne({_id: String(req.body.orderID)}, (err) => {
+                if(err){
+                    console.log(err);
+                    return res.status(400).json({status: false, message: err});
+                }else{
+                    console.log("Successfully canceled meal order!");
+                }
+            });
+        }
+        if(req.body.discountID !== ""){
             const discount = await Discount.findOne({_id: String(req.body.discountID)});
             if(discount){
-                if(discount.meal === order.meal){
+                if(discount.meal === order.meal || !req.body.min_transaction ){
                     Reservation.updateOne({_id: order.reservation}, {discount: ""}, async (err) => {
                         if(err){
                             console.log(err);
@@ -47,16 +56,8 @@ router.post("/", async (req, res) => {
                     });
                 }
             }
-            Order.deleteOne({_id: String(req.body.orderID)}, (err) => {
-                if(err){
-                    console.log(err);
-                    return res.status(400).json({status: false, message: err});
-                }else{
-                    console.log("Successfully canceled meal order!");
-                    return res.status(200).json({status: true, message: "Successfully canceled meal order!"});
-                }
-            });
         }
+        return res.status(200).json({status: true, message: "Successfully canceled meal order!"});
     }catch(error){
         console.log(error);
         return res.status(400).json({status: false, message: error});

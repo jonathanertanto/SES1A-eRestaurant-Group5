@@ -109,7 +109,7 @@ const item = (discount, reservation, totalPayment, meals) => {
             }
 
             // Check if the orders has the required meal type
-            if(meals !== "" && String(discount.meal)==="" && String(discount.mealType)!=="A" && !hasMealType(discount.mealType)){
+            if(meals.length>0 && String(discount.meal)==="" && String(discount.mealType)!=="A" && !hasMealType(discount.mealType)){
                 return alert(`Please order a ${(String(discount.mealType).toUpperCase() === "F" ? "food" : "drink" )} first before applying this offer!`);
             }
 
@@ -118,6 +118,7 @@ const item = (discount, reservation, totalPayment, meals) => {
                 return alert("Please order more meals or choose different offer!\r\nYour orders do not meet the minimum transaction of the discount offer!");
             }
             const status = (meals === "" ? true : String(discount.meal)!=="" && !hasMeal(discount.meal));
+            console.log(status);
 
             fetch("/api/applydiscount", {
                 method: "POST",

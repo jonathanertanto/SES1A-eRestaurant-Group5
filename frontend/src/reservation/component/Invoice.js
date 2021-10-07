@@ -65,12 +65,33 @@ export const Invoice = (props) => {
         getData();
     }, [reservation, subTotalPayment, props.meals, props.orders]);
 
+    const [oldOrders, setOldOrders] = useState("");
+    useEffect(() => {
+        const getData = async _ =>{
+            if(reservation === "I" || reservation === ""){
+                return setOldOrders("");
+            }
+            const res = await fetch("/api/getorders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    reservation: reservation._id
+                })
+            });
+            const data = await res.json();
+            setOldOrders(data.orders);
+        };
+        getData();
+    }, [reservation]);
+
     return(
         <div className="col-md-6 mb-3">
             <div className="card">
                 <div className="card-body">
                     <div className="d-flex flex-column align-items-center text-center">
-                        {invoiceInformation(reservation, props.orders, props.meals, subTotalPayment, discount, discountDetail)}
+                        {invoiceInformation(reservation, props.orders, props.meals, subTotalPayment, discount, discountDetail, oldOrders)}
                     </div>
                 </div>
             </div>
@@ -78,12 +99,12 @@ export const Invoice = (props) => {
     );
 }
 
-const invoiceInformation = (reservation, orders, meals, subTotalPayment, discount, discountDetail) => {
+const invoiceInformation = (reservation, orders, meals, subTotalPayment, discount, discountDetail, oldOrders) => {
     let componentRef;
     const invoiceItems = [];
     let totalPayment = 0;
     for(let i=0; i<meals.length; ++i){
-        invoiceItems.push(mealItem(discountDetail, orders[i], meals[i]));
+        invoiceItems.push(mealItem(discountDetail, orders[i], meals[i], oldOrders, meals));
     }
     totalPayment = subTotalPayment - discount;
 
@@ -177,7 +198,7 @@ const total = (totalPayment) =>{
     );
 }
 
-const mealItem = (discountDetail, order, meal) => {
+const mealItem = (discountDetail, order, meal, orders, meals) => {
     const handleQtyChange = (e) => {
         order.quantity = e.target.value;
     }
@@ -188,6 +209,11 @@ const mealItem = (discountDetail, order, meal) => {
         if(!Number.isFinite(Number(order.quantity)) || Number(order.quantity)%1 !== 0 || Number(order.quantity) <= 0 ){
             return alert("Please fill in the quantity with a non decimal number larger than 0!");
         }
+
+        // if(discountDetail !== "" && !checkDiscMinTrans() && !(window.confirm("The applied discount offer will be removed!\r\nAre you sure to remove the order?"))){
+        //     return;
+        // }
+
         fetch("/api/updateorder", {
             method: "POST",
             headers: {
@@ -212,6 +238,10 @@ const mealItem = (discountDetail, order, meal) => {
             return alert("Please fill in the quantity with a non decimal number larger than 0!");
         }
 
+        if(discountDetail !== "" && !checkDiscMinTrans("delete") && !(window.confirm("The applied discount offer will be removed!\r\nAre you sure to remove the order?"))){
+            return window.location.reload();;
+        }
+
         fetch("/api/removeorder", {
             method: "POST",
             headers: {
@@ -220,7 +250,8 @@ const mealItem = (discountDetail, order, meal) => {
             body: JSON.stringify({
                 orderID: String(order._id),
                 quantity: Number(order.quantity),
-                discountID: (discountDetail === "" ? "" : String(discountDetail._id))
+                discountID: (discountDetail === "" ? "" : String(discountDetail._id)),
+                min_transaction: checkDiscMinTrans("delete")
             })
         })
             .then((res) => {return res.json(); })
@@ -230,6 +261,28 @@ const mealItem = (discountDetail, order, meal) => {
                     window.location.reload();
                 }
             });
+    }
+    const checkDiscMinTrans = (type) => {
+        try{
+            if(discountDetail === ""){
+                return false;
+            }
+            let value = 0;
+            for(let i = 0; i < orders.length; ++i){
+                if(String(orders[i]._id) === String(order._id)){
+                    if(String(type).toUpperCase() === "UPDATE" ){
+                        value += ( Number(order.quantity) * Number(meals[i].price) );
+                    }else{
+                        value += ( (Number(orders[i].quantity) - Number(order.quantity)) * Number(meals[i].price) );
+                    }
+                }else{
+                    value += (Number(orders[i].quantity) * Number(meals[i].price));
+                }
+            }
+            return (value >= Number(discountDetail.min_transaction));
+        }catch(error){
+            alert(error);
+        }
     }
 
     return(
