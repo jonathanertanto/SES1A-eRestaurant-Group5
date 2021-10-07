@@ -206,13 +206,18 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
         order.notes = e.target.value;
     }
     const updateData = _ => {
-        if(!Number.isFinite(Number(order.quantity)) || Number(order.quantity)%1 !== 0 || Number(order.quantity) <= 0 ){
-            return alert("Please fill in the quantity with a non decimal number larger than 0!");
+        if(!Number.isFinite(Number(order.quantity)) || Number(order.quantity)%1 !== 0 || Number(order.quantity) < 0 ){
+            return alert("Please fill in the quantity with a postive non decimal number!");
         }
 
-        // if(discountDetail !== "" && !checkDiscMinTrans() && !(window.confirm("The applied discount offer will be removed!\r\nAre you sure to remove the order?"))){
-        //     return;
-        // }
+        if(Number(order.quantity) === 0){
+            order.quantity = Number(orders[findOrderIndex()].quantity);
+            return removeItem();
+        }
+
+        if(discountDetail !== "" && !checkDiscMinTrans("update") && !(window.confirm("The applied discount offer will be removed!\r\nAre you sure to modify the order's quantity?"))){
+            return window.location.reload();;
+        }
 
         fetch("/api/updateorder", {
             method: "POST",
@@ -222,7 +227,9 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
             body: JSON.stringify({
                 orderID: order._id,
                 quantity: order.quantity,
-                notes: order.notes
+                notes: order.notes,
+                discountID: (discountDetail === "" ? "" : String(discountDetail._id)),
+                min_transaction: checkDiscMinTrans("update")
             })
         })
             .then((res) => {return res.json(); })
@@ -280,6 +287,18 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
                 }
             }
             return (value >= Number(discountDetail.min_transaction));
+        }catch(error){
+            alert(error);
+        }
+    }
+    const findOrderIndex = _ => {
+        try{
+            for(let i = 0; i < orders.length; ++i){
+                if(String(orders[i]._id) === String(order._id)){
+                    return i;
+                }
+            }
+            return -1;
         }catch(error){
             alert(error);
         }
