@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
         if(req.body.discountID !== ""){
             const discount = await Discount.findOne({_id: String(req.body.discountID)});
             if(discount){
-                if(discount.meal === order.meal || !req.body.min_transaction ){
+                if(discount.meal === order.meal || !req.body.min_transaction || !req.body.hasMealType){
                     Reservation.updateOne({_id: order.reservation}, {discount: ""}, async (err) => {
                         if(err){
                             console.log(err);

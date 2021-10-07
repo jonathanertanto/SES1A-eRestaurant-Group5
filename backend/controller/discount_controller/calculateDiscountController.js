@@ -65,8 +65,8 @@ const roundNumber = (nominal) => {
 const totalTransactioins = (orders, meals, type) => {
     let nominal = 0;
     for(let i=0; i<meals.length; ++i){
-        if(String(meals[i].type).toUpperCase() === type.toUpperCase() ){
-            nominal += Number(meals[i].price) * Number(orders.quantity);
+        if(String(meals[i].type).toUpperCase() === String(type).toUpperCase() ){
+            nominal += Number(meals[i].price) * Number(orders[i].quantity);
         }
     }
     return nominal;

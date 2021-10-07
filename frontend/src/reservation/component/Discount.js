@@ -104,12 +104,12 @@ const item = (discount, reservation, totalPayment, meals) => {
             }
 
             // Check if the reservation has an order
-            if(meals==="" && String(discount.meal)===""){
+            if(meals==="" && String(discount.meal)==="" && String(discount.mealType)==="A"){
                 return alert("Please make an order first!");
             }
 
             // Check if the orders has the required meal type
-            if(meals.length>0 && String(discount.meal)==="" && String(discount.mealType)!=="A" && !hasMealType(discount.mealType)){
+            if(String(discount.meal)==="" && String(discount.mealType)!=="A" && !hasMealType()){
                 return alert(`Please order a ${(String(discount.mealType).toUpperCase() === "F" ? "food" : "drink" )} first before applying this offer!`);
             }
 
@@ -117,8 +117,7 @@ const item = (discount, reservation, totalPayment, meals) => {
             if(Number(totalPayment) < Number(discount.min_transaction)){
                 return alert("Please order more meals or choose different offer!\r\nYour orders do not meet the minimum transaction of the discount offer!");
             }
-            const status = (meals === "" ? true : String(discount.meal)!=="" && !hasMeal(discount.meal));
-            console.log(status);
+            const status = meals === "" ? true : !hasMeal();
 
             fetch("/api/applydiscount", {
                 method: "POST",
@@ -142,18 +141,18 @@ const item = (discount, reservation, totalPayment, meals) => {
         }catch(err){
             alert(err);
         }
-    }
-    const hasMeal = (meal) => {
+    }// eslint-disable-next-line
+    const hasMeal = _ => {
         for(let i=0; i<meals.length; ++i){
-            if(String(meals[i]._id) === String(meal)){
+            if(String(meals[i]._id) === String(discount.meal)){
                 return true;
             }
         }
         return false;
     }
-    const hasMealType = (type) => {
+    const hasMealType = _ => {
         for(let i=0; i<meals.length; ++i){
-            if(String(meals[i].type).toUpperCase() === String(type).toUpperCase()){
+            if(String(meals[i].type).toUpperCase() === String(discount.mealType).toUpperCase()){
                 return true;
             }
         }

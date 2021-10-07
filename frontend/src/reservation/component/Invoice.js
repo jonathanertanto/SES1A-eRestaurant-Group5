@@ -215,7 +215,7 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
             return removeItem();
         }
 
-        if(discountDetail !== "" && !checkDiscMinTrans("update") && !(window.confirm("The applied discount offer will be removed!\r\nAre you sure to modify the order's quantity?"))){
+        if(discountDetail !== "" && !validateDiscMinTrans("update") && !(window.confirm("The applied discount offer will be removed!\r\nAre you sure to modify the order's quantity?"))){
             return window.location.reload();;
         }
 
@@ -229,7 +229,7 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
                 quantity: order.quantity,
                 notes: order.notes,
                 discountID: (discountDetail === "" ? "" : String(discountDetail._id)),
-                min_transaction: checkDiscMinTrans("update")
+                min_transaction: validateDiscMinTrans("update")
             })
         })
             .then((res) => {return res.json(); })
@@ -245,7 +245,8 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
             return alert("Please fill in the quantity with a non decimal number larger than 0!");
         }
 
-        if(discountDetail !== "" && !checkDiscMinTrans("delete") && !(window.confirm("The applied discount offer will be removed!\r\nAre you sure to remove the order?"))){
+        if(discountDetail !== "" && (!validateDiscMinTrans("delete") || (String(discountDetail.mealType).toUpperCase() !== "A" && !hasMealType("delete")) ) 
+                && !(window.confirm("The applied discount offer will be removed!\r\nAre you sure to remove the order?"))){
             return window.location.reload();;
         }
 
@@ -258,7 +259,8 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
                 orderID: String(order._id),
                 quantity: Number(order.quantity),
                 discountID: (discountDetail === "" ? "" : String(discountDetail._id)),
-                min_transaction: checkDiscMinTrans("delete")
+                min_transaction: validateDiscMinTrans("delete"),
+                hasMealType: hasMealType("delete")
             })
         })
             .then((res) => {return res.json(); })
@@ -269,7 +271,7 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
                 }
             });
     }
-    const checkDiscMinTrans = (type) => {
+    const validateDiscMinTrans = (type) => {
         try{
             if(discountDetail === ""){
                 return false;
@@ -301,6 +303,33 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
             return -1;
         }catch(error){
             alert(error);
+        }
+    }
+    const hasMealType = (type) => {
+        try{
+            if(discountDetail === ""){
+                return false;
+            }
+            for(let i = 0; i < orders.length; ++i){
+                if(String(orders[i]._id) === String(order._id)){
+                    let qty;
+                    if(String(type).toUpperCase() === "UPDATE" ){
+                        qty = Number(order.quantity);
+                    }else{
+                        qty = (Number(orders[i].quantity) - Number(order.quantity));
+                    }
+                    if(String(meals[i].type).toUpperCase() === String(discountDetail.mealType).toUpperCase() && qty > 0){
+                        return true;
+                    }
+                }else{
+                    if(String(meals[i].type).toUpperCase() === String(discountDetail.mealType).toUpperCase()){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }catch(err){
+            alert(err);
         }
     }
 
