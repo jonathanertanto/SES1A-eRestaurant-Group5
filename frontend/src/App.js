@@ -1,9 +1,10 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom";
-import {Navbar} from "./component/Navbar";
+import {Navbar} from "./NavBar/component/Navbar";
 import {Homepage} from "./component/Homepage";
 import {Menu} from "./menu/component/Menu";
 import {Book} from "./reservation/component/Book";
+import {Discount} from "./Discount/component/Discount";
 import {Profile} from "./profile/component/Profile";
 import {Login} from "./component/Login";
 import {Signup} from "./component/SignUp";
@@ -42,6 +43,9 @@ function App(){
         </Route>
         <Route path="/reservation" element={<Navbar page="reservation"/>}>
           <Route element={<Book/>}/>
+        </Route>
+        <Route path="/discount" element={<Navbar page="discount"/>}>
+          <Route element={<Discount/>}/>
         </Route>
         <Route path="/profile" element={<Navbar page="profile"/>}>
           <Route element={<Profile/>}/>
