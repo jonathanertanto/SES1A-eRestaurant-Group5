@@ -120,6 +120,7 @@ export const Item = (discounts, reservation, table, meals, subTotalPayment, menu
                             <div className="detail"><b >Meal Type : </b>{String(discount.mealType).toUpperCase() === "A" ? "All" : (String(discount.mealType).toUpperCase()==="F"?"Food":"Drink")}</div>
                             <div className="detail"><b >Meal Name : </b>{String(discount.meal) !== "" ? findMeal(discount).name : "-"}</div>
                             <div className="detail"><b >Nominal : </b>{(String(discount.type)==="N"&&"$")+discount.nominal+(String(discount.type)==="P"?"%":"")}</div>
+                            <div className="detail"><b >Minimum Transaction : </b>${discount.min_transaction}</div>
                             <div className="detail"><b >Period : </b>{formatDate(String(discount.start_date)) + " - " + formatDate(String(discount.end_date))}</div>
                         </div>
                         <div className="btn">

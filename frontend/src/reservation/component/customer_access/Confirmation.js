@@ -1,5 +1,5 @@
 import React from "react";
-import '../style/reservation.css';
+import '../../style/reservation.css';
 
 export const Confirmation = (props) => {
     return(

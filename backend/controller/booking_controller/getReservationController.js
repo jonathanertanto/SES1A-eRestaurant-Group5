@@ -11,23 +11,23 @@ router.post("/", async (req, res) => {
         const reservations = await Reservation.find({user: String(req.body.userID)});
         let table;
         for(let i=0; i<reservations.length; ++i){
-            table = await Table.findOne({_id: String(reservations[i].table)})
+            table = await Table.findOne({_id: String(reservations[i].table)});
             if(table.date >= new Date()){
                 console.log("An active reservation founded: " + String(table._id));
                 return res.status(200).json({
-                    booking: reservations[i],
+                    reservation: reservations[i],
                     table: table
                 });
             }
         }
         return res.status(200).json({
-            booking: "",
+            reservation: "",
             table: ""
         });
     }catch(error){
         console.log(error);
-        return res.status(200).json({
-            booking: "",
+        return res.status(400).json({
+            reservation: "",
             table: ""
         });
     }

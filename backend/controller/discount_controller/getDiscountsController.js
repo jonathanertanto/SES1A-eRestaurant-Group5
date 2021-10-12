@@ -21,10 +21,10 @@ router.post("/", async (req, res) => {
                 }
             }
             if(returnData.length === 0){
-                return res.json({status: false});
+                return res.status(400).json({status: false});
             }
             console.log("Discounts successfully retrieved!");
-            return res.json({status: true, discounts: returnData});
+            return res.status(200).json({status: true, discounts: returnData});
         }
         console.log("There is no discount existed in the database!");
 
@@ -61,12 +61,11 @@ router.post("/", async (req, res) => {
                 newDiscounts.push(discount);
                 console.log(`Successfully saved discount: ${discount.name}`);
             }
-            return res.json({status: true, discounts: newDiscounts});
+            return res.status(200).json({status: true, discounts: newDiscounts});
         // End of Comment
-
     }catch(error){
         console.log(error);
-        return res.json({status: false});
+        return res.status(400).json({status: false});
     }
 });
 module.exports = router;

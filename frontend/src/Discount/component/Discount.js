@@ -55,7 +55,7 @@ export const Discount = _ =>{
                 })
             });
             const data = await res.json();
-            setReservation(data.booking);
+            setReservation(data.reservation);
             setTable(data.table);
         };
         getData();

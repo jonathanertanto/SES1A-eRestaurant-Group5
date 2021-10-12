@@ -48,9 +48,20 @@
 
 .container {
   padding: 0;
+  width: 100%;
 }
 
 .invoice {
   width: 100%;
+}
+
+.filter-dropdown {
+  margin: 0 !important;
+  text-align: center !important;
+  width: 100%;
+}
+
+.popup-info input[type=text], .popup-info input[type=password] {
+  background-color: white;
 }
 /*# sourceMappingURL=reservation.css.map */

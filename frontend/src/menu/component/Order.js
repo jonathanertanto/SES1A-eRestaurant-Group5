@@ -5,7 +5,7 @@ export const Order = (selection, setSelection, closeForm, orderMeal) => {
     return(
         <div className="form-popup center" id="myForm">
             <form className="form-container">
-                <h2>Please input the quantity and additional notes for the meal order!</h2>
+                <h2 style={{margin: 0}}>Please input the quantity and additional notes for the meal order! </h2>
                 <div className="form-floating">
                     <input type="text" className="form-control" value={selection.quantity} placeholder="Quantity" required 
                         onChange={event => {

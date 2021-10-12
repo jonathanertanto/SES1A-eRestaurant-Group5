@@ -1,13 +1,13 @@
 import React from "react";
-import '../style/reservation.css';
-import {Title} from "../../component/Title.js";
+import '../../style/reservation.css';
+import {Title} from "../../../component/Title.js";
 import {Invoice} from "./Invoice";
-import {TextField} from "./TextField";
+import {TextField} from "../TextField";
 
-export const Reservation = (props) => {
+export const Reservation = (reservation, table, getCurrentDate, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders) => {
     const cancelReservation = _ => {
-        const date = new Date(String(props.table.date));
-        if(date < new Date(props.getCurrentDate())){
+        const date = new Date(String(table.date));
+        if(date < new Date(getCurrentDate())){
             return alert("Reservation cancellation must be at least 1 hour before!");
         }
         const confirmation = window.confirm("Are you sure to cancel the reservation?");
@@ -20,9 +20,9 @@ export const Reservation = (props) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                reservation: props.booking._id,
-                table: props.table._id,
-                date: props.table.date
+                reservation: reservation._id,
+                table: table._id,
+                date: table.date
             })
         })
             .then((res) => {return res.json(); })
@@ -45,8 +45,8 @@ export const Reservation = (props) => {
                         <div className="col-md-6">
                             <div className="card mb-3">
                                 <div className="card-body">
-                                    {tableInformation(props.table)}
-                                    {bookingInformation(props.booking)}
+                                    {tableInformation(table)}
+                                    {reservationInformation(reservation)}
                                     <div className="column right-side-button">
                                         {/* <button className="btn-lg" >Edit</button> */}
                                         <button className="btn-lg" onClick={cancelReservation} >Cancel Reservation</button>
@@ -54,9 +54,7 @@ export const Reservation = (props) => {
                                 </div>
                             </div>
                         </div>
-
-                        <Invoice orders={props.orders} meals={props.meals} />
-
+                        {Invoice(subTotalPayment, discount, discountDetail, reservation, table, orders, meals, discountList, oldOrders)}
                     </div>
                 </div>
             </div>
@@ -74,9 +72,9 @@ const tableInformation = (table) => {
     return items;
 }
 
-const bookingInformation = (booking) => {
+const reservationInformation = (reservation) => {
     const items = [];
-    items.push(TextField("Reservation Party Size", booking.number_of_people));
-    items.push(TextField("Notes", String(booking.notes) === "null" ? " " : booking.notes));
+    items.push(TextField("Reservation Party Size", reservation.number_of_people));
+    items.push(TextField("Notes", String(reservation.notes) === "null" ? " " : reservation.notes));
     return items;
 }

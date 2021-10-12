@@ -92,6 +92,7 @@ button:hover {
   width: 72.5vw;
   padding: 10px;
   background-color: white;
+  overflow: auto;
 }
 
 .form-container input[type=text], .form-container input[type=password] {
@@ -414,6 +415,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
   -webkit-box-pack: center !important;
       -ms-flex-pack: center !important;
           justify-content: center !important;
+  overflow: scroll;
 }
 
 .booking-dropdown:hover {
@@ -429,6 +431,10 @@ input[type=date]::-webkit-calendar-picker-indicator {
 
 .booking-dropdown-menu {
   outline: none;
+}
+
+.booking-dropdown-item {
+  overflow: scroll;
 }
 
 .booking-dropdown-item:hover {
@@ -575,34 +581,8 @@ input[type=date]::-webkit-calendar-picker-indicator {
   padding-bottom: 3%;
 }
 
-.thanks-header {
-  padding: 5% 0;
-  padding-top: 10%;
-  font-size: 2.5rem;
-}
-
-.thanks-subtext {
-  font-size: 1.2rem;
-  padding: 2%;
-}
-
-.thank-you-pizza {
-  font-size: 4rem;
-  color: #e74c3c;
-  padding-bottom: 8%;
-}
-
-@media (min-width: 770px) {
-  .thanks-header {
-    font-size: 5.5rem;
-  }
-  .thanks-subtext {
-    font-size: 2.2rem;
-  }
-  .thank-you-pizza {
-    font-size: 7rem;
-    padding-bottom: 4%;
-  }
+th, td {
+  vertical-align: middle;
 }
 
 /* Contact Info

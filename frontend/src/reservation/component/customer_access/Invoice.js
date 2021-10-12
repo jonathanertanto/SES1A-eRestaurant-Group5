@@ -1,97 +1,15 @@
-import React, {useState, useEffect} from "react";
-import '../style/reservation.css';
+import React from "react";
+import '../../style/reservation.css';
 import ReactToPrint from 'react-to-print';
 import { Discount } from "./Discount";
-import { getUserID } from "../../App";
 
-export const Invoice = (props) => {
-    const [reservation, setReservation] = useState("I");
-    useEffect(() => {
-        const getData = async _ =>{
-            const res = await fetch("/api/getreservation", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    userID: getUserID()
-                })
-            });
-            const data = await res.json();
-            setReservation(data.booking);
-        };
-        getData();
-    }, []);
-
-    const [subTotalPayment, setSubtotalPayment] = useState(0);
-    useEffect(() => {
-        let value = 0;
-        for(let i=0; i<props.meals.length; ++i){
-            value += Number(props.orders[i].quantity) * Number(props.meals[i].price);
-        }
-        setSubtotalPayment(value);
-    }, [props.orders, props.meals]);
-
-    const [discount, setDiscount] = useState(0);
-    const [discountDetail, setDiscountDetail] = useState("");
-    useEffect(() => {
-        const getData = async _ =>{
-            if(reservation === "I" || reservation === "" || String(reservation.discount) === "" || props.meals.length <= 0 || props.orders.length <=0){
-                setDiscount(0);
-                setDiscountDetail("");
-                return;
-            }
-            const res = await fetch("/api/calculatediscount", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    discountID: reservation.discount,
-                    transaction: subTotalPayment,
-                    meals: props.meals,
-                    orders: props.orders
-                })
-            });
-            const data = await res.json();
-            if(data.status){
-                setDiscount(Number(data.value));
-                setDiscountDetail(data.item);
-            }else{
-                setDiscount(0);
-                setDiscountDetail("");
-            }
-        }
-        getData();
-    }, [reservation, subTotalPayment, props.meals, props.orders]);
-
-    const [oldOrders, setOldOrders] = useState("");
-    useEffect(() => {
-        const getData = async _ =>{
-            if(reservation === "I" || reservation === ""){
-                return setOldOrders("");
-            }
-            const res = await fetch("/api/getorders", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    reservation: reservation._id
-                })
-            });
-            const data = await res.json();
-            setOldOrders(data.orders);
-        };
-        getData();
-    }, [reservation]);
-
+export const Invoice = (subTotalPayment, discount, discountDetail, reservation, table, orders, meals, discountList, oldOrders) => {
     return(
         <div className="col-md-6 mb-3">
             <div className="card">
                 <div className="card-body">
                     <div className="d-flex flex-column align-items-center text-center">
-                        {invoiceInformation(reservation, props.orders, props.meals, subTotalPayment, discount, discountDetail, oldOrders)}
+                        {invoiceInformation(reservation, table, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, true, true)}
                     </div>
                 </div>
             </div>
@@ -99,7 +17,7 @@ export const Invoice = (props) => {
     );
 }
 
-const invoiceInformation = (reservation, orders, meals, subTotalPayment, discount, discountDetail, oldOrders) => {
+export const invoiceInformation = (reservation, table, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, printPDF, applyDiscount) => {
     let componentRef;
     const invoiceItems = [];
     let totalPayment = 0;
@@ -121,7 +39,7 @@ const invoiceInformation = (reservation, orders, meals, subTotalPayment, discoun
     
     return(
         <section className="invoice" >
-            {Discount(totalPayment, meals)}
+            {Discount(reservation, totalPayment, meals, discountList)}
             <div className="container mb-4">
 
                 <div id="invoiceComp" ref={(response) => (componentRef = response)} className="table-responsive">
@@ -147,11 +65,13 @@ const invoiceInformation = (reservation, orders, meals, subTotalPayment, discoun
                     </table>
                 </div>
                 <div>
-                    <ReactToPrint
-                        content={() => componentRef}
-                        trigger={() => <button >Print to PDF</button>}
-                    />
-                    <button style={{marginLeft:10}} onClick={openDiscountForm} >Apply Discount</button>
+                    {printPDF &&
+                        <ReactToPrint
+                            content={() => componentRef}
+                            trigger={() => <button >Print to PDF</button>}
+                        />
+                    }
+                    {applyDiscount && <button style={{marginLeft:10}} onClick={openDiscountForm} >Apply Discount</button>}
                 </div>
             </div>
         </section>
@@ -206,6 +126,10 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
         order.notes = e.target.value;
     }
     const updateData = _ => {
+        if(orders.length <= 0 || !order || discountDetail === "" || meals.length <= 0 || !meal){
+            return;
+        }
+
         if(!Number.isFinite(Number(order.quantity)) || Number(order.quantity)%1 !== 0 || Number(order.quantity) < 0 ){
             return alert("Please fill in the quantity with a postive non decimal number!");
         }
@@ -241,6 +165,10 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
             });
     }
     const removeItem = _ => {
+        if(!order || meals === "" || !meal){
+            return;
+        }
+
         if(!Number.isFinite(Number(order.quantity)) || Number(order.quantity)%1 !== 0 || Number(order.quantity) <= 0 ){
             return alert("Please fill in the quantity with a non decimal number larger than 0!");
         }

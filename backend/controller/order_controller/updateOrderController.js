@@ -44,7 +44,6 @@ router.post("/", async (req, res) => {
                 }
             }
         }
-
         return res.status(200).json({status: true, message: "Successfully updated the order's information!"});
     }catch(error){
         console.log(error);

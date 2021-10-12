@@ -11,7 +11,7 @@ const app = express();
 require ("dotenv").config();
 
 //-----EXPRESS-----
-app.use(express.static(path.resolve(__dirname, '../index.js')));
+app.use(express.static(path.resolve(__dirname, '../backend/app.js')));
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
@@ -29,6 +29,7 @@ mongoose.connection.on("error",(err) => {
 })
 
 //-----USER-----
+app.use("/api/createadmin", require("./controller/user_controller/createAdminController"));
 app.use("/api/login", require("./controller/user_controller/loginController"));
 app.use("/api/signup", require("./controller/user_controller/signUpController"));
 app.use("/api/profile", require("./controller/user_controller/getProfileController"));
@@ -40,6 +41,8 @@ app.use("/availability", require ("./controller/booking_controller/availabilityC
 app.use("/reserve", require ("./controller/booking_controller/reservationController"));
 app.use("/api/getreservation", require("./controller/booking_controller/getReservationController"));
 app.use("/api/cancelreservation", require("./controller/booking_controller/cancelReservationController"));
+app.use("/api/getreservationlist", require("./controller/booking_controller/getReservationListController"));
+app.use("/api/setbookingcompleteness", require("./controller/booking_controller/setBookingCompletenessController"));
 
 //-----MENU-----
 app.use("/api/addmeal", require("./controller/menu_controller/addMealController"));
@@ -61,7 +64,7 @@ app.use("/api/canceldiscount", require("./controller/discount_controller/cancelD
 
 //-----RANDOM DIRECTORY-----
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../index.js'));
+    res.sendFile(path.resolve(__dirname, '../backend/app.js'));
 });
 
 app.listen(port, () =>{

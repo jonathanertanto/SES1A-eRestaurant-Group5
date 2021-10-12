@@ -14,6 +14,16 @@ import {Meal} from "./Meal";
 import {Order} from "./Order";
 
 export const Menu = _ =>{
+    // const [userType, setUserType] = useState(null);
+    // useEffect(() => {
+    //     const getData = async _ =>{
+    //         const res = await fetch(`/api/profile?userID=${getUserID()}`);
+    //         const data = await res.json();
+    //         setUserType(data.userType);
+    //     }
+    //     getData();
+    // }, []);
+
     // User's selection
     const [selection, setSelection] = useState({
         menuType: "",
@@ -38,7 +48,7 @@ export const Menu = _ =>{
                 })
             });
             const data = await res.json();
-            setReservation(data.booking);
+            setReservation(data.reservation);
             setTable(data.table);
             if(data.table === ""){
                 return;

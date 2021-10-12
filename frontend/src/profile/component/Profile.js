@@ -149,7 +149,11 @@ const profilePicture = (firstName, lastName, userType) => {
                         <img src="https://i.pinimg.com/564x/89/64/99/8964998576cfac440b3a14df748fc670.jpg" alt="Admin" className="rounded-circle profile-picture" width="200" height="200"/>
                         <div className="mt-3">
                             <h4>{firstName + " " + lastName}</h4>
-                            <p class="text-secondary mb-1">Account: {userType==='C'? "Customer":"Admin/Staff"}</p>
+                            <p class="text-secondary mb-1">Account: 
+                                {String(userType).toUpperCase()==='C'? " Customer":(
+                                    String(userType).toUpperCase() === 'M'? " Managemer" : " Staff"
+                                )}
+                            </p>
                         </div>
                     </div>
                 </div>

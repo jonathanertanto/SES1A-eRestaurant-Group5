@@ -1,59 +1,15 @@
-import React, {useEffect, useState} from "react";
-import { getUserID } from "../../App";
-import '../style/reservation.css';
+import React from "react";
+import '../../style/reservation.css';
 
-export const Discount = (totalPayment, meals) => {
-    const [discounts, setDiscounts] = useState("");
-    const [reservation, setReservation] = useState("I");
-    const [table, setTable] = useState("I");
-    useEffect(() => {
-        const getData = async _ =>{
-            const res = await fetch("/api/getreservation", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    userID: getUserID()
-                })
-            });
-            const data = await res.json();
-            setReservation(data.booking);
-            setTable(data.table);
-        };
-        getData();
-    }, []);
-
+export const Discount = (reservation, totalPayment, meals, discountList) => {
     const closeDiscountForm = _ => {
         document.getElementById("discountForm").style.display = "none";
     }
-    // Get and filter available discount offers to fit the user's reservation and orders
-    useEffect(()=>{
-        const getData = async _ => {
-            const res = await fetch("/api/getdiscounts", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    userID: getUserID()
-                })
-            });
-            const data = await res.json();
-            if(!data.status){
-                return setDiscounts("");
-            }
-            setDiscounts(data.discounts.filter(data => 
-                (new Date(String(data.end_date)).getTime() > new Date(String(table.date)).getTime()) &&
-                (String(data.menuType)==="A" ? true : (new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") )
-            ));
-        }
-        getData();
-    }, [table, meals]);
+
     return(
         <div id="discountForm" className="form-popup center">
             <form className="form-container">
-                {list(discounts, reservation, totalPayment, meals)}
+                {list(discountList, reservation, totalPayment, meals)}
                 <div className="right-side-button">
                     <button type="button" onClick={closeDiscountForm} >Cancel</button>
                 </div>
@@ -62,10 +18,10 @@ export const Discount = (totalPayment, meals) => {
     );
 }
 
-const list = (discounts, reservation, totalPayment, meals) => {
+const list = (discountList, reservation, totalPayment, meals) => {
     const items = [];
-    for(let i=0; i<discounts.length; ++i){
-        items.push(item(discounts[i], reservation, totalPayment, meals));
+    for(let i=0; i<discountList.length; ++i){
+        items.push(item(discountList[i], reservation, totalPayment, meals));
     }
 
     return (
@@ -99,7 +55,7 @@ const item = (discount, reservation, totalPayment, meals) => {
     const applyDiscount = _ =>{
         try{
             // Check if the reservation, meals, and discount variables are empty or not
-            if(reservation === "I" || reservation === "" || meals === "I" || !discount || !Number.isFinite(totalPayment)){
+            if(reservation === "I" || reservation === "" || !discount || !Number.isFinite(totalPayment)){
                 return;
             }
 
@@ -117,7 +73,6 @@ const item = (discount, reservation, totalPayment, meals) => {
             if(Number(totalPayment) < Number(discount.min_transaction)){
                 return alert("Please order more meals or choose different offer!\r\nYour orders do not meet the minimum transaction of the discount offer!");
             }
-            const status = meals === "" ? true : !hasMeal();
 
             fetch("/api/applydiscount", {
                 method: "POST",
@@ -125,10 +80,10 @@ const item = (discount, reservation, totalPayment, meals) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    reservationID: String(reservation._id),
-                    discountID: String(discount._id),
-                    mealID: String(discount.meal),
-                    status: status
+                    reservationID: reservation._id,
+                    discountID: discount._id,
+                    mealID: discount.meal,
+                    status: !hasMeal()
                 })
             })
                 .then((res) => {return res.json(); })
@@ -138,8 +93,8 @@ const item = (discount, reservation, totalPayment, meals) => {
                         window.location.reload();
                     }
                 });
-        }catch(err){
-            alert(err);
+        }catch(error){
+            alert(error);
         }
     }
     const hasMeal = _ => {

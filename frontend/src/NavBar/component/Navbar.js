@@ -5,6 +5,20 @@ import { getUserID, logOut } from "../../App";
 import '../style/navbar.css';
 
 export const Navbar = (props) => {
+    useEffect(() => {
+        const createAdmin = async _ => {
+            try{
+                if(getUserID()){
+                    return;
+                }
+                await fetch("/api/createadmin");
+            }catch(err){
+                console.log(err);
+            }
+        }
+        createAdmin();
+    }, [])
+
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     useEffect(() => {
         const handleResize = _ => {
