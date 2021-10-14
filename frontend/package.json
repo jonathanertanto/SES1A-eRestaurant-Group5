@@ -11,9 +11,12 @@
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
     "animejs": "^3.2.1",
+    "ansi-html": "^0.0.7",
     "axios": "^0.21.4",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.1.1",
+    "chart.js": "2.9.3",
+    "glob-parent": "^6.0.2",
     "history": "^5.0.1",
     "immer": "^9.0.6",
     "mongoose": "^6.0.6",
@@ -23,6 +26,7 @@
     "react-animejs": "^0.5.6",
     "react-bootstrap": "^1.6.3",
     "react-box-sizing": "^0.0.2",
+    "react-chartjs-2": "2.9.0",
     "react-datepicker": "^4.2.1",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
@@ -31,7 +35,8 @@
     "react-router-dom": "^6.0.0-beta.4",
     "react-scripts": "4.0.3",
     "react-to-print": "^2.13.0",
-    "reactstrap": "^8.2.0"
+    "reactstrap": "^8.2.0",
+    "set-value": "^4.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

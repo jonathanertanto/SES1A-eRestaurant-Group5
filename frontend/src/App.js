@@ -8,6 +8,7 @@ import {Discount} from "./discount/component/Discount";
 import {Profile} from "./profile/component/Profile";
 import {Login} from "./component/Login";
 import {Signup} from "./component/SignUp";
+import { FinancialFigure } from "./financial_figure/component/FinancialFigure";
 
 export const getUserID = _ => {
   const rememberMe = localStorage.getItem("rememberMe");
@@ -46,6 +47,9 @@ function App(){
         </Route>
         <Route path="/discount" element={<Navbar page="discount"/>}>
           <Route element={<Discount/>}/>
+        </Route>
+        <Route path="/financialfigure" element={<Navbar page="financialfigure"/>}>
+          <Route element={<FinancialFigure/>}/>
         </Route>
         <Route path="/profile" element={<Navbar page="profile"/>}>
           <Route element={<Profile/>}/>

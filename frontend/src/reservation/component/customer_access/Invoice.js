@@ -3,13 +3,13 @@ import '../../style/reservation.css';
 import ReactToPrint from 'react-to-print';
 import { Discount } from "./Discount";
 
-export const Invoice = (subTotalPayment, discount, discountDetail, reservation, table, orders, meals, discountList, oldOrders) => {
+export const Invoice = (subTotalPayment, discount, discountDetail, reservation, orders, meals, discountList, oldOrders) => {
     return(
         <div className="col-md-6 mb-3">
             <div className="card">
                 <div className="card-body">
                     <div className="d-flex flex-column align-items-center text-center">
-                        {invoiceInformation(reservation, table, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, true, true)}
+                        {invoiceInformation(reservation, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, true, true)}
                     </div>
                 </div>
             </div>
@@ -17,7 +17,7 @@ export const Invoice = (subTotalPayment, discount, discountDetail, reservation, 
     );
 }
 
-export const invoiceInformation = (reservation, table, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, printPDF, applyDiscount) => {
+export const invoiceInformation = (reservation, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders) => {
     let componentRef;
     const invoiceItems = [];
     let totalPayment = 0;
@@ -41,7 +41,6 @@ export const invoiceInformation = (reservation, table, orders, meals, discountLi
         <section className="invoice" >
             {Discount(reservation, totalPayment, meals, discountList)}
             <div className="container mb-4">
-
                 <div id="invoiceComp" ref={(response) => (componentRef = response)} className="table-responsive">
                     <table className="table table-striped">
                         <thead>
@@ -65,13 +64,11 @@ export const invoiceInformation = (reservation, table, orders, meals, discountLi
                     </table>
                 </div>
                 <div>
-                    {printPDF &&
-                        <ReactToPrint
-                            content={() => componentRef}
-                            trigger={() => <button >Print to PDF</button>}
-                        />
-                    }
-                    {applyDiscount && <button style={{marginLeft:10}} onClick={openDiscountForm} >Apply Discount</button>}
+                    <ReactToPrint
+                        content={() => componentRef}
+                        trigger={() => <button >Print to PDF</button>}
+                    />
+                    <button style={{marginLeft:10}} onClick={openDiscountForm} >Apply Discount</button>
                 </div>
             </div>
         </section>

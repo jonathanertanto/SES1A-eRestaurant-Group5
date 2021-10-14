@@ -17,9 +17,15 @@ export const Menu = _ =>{
     // const [userType, setUserType] = useState(null);
     // useEffect(() => {
     //     const getData = async _ =>{
+    //         if(!getUserID()){
+    //             return setUserType("");
+    //         }
     //         const res = await fetch(`/api/profile?userID=${getUserID()}`);
     //         const data = await res.json();
-    //         setUserType(data.userType);
+    //         if(data.status)
+    //             setUserType(data.userType);
+    //         else
+    //             setUserType("");
     //     }
     //     getData();
     // }, []);

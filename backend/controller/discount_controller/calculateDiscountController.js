@@ -5,30 +5,41 @@ var mongoose = require ("mongoose");
 require('../../model/Discount');
 const Discount = mongoose.model("Discount");
 
-require('../../model/Meal');
-const Meal = mongoose.model("Meal");
-
 router.post("/", async (req, res) => {
     try{
-        if(String(req.body.discountID) === ""){
-            console.log("No discount applied to the reservation!");
-            return res.status(400).json({status: false});
+        const data = await calculateDiscount(req.body.discountID, req.body.orders, req.body.meals, req.body.transaction);
+        if(data[0]){
+           res.status(200).json({status: true, value: data[1], item: data[2]}); 
+        }else{
+            res.status(400).json({status: false, value: 0, item: ""});
         }
-        const discount = await Discount.findOne({_id: String(req.body.discountID)});
+    }catch(error){
+        console.log(error);
+    }
+});
+module.exports = router;
+
+const calculateDiscount = async (discountID, orders, meals, transaction) => {
+    try{
+        if(String(discountID) === ""){
+            console.log("No discount applied to the reservation!");
+            return [false, 0, ""];
+        }
+        const discount = await Discount.findOne({_id: String(discountID)});
         if(!discount){
             console.log("No discount applied to the reservation!");
-            return res.status(400).json({status: false});
+            return [false, 0, ""];
         }
         let nominal;
         switch(String(discount.type).toUpperCase()){
             case "P":
                 if(String(discount.meal) !== ""){
-                    const idx = findOrdersIndex(req.body.meals, String(discount.meal));
-                    nominal = Number(req.body.meals[idx].price) * Number(req.body.orders[idx].quantity);
+                    const idx = findOrdersIndex(meals, String(discount.meal));
+                    nominal = Number(meals[idx].price) * Number(orders[idx].quantity);
                 }else if(String(discount.mealType).toUpperCase() !== "A" ){
-                    nominal = totalTransactioins(req.body.orders, req.body.meals, String(discount.mealType).toUpperCase());
+                    nominal = totalTransactioins(orders, meals, String(discount.mealType).toUpperCase());
                 }else{
-                    nominal = Number(req.body.transaction);
+                    nominal = Number(transaction);
                 }
                 nominal = nominal * Number(discount.nominal) / 100;
                 break;
@@ -36,25 +47,26 @@ router.post("/", async (req, res) => {
                 nominal = discount.nominal;
                 let temp = 0;
                 if(String(discount.meal) !== ""){
-                    const idx = findOrdersIndex(req.body.meals, String(discount.meal));
-                    temp = Number(req.body.meals[idx].price) * Number(req.body.orders[idx].quantity);
+                    const idx = findOrdersIndex(meals, String(discount.meal));
+                    temp = Number(meals[idx].price) * Number(orders[idx].quantity);
                 }else if(String(discount.mealType).toUpperCase() !== "A" ){
-                    temp = totalTransactioins(req.body.orders, req.body.meals, String(discount.mealType));
+                    temp = totalTransactioins(orders, meals, String(discount.mealType));
                 }
                 nominal = temp < nominal ? temp : nominal;
                 break;
             default:
-                const idx = findOrdersIndex(req.body.meals, String(discount.meal));
-                nominal = Number(req.body.meals[idx].price) * Number(discount.nominal);
+                const idx = findOrdersIndex(meals, String(discount.meal));
+                nominal = Number(meals[idx].price) * Number(discount.nominal);
                 break;
         }
         nominal = roundNumber(nominal);
-        return res.status(200).json({status: true, value: nominal, item: discount});
+        return [true, nominal, discount];
     }catch(error){
         console.log(error);
+        return [false, 0, ""];
     }
-});
-module.exports = router;
+}
+module.exports.calculateDiscount = calculateDiscount;
 
 const roundNumber = (nominal) => {
     nominal = Number((Number(nominal)*100).toPrecision(15) );

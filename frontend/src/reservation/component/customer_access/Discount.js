@@ -7,13 +7,11 @@ export const Discount = (reservation, totalPayment, meals, discountList) => {
     }
 
     return(
-        <div id="discountForm" className="form-popup center">
-            <form className="form-container">
-                {list(discountList, reservation, totalPayment, meals)}
-                <div className="right-side-button">
-                    <button type="button" onClick={closeDiscountForm} >Cancel</button>
-                </div>
-            </form>
+        <div id="discountForm" className="form-popup center form-container">
+            {list(discountList, reservation, totalPayment, meals)}
+            <div className="right-side-button">
+                <button type="button" onClick={closeDiscountForm} >Cancel</button>
+            </div>
         </div>
     );
 }

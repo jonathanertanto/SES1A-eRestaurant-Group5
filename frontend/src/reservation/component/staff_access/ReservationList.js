@@ -32,6 +32,7 @@ const filterDropdown = (filter, setFilter) => {
         <Row noGutters className="menu-dropdown filter-dropdown">
             {locationfilter(filter, setFilter)}
             {reservationTypefilter(filter, setFilter)}
+            {/* {completenessFilter(filter, setFilter)} */}
         </Row>
     )
 }
@@ -93,6 +94,37 @@ const reservationTypefilter = (filter, setFilter) => {
             <UncontrolledDropdown>
                 <DropdownToggle color="none" caret className="booking-dropdown">{filter.type}</DropdownToggle>
                 <DropdownMenu className="booking-dropdown-menu">{getType()}</DropdownMenu>
+            </UncontrolledDropdown>
+        </Col>
+    )
+}
+// eslint-disable-next-line
+const completenessFilter = (filter, setFilter) => {
+    const status = ["All Reservations", "Completed Reservations", "Uncompleted Reservations"];
+    const getStatus = _ => {
+        let newStatus = [];
+        status.forEach(completeness => {
+            newStatus.push(
+                <DropdownItem key={completeness} className="booking-dropdown-item" 
+                        onClick={_=> {
+                            let newSel = {
+                                ...filter,
+                                completeness: completeness
+                            };
+                            setFilter(newSel);
+                        }}
+                        >
+                    {completeness}
+                </DropdownItem>
+            )
+        })
+        return newStatus;
+    };
+    return(
+        <Col xs="12" sm="4">
+            <UncontrolledDropdown>
+                <DropdownToggle color="none" caret className="booking-dropdown">{filter.completeness}</DropdownToggle>
+                <DropdownMenu className="booking-dropdown-menu">{getStatus()}</DropdownMenu>
             </UncontrolledDropdown>
         </Col>
     )

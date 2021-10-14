@@ -14,16 +14,14 @@ export const Invoice = (reservation, table, orders, meals, discountList, subTota
     }
 
     return (
-        <div id="invoiceForm" className="form-popup center">
-            <form className="form-container popup-info">
-                <h2>INVOICE</h2>
-                <div className="d-flex flex-column align-items-center text-center">
-                    {invoiceInformation(reservation, table, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, false, false)}
-                </div>
-                <div className="right-side-button">
-                    <button type="button" onClick={closeDiscountForm} >Close</button>
-                </div>
-            </form>
+        <div id="invoiceForm" className="form-popup center popup-info form-container">
+            <h2>INVOICE</h2>
+            <div className="d-flex flex-column align-items-center text-center">
+                {invoiceInformation(reservation, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders)}
+            </div>
+            <div className="right-side-button">
+                <button type="button" onClick={closeDiscountForm} >Close</button>
+            </div>
         </div>
     )
 }

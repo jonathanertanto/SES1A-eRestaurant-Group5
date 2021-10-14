@@ -62,6 +62,9 @@ app.use("/api/applydiscount", require("./controller/discount_controller/applyDis
 app.use("/api/calculatediscount", require("./controller/discount_controller/calculateDiscountController"));
 app.use("/api/canceldiscount", require("./controller/discount_controller/cancelDiscountController"));
 
+//-----FINANCIAL REPORTS-----
+app.use("/api/getfinancialreport", require("./controller/financial_report_controller/getFinancialReportController"));
+
 //-----RANDOM DIRECTORY-----
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../backend/app.js'));

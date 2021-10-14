@@ -16,7 +16,7 @@ import {Confirmation} from "./customer_access/Confirmation";
 import {ReservationList} from "./staff_access/ReservationList";
 
 export const Book = _ => {
-    const [userType, setUserType] = useState([""]);
+    const [userType, setUserType] = useState("");
     const [totalTables, setTotalTables] = useState([]);
 
     const [staffSelection, setStaffSelection] = useState({
@@ -26,7 +26,8 @@ export const Book = _ => {
     });
     const [filter, setFilter] = useState({
         location: "All Locations",
-        type: new Date().getHours() >= 18? "Dinner" : "Lunch"
+        type: new Date().getHours() >= 18? "Dinner" : "Lunch",
+        completeness: "All Reservations"
     });
     const [reservationsList, setReservationsList] = useState("");
     // Customer's selections
@@ -67,9 +68,15 @@ export const Book = _ => {
     // Get the user's account type
     useEffect(() => {
         const getData = async _ =>{
+            if(!getUserID()){
+                return setUserType("");
+            }
             const res = await fetch(`/api/profile?userID=${getUserID()}`);
             const data = await res.json();
-            setUserType(data.userType);
+            if(data.status)
+                setUserType(data.userType);
+            else
+                setUserType("");
         }
         getData();
     }, []);
@@ -365,7 +372,8 @@ export const Book = _ => {
                     },
                     body: JSON.stringify({
                         location: filter.location,
-                        type: filter.type
+                        type: filter.type,
+                        completeness: filter.completeness
                     })
                 });
                 const data = await res.json();
@@ -377,7 +385,7 @@ export const Book = _ => {
                 ));
             }
             getData();
-        }, [filter, userType]);
+        }, [filter, userType, staffSelection]);
     //-----END OF SECTION-----
 
     // If Unauthorised users try to open
@@ -479,9 +487,11 @@ const menuTypeSelection = (selection, setSelection) => {
     )
 }
 const dateSelection = (selection, setSelection) => {
+    const month = new Date().getMonth()+1;
+    const date = new Date().getFullYear() + "-" + (month < 10 && "0") + month + "-" + new Date().getDate();
     return(
         <Col xs="12" sm="2">
-            <input type="date" required="required" className="booking-dropdown" defaultValue={new Date().getFullYear() + "-" + (new Date().getMonth()>8?(new Date().getMonth()+1):("0" + (new Date().getMonth()+1))) + "-" + new Date().getDate()}
+            <input type="date" required="required" className="booking-dropdown" defaultValue={date}
                 onChange={e => {
                     if (!isNaN(new Date(new Date(e.target.value)))) {
                         let newSel = {

@@ -1,10 +1,28 @@
 import React, {useState, useEffect} from "react";
 import {Outlet} from "react-router-dom";
-import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle, MeetingRoom, LocalOffer} from '@material-ui/icons/';
+import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle, MeetingRoom, LocalOffer, ShowChart} from '@material-ui/icons/';
 import { getUserID, logOut } from "../../App";
 import '../style/navbar.css';
 
 export const Navbar = (props) => {
+    const [userType, setUserType] = useState("");
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+    useEffect(() => {
+        const getData = async _ =>{
+            if(!getUserID()){
+                return setUserType("");
+            }
+            const res = await fetch(`/api/profile?userID=${getUserID()}`);
+            const data = await res.json();
+            if(data.status)
+                setUserType(data.userType);
+            else
+                setUserType("");
+        }
+        getData();
+    }, []);
+
     useEffect(() => {
         const createAdmin = async _ => {
             try{
@@ -19,7 +37,6 @@ export const Navbar = (props) => {
         createAdmin();
     }, [])
 
-    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     useEffect(() => {
         const handleResize = _ => {
           setWindowDimensions(getWindowDimensions());
@@ -40,17 +57,9 @@ export const Navbar = (props) => {
                             <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>
                             {getUserID() && <a className={props.page==="reservation"? "active":""} href="/reservation"><Event />Reservation</a>}
                             <a className={props.page==="discount"? "active":""} href="/discount"><LocalOffer />Discount</a>
+                            {isManager(userType) && <a className={props.page==="financialfigure"? "active":""} href="/financialfigure"><ShowChart />Financial Figures</a>}
                             {!getUserID() && <a className={props.page==="login"? "active":""} href="/login"><ExitToApp />Log In</a>}
-                            {getUserID()?(
-                                <div className={windowDimensions.width >= maxWidth && "topnav-dropdown"}>
-                                    {windowDimensions.width >= maxWidth && <button className={props.page==="profile"? "topnav-dropbtn-active topnav-dropbtn":"topnav-dropbtn"} ><AccountCircle />Account</button>}
-                                    <div className={windowDimensions.width >= maxWidth && "topnav-dropdown-content"}>
-                                        <a className={props.page==="profile"?"active":""} href="/profile"><AccountCircle />Profile</a>
-                                        <a href="/" onClick={logOut}><MeetingRoom />Log Out</a>
-                                    </div>
-                                </div>
-                            ) : <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>
-                            }
+                            {getUserID()? accountMenu(windowDimensions, maxWidth, props.page) : <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>}
                         </div>
                     </div>
                 </div>
@@ -59,6 +68,22 @@ export const Navbar = (props) => {
             <Outlet />
         </main>
     );
+}
+
+const isManager = (userType) => {
+    return String(userType).toUpperCase() === "M";
+}
+
+const accountMenu = (windowDimensions, maxWidth, page) => {
+    return (
+        <div className={windowDimensions.width >= maxWidth && "topnav-dropdown"}>
+            {windowDimensions.width >= maxWidth && <button className={page==="profile"? "topnav-dropbtn-active topnav-dropbtn":"topnav-dropbtn"} ><AccountCircle />Account</button>}
+            <div className={windowDimensions.width >= maxWidth && "topnav-dropdown-content"}>
+                <a className={page==="profile"?"active":""} href="/profile"><AccountCircle />Profile</a>
+                <a href="/" onClick={logOut}><MeetingRoom />Log Out</a>
+            </div>
+        </div>
+    )
 }
 
 const getWindowDimensions = _ => {

@@ -54,7 +54,7 @@ export const Reservation = (reservation, table, getCurrentDate, orders, meals, d
                                 </div>
                             </div>
                         </div>
-                        {Invoice(subTotalPayment, discount, discountDetail, reservation, table, orders, meals, discountList, oldOrders)}
+                        {Invoice(subTotalPayment, discount, discountDetail, reservation, orders, meals, discountList, oldOrders)}
                     </div>
                 </div>
             </div>
