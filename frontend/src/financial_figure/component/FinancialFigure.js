@@ -22,6 +22,9 @@ export const FinancialFigure = _ => {
     const [data, setData] = useState([]);
     useEffect(() => {
         try{
+            if(filter.startPeriod > filter.endPeriod){
+                return alert("The first date selection is the start date while the second date selection is the end date.\r\n\r\nThe start date cannot be larger than the end date.");
+            }
             const getData = async _ =>{
                 const res = await fetch("/api/getfinancialreport", {
                     method: "POST",
@@ -41,6 +44,13 @@ export const FinancialFigure = _ => {
                         period: data.periods,
                         revenue: data.revenue,
                         profit: data.profit
+                    }
+                    setData(temp);
+                }else{
+                    const temp = {
+                        period: "",
+                        revenue: [0],
+                        profit: [0]
                     }
                     setData(temp);
                 }
@@ -81,20 +91,11 @@ const startPeriodFilter = (filter, setFilter, size) => {
         <Col xs="12" sm={size}>
             <input type="date" required="required" className="booking-dropdown" defaultValue = {filter.startPeriod}
                 onChange={e => {
-                    if (!isNaN(new Date(new Date(e.target.value)))) {
-                        let newSel = {
-                            ...filter,
-                            startPeriod: new Date(e.target.value)
-                        };
-                        setFilter(newSel);
-                    } else {
-                        console.log("Invalid date");
-                        let newSel = {
-                            ...filter,
-                            startPeriod: new Date()
-                        };
-                        setFilter(newSel);
-                    }
+                    let newSel = {
+                        ...filter,
+                        startPeriod: new Date(e.target.value)
+                    };
+                    setFilter(newSel);
                 }}
             ></input>
         </Col>
@@ -106,20 +107,11 @@ const endPeriodFilter = (filter, setFilter, size) => {
         <Col xs="12" sm={size}>
             <input type="date" required="required" className="booking-dropdown" defaultValue = {filter.endPeriod}
                 onChange={e => {
-                    if (!isNaN(new Date(new Date(e.target.value)))) {
-                        let newSel = {
-                            ...filter,
-                            endPeriod: new Date(e.target.value)
-                        };
-                        setFilter(newSel);
-                    } else {
-                        console.log("Invalid date");
-                        let newSel = {
-                            ...filter,
-                            endPeriod: new Date()
-                        };
-                        setFilter(newSel);
-                    }
+                    let newSel = {
+                        ...filter,
+                        endPeriod: new Date(e.target.value)
+                    };
+                    setFilter(newSel);
                 }}
             ></input>
         </Col>

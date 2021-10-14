@@ -35,6 +35,9 @@ const calculateDiscount = async (discountID, orders, meals, transaction) => {
             case "P":
                 if(String(discount.meal) !== ""){
                     const idx = findOrdersIndex(meals, String(discount.meal));
+                    if(idx === -1){
+                        break;
+                    }
                     nominal = Number(meals[idx].price) * Number(orders[idx].quantity);
                 }else if(String(discount.mealType).toUpperCase() !== "A" ){
                     nominal = totalTransactioins(orders, meals, String(discount.mealType).toUpperCase());
@@ -48,6 +51,9 @@ const calculateDiscount = async (discountID, orders, meals, transaction) => {
                 let temp = 0;
                 if(String(discount.meal) !== ""){
                     const idx = findOrdersIndex(meals, String(discount.meal));
+                    if(idx === -1){
+                        break;
+                    }
                     temp = Number(meals[idx].price) * Number(orders[idx].quantity);
                 }else if(String(discount.mealType).toUpperCase() !== "A" ){
                     temp = totalTransactioins(orders, meals, String(discount.mealType));
@@ -56,6 +62,9 @@ const calculateDiscount = async (discountID, orders, meals, transaction) => {
                 break;
             default:
                 const idx = findOrdersIndex(meals, String(discount.meal));
+                if(idx === -1){
+                    break;
+                }
                 nominal = Number(meals[idx].price) * Number(discount.nominal);
                 break;
         }

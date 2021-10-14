@@ -9,8 +9,6 @@ require('../../model/Meal');
 const Meal = mongoose.model("Meal");
 require ("../../model/Order");
 const Order = mongoose.model("Order");
-require ("../../model/Discount");
-const Discount = mongoose.model("Discount");
 const calculateDiscount = require("../discount_controller/calculateDiscountController").calculateDiscount;
 
 router.post("/", async (req, res) => {
@@ -21,22 +19,19 @@ router.post("/", async (req, res) => {
         }else{
             tables = await Table.find({location: String(req.body.location)}).sort([['date', 1]]);
         }
-        if(tables.length <= 0){
-            console.log("There is no reservations on the database!");
-            return res.status(400).json({status: false});
-        }
 
+        const periods = [];
         const revenue = [];
         const profit = [];
+        periods.push("");
+        revenue.push(0);
+        profit.push(0);
+
         let filterStartDate = new Date(String(req.body.startDate));
         filterStartDate = new Date(filterStartDate.getFullYear(), filterStartDate.getMonth(), filterStartDate.getDate());
         let filterEndDate = new Date(String(req.body.endDate));
         filterEndDate = new Date(filterEndDate.getFullYear(), filterEndDate.getMonth(), filterEndDate.getDate());
-        const periods = [];
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        periods.push("");
-        revenue.push(0);
-        profit.push(0);
         let temp;
         switch(String(req.body.timeInterval).toUpperCase()){
             case "DAILY":
@@ -80,7 +75,7 @@ router.post("/", async (req, res) => {
                 }
                 break;
         }
-        return res.status(200).json({status: true, periods: periods, revenue: revenue, profit, profit});
+        return res.status(200).json({status: true, periods: periods, revenue: revenue, profit: profit});
     }catch(error){
         console.log(error);
         res.status(400).json({status: false});
@@ -120,12 +115,17 @@ const setData = async (temp, tables, type) => {
             const meals = [];
             for(let j=0; j<orders.length; ++j){
                 const meal = await Meal.findOne({_id: String(orders[j].meal)});
+                if(!meal){
+                    continue;
+                }
                 nominal += (Number(orders[j].quantity) * Number(meal.price));
                 cost += (Number(orders[j].quantity) * Number(meal.cost));
                 meals.push(meal);
             }
-            const discountValue = await calculateDiscount(reservation.discount, orders, meals, nominal);
-            cost += discountValue[1];
+            if(orders.length > 0 && meals.length > 0){
+                const discountValue = await calculateDiscount(reservation.discount, orders, meals, nominal);
+                cost += discountValue[1];
+            }
         }
     }
     return [nominal, cost];
