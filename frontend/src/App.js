@@ -6,9 +6,10 @@ import {Menu} from "./menu/component/Menu";
 import {Book} from "./reservation/component/Book";
 import {Discount} from "./discount/component/Discount";
 import {Profile} from "./profile/component/Profile";
-import {Login} from "./component/Login";
-import {Signup} from "./component/SignUp";
+import {Login} from "./account/component/Login";
+import {Signup} from "./account/component/SignUp";
 import { FinancialFigure } from "./financial_figure/component/FinancialFigure";
+import { AccountList } from "./account/component/AccountList";
 
 export const getUserID = _ => {
   const rememberMe = localStorage.getItem("rememberMe");
@@ -53,6 +54,9 @@ function App(){
         </Route>
         <Route path="/profile" element={<Navbar page="profile"/>}>
           <Route element={<Profile/>}/>
+        </Route>
+        <Route path="/accountlist" element={<Navbar page="accountlist"/>}>
+          <Route element={<AccountList/>}/>
         </Route>
         <Route path="*" element={<Navbar/>}/>
       </Routes>

@@ -28,16 +28,17 @@ export const ReservationList = (filter, setFilter, reservationsList, staffSelect
 }
 
 const filterDropdown = (filter, setFilter) => {
+    const size = 4;
     return(
         <Row noGutters className="menu-dropdown filter-dropdown">
-            {locationfilter(filter, setFilter)}
-            {reservationTypefilter(filter, setFilter)}
-            {/* {completenessFilter(filter, setFilter)} */}
+            {locationfilter(filter, setFilter, size)}
+            {reservationTypefilter(filter, setFilter, size)}
+            {completenessFilter(filter, setFilter, size)}
         </Row>
     )
 }
 
-const locationfilter = (filter, setFilter) => {
+const locationfilter = (filter, setFilter, size) => {
     const locations = ["All Locations", "2/1-25 Harbour St", "123 Victoria St, Potts Point", "241 Victoria St, Darlinghurst"];
     const getLocation = _ => {
         let newLocation = [];
@@ -59,7 +60,7 @@ const locationfilter = (filter, setFilter) => {
         return newLocation;
     }
     return(
-        <Col xs="12" sm="6">
+        <Col xs="12" sm={size}>
             <UncontrolledDropdown>
                 <DropdownToggle color="none" caret className="booking-dropdown">{filter.location}</DropdownToggle>
                 <DropdownMenu className="booking-dropdown-menu">{getLocation()}</DropdownMenu>
@@ -68,7 +69,7 @@ const locationfilter = (filter, setFilter) => {
     )
 }
 
-const reservationTypefilter = (filter, setFilter) => {
+const reservationTypefilter = (filter, setFilter, size) => {
     const types = ["All", "Lunch", "Dinner"];
     const getType = _ => {
         let newType = [];
@@ -90,7 +91,7 @@ const reservationTypefilter = (filter, setFilter) => {
         return newType;
     };
     return(
-        <Col xs="12" sm="6">
+        <Col xs="12" sm={size}>
             <UncontrolledDropdown>
                 <DropdownToggle color="none" caret className="booking-dropdown">{filter.type}</DropdownToggle>
                 <DropdownMenu className="booking-dropdown-menu">{getType()}</DropdownMenu>
@@ -99,7 +100,7 @@ const reservationTypefilter = (filter, setFilter) => {
     )
 }
 // eslint-disable-next-line
-const completenessFilter = (filter, setFilter) => {
+const completenessFilter = (filter, setFilter, size) => {
     const status = ["All Reservations", "Completed Reservations", "Uncompleted Reservations"];
     const getStatus = _ => {
         let newStatus = [];
@@ -121,7 +122,7 @@ const completenessFilter = (filter, setFilter) => {
         return newStatus;
     };
     return(
-        <Col xs="12" sm="4">
+        <Col xs="12" sm={size}>
             <UncontrolledDropdown>
                 <DropdownToggle color="none" caret className="booking-dropdown">{filter.completeness}</DropdownToggle>
                 <DropdownMenu className="booking-dropdown-menu">{getStatus()}</DropdownMenu>

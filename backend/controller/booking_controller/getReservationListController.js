@@ -17,13 +17,13 @@ router.post("/", async (req, res) => {
             const reservationType = new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch";
             const areSameType = String(req.body.type).toUpperCase() === "ALL" || reservationType.toUpperCase() === String(req.body.type).toUpperCase();
             const areSameLocation = String(req.body.location).toUpperCase() === "ALL LOCATIONS" || String(table.location).toUpperCase() === String(req.body.location).toUpperCase();
-            // let completeness;
-            // switch(String(req.body.completeness).toUpperCase()){
-            //     case "COMPLETED RESERVATIONS": completeness = (reservations[i].completeness ? true:false); break;
-            //     case "UNCOMPLETED RESERVATIONS": completeness = (reservations[i].completeness ? false:true); break;
-            //     default: completeness = true; break;
-            // }
-            if(areSameType && areSameLocation){
+            let completeness;
+            switch(String(req.body.completeness).toUpperCase()){
+                case "COMPLETED RESERVATIONS": completeness = (reservations[i].completeness ? true:false); break;
+                case "UNCOMPLETED RESERVATIONS": completeness = (reservations[i].completeness ? false:true); break;
+                default: completeness = true; break;
+            }
+            if(areSameType && areSameLocation && completeness){
                 const customer = await User.findOne({_id: String(reservations[i].user)});
                 const booking = {
                     customer: customer,

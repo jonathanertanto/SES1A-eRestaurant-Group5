@@ -261,12 +261,12 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
     return(
         <tr>
             <td>{meal.name}</td>
-            <td><input className="form-control text-center" type="text" placeholder={order.quantity} onChange={handleQtyChange}/></td>
-            <td><input className="form-control text-center" type="text" placeholder={order.notes} onChange={handleNotesChange} /></td>
-            <td className="text-right">${meal.price}</td>
-            <td className="text-right">${Number.isFinite(Number(order.quantity))? Number(meal.price) * Number(order.quantity):0}</td>
-            <td className="text-right"><button onClick={updateData} >Edit</button> </td>
-            <td className="text-right"><button className="btn btn-sm btn-danger" onClick={removeItem} ><i className="fa fa-trash"></i> </button> </td>
+            <td><input className="form-control text-center" type="text" defaultValue={order.quantity} onChange={handleQtyChange}/></td>
+            <td><input className="form-control text-center" type="text" defaultValue={order.notes} onChange={handleNotesChange} /></td>
+            <td>${meal.price}</td>
+            <td>${Number.isFinite(Number(order.quantity))? Number(meal.price) * Number(order.quantity):0}</td>
+            <td><button onClick={updateData} >Edit</button> </td>
+            <td><button className="btn btn-sm btn-danger" onClick={removeItem} ><i className="fa fa-trash"></i> </button> </td>
         </tr>
     )
 }

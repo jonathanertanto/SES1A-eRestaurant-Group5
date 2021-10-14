@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react";
 import {Outlet} from "react-router-dom";
-import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle, MeetingRoom, LocalOffer, ShowChart} from '@material-ui/icons/';
+import {Home, ListAlt, ExitToApp, HowToReg, Event, AccountCircle, MeetingRoom, LocalOffer, ShowChart, PlaylistAdd} from '@material-ui/icons/';
 import { getUserID, logOut } from "../../App";
 import '../style/navbar.css';
 
 export const Navbar = (props) => {
-    const [userType, setUserType] = useState("");
+    const [userType, setUserType] = useState("I");
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
     useEffect(() => {
@@ -52,15 +52,17 @@ export const Navbar = (props) => {
                 <div className={props.page==="homepage"? "topnav homepage":"topnav"}>
                     <div className={windowDimensions.width < maxWidth && "topnav-dropdown"}>
                         {windowDimensions.width < maxWidth && <button className="topnav-dropbtn"><i className="fa fa-bars" style={{fontSize: 30}}></i></button>}
-                        <div className={windowDimensions.width < maxWidth && "topnav-dropdown-content"}>
-                            <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
-                            <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>
-                            {getUserID() && <a className={props.page==="reservation"? "active":""} href="/reservation"><Event />Reservation</a>}
-                            <a className={props.page==="discount"? "active":""} href="/discount"><LocalOffer />Discount</a>
-                            {isManager(userType) && <a className={props.page==="financialfigure"? "active":""} href="/financialfigure"><ShowChart />Financial Figures</a>}
-                            {!getUserID() && <a className={props.page==="login"? "active":""} href="/login"><ExitToApp />Log In</a>}
-                            {getUserID()? accountMenu(windowDimensions, maxWidth, props.page) : <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>}
-                        </div>
+                        {userType !== "I" && 
+                            <div className={windowDimensions.width < maxWidth && "topnav-dropdown-content"}>
+                                <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
+                                {!isManager(userType) && <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>}
+                                {getUserID() && <a className={props.page==="reservation"? "active":""} href="/reservation"><Event />Reservation</a>}
+                                {!isManager(userType) && <a className={props.page==="discount"? "active":""} href="/discount"><LocalOffer />Discount</a>}
+                                {isManager(userType) && <a className={props.page==="financialfigure"? "active":""} href="/financialfigure"><ShowChart />Financial Figures</a>}
+                                {!getUserID() && <a className={props.page==="login"? "active":""} href="/login"><ExitToApp />Log In</a>}
+                                {getUserID()? accountMenu(windowDimensions, maxWidth, props.page, userType) : <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>}
+                            </div>
+                        }
                     </div>
                 </div>
                 {props.page==="homepage" && homepageHeader()}
@@ -70,20 +72,21 @@ export const Navbar = (props) => {
     );
 }
 
-const isManager = (userType) => {
-    return String(userType).toUpperCase() === "M";
-}
-
-const accountMenu = (windowDimensions, maxWidth, page) => {
+const accountMenu = (windowDimensions, maxWidth, page, userType) => {
     return (
         <div className={windowDimensions.width >= maxWidth && "topnav-dropdown"}>
-            {windowDimensions.width >= maxWidth && <button className={page==="profile"? "topnav-dropbtn-active topnav-dropbtn":"topnav-dropbtn"} ><AccountCircle />Account</button>}
+            {windowDimensions.width >= maxWidth && <button className={(page==="profile" || page === "accountlist") ? "topnav-dropbtn-active topnav-dropbtn":"topnav-dropbtn"} ><AccountCircle />Account</button>}
             <div className={windowDimensions.width >= maxWidth && "topnav-dropdown-content"}>
                 <a className={page==="profile"?"active":""} href="/profile"><AccountCircle />Profile</a>
+                {isManager(userType) && <a className={page==="accountlist"?"active":""} href="/accountlist"><PlaylistAdd />Account List</a>}
                 <a href="/" onClick={logOut}><MeetingRoom />Log Out</a>
             </div>
         </div>
     )
+}
+
+const isManager = (userType) => {
+    return String(userType).toUpperCase() === "M";
 }
 
 const getWindowDimensions = _ => {

@@ -2,7 +2,7 @@ import React from "react";
 import '../../style/reservation.css';
 import { invoiceInformation } from "../customer_access/Invoice";
 
-export const Invoice = (reservation, table, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, setStaffSelection) => {
+export const Invoice = (reservation, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, setStaffSelection) => {
     const closeDiscountForm = _ => {
         const newSel = {
             customer: "",

@@ -7,7 +7,7 @@ export const ReservationTable = (reservations, staffSelection, setStaffSelection
     return(
         <section>
             {CustomerDetail(staffSelection.customer)}
-            {Invoice(staffSelection.reservation, staffSelection.table, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, setStaffSelection)}
+            {Invoice(staffSelection.reservation, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders, setStaffSelection)}
             <table className="table table-striped">
                 <thead>
                     <tr>

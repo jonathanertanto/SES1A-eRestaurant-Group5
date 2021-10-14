@@ -108,9 +108,10 @@ export const Book = _ => {
         // Get customer's orders with the meals information
         useEffect(() => {
             const getData = async _ =>{
+                setOrders("");
+                setMeals("");
                 if( (!userType || userType !== 'C') && staffSelection.customer === ""){
-                    setOrders("");
-                    setMeals("");
+                    return
                 }
                 const res = await fetch("/api/getorders", {
                     method: "POST",
@@ -118,7 +119,7 @@ export const Book = _ => {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        reservation: (userType === 'C' ? reservation._id : staffSelection.reservation._id)
+                        reservation: ((userType !== 'C' && staffSelection.reservation !== "") ? staffSelection.reservation._id : reservation._id)
                     })
                 });
                 const data = await res.json();
@@ -140,9 +141,9 @@ export const Book = _ => {
         // Set customer's applied discount
         useEffect(() => {
             const getData = async _ =>{
+                setDiscount(0);
+                setDiscountDetail("");
                 if( (staffSelection.reservation === "" && (reservation === "I" || reservation === "" || String(reservation.discount) === "")) || (staffSelection.reservation !== "" && ((String(staffSelection.reservation.discount) === ""))) || meals.length <= 0 || orders.length <=0){
-                    setDiscount(0);
-                    setDiscountDetail("");
                     return;
                 }
                 const res = await fetch("/api/calculatediscount", {
@@ -161,9 +162,6 @@ export const Book = _ => {
                 if(data.status){
                     setDiscount(Number(data.value));
                     setDiscountDetail(data.item);
-                }else{
-                    setDiscount(0);
-                    setDiscountDetail("");
                 }
             }
             getData();
@@ -172,8 +170,9 @@ export const Book = _ => {
         // Set temporary variable to store previous customer's orders
         useEffect(() => {
             const getData = async _ =>{
+                setOldOrders("");
                 if((reservation === "I" || reservation === "" ) && staffSelection.reservation === ""){
-                    return setOldOrders("");
+                    return;
                 }
                 const res = await fetch("/api/getorders", {
                     method: "POST",
@@ -193,26 +192,34 @@ export const Book = _ => {
         // Get filtered discount offer list
         useEffect(()=>{
             const getData = async _ => {
+                setDiscountList("");
                 const res = await fetch("/api/getdiscounts", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        userID: getUserID()
+                        userID: (staffSelection.customer !== "" && String(userType).toUpperCase() !== "C") ? staffSelection.customer._id : getUserID()
                     })
                 });
                 const data = await res.json();
                 if(!data.status){
                     return setDiscountList("");
                 }
-                setDiscountList(data.discounts.filter(data => 
-                    (new Date(String(data.end_date)).getTime() > new Date(String(table.date)).getTime()) &&
-                    (String(data.menuType)==="A" ? true : (new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") )
-                ));
+                if(String(userType).toUpperCase() === "C"){
+                    setDiscountList(data.discounts.filter(data => 
+                        (new Date(String(data.end_date)).getTime() > new Date(String(table.date)).getTime()) &&
+                        (String(data.menuType)==="A" ? true : (new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") )
+                    ));
+                }else{
+                    setDiscountList(data.discounts.filter(data => 
+                        (new Date(String(data.end_date)).getTime() > new Date(String(staffSelection.table.date)).getTime()) &&
+                        (String(data.menuType)==="A" ? true : (new Date(String(staffSelection.table.date)).getHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") )
+                    ));
+                }
             }
             getData();
-        }, [table, meals]);
+        }, [staffSelection, table, meals, userType]);
     //-----END OF SECTION-----
 
     //-----RESERVATION CREATION FOR CUSTOMER-----
@@ -362,8 +369,9 @@ export const Book = _ => {
         // Filter reservation list
         useEffect(() => {
             const getData = async _ => {
+                setReservationsList("");
                 if(!userType || userType !== 'M'){
-                    return setReservationsList("");
+                    return;
                 }
                 const res = await fetch("/api/getreservationlist", {
                     method: "POST",

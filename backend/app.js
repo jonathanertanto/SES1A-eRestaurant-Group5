@@ -35,6 +35,7 @@ app.use("/api/signup", require("./controller/user_controller/signUpController"))
 app.use("/api/profile", require("./controller/user_controller/getProfileController"));
 app.use("/api/updateuser", require("./controller/user_controller/updateUserController"));
 app.use("/api/deleteuser", require("./controller/user_controller/deleteUserController"));
+app.use("/api/getaccountlist", require("./controller/user_controller/getAccountListController"));
 
 //-----BOOKING-----
 app.use("/availability", require ("./controller/booking_controller/availabilityController"));
