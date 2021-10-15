@@ -55,9 +55,9 @@ export const Navbar = (props) => {
                         {userType !== "I" && 
                             <div className={windowDimensions.width < maxWidth && "topnav-dropdown-content"}>
                                 <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
-                                {!isManager(userType) && <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>}
+                                { (!isManager(userType) && !isEmployee(userType)) && <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>}
                                 {getUserID() && <a className={props.page==="reservation"? "active":""} href="/reservation"><Event />Reservation</a>}
-                                {!isManager(userType) && <a className={props.page==="discount"? "active":""} href="/discount"><LocalOffer />Discount</a>}
+                                {(!isManager(userType) && !isEmployee(userType)) && <a className={props.page==="discount"? "active":""} href="/discount"><LocalOffer />Discount</a>}
                                 {isManager(userType) && <a className={props.page==="financialfigure"? "active":""} href="/financialfigure"><ShowChart />Financial Figures</a>}
                                 {!getUserID() && <a className={props.page==="login"? "active":""} href="/login"><ExitToApp />Log In</a>}
                                 {getUserID()? accountMenu(windowDimensions, maxWidth, props.page, userType) : <a className={props.page==="signup"? "active":""} href="/signup"><HowToReg />Sign Up</a>}
@@ -87,6 +87,9 @@ const accountMenu = (windowDimensions, maxWidth, page, userType) => {
 
 const isManager = (userType) => {
     return String(userType).toUpperCase() === "M";
+}
+const isEmployee = (userType) => {
+    return String(userType).toUpperCase() === "E";
 }
 
 const getWindowDimensions = _ => {

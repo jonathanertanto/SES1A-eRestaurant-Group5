@@ -9,7 +9,7 @@ import {Profile} from "./profile/component/Profile";
 import {Login} from "./account/component/Login";
 import {Signup} from "./account/component/SignUp";
 import { FinancialFigure } from "./financial_figure/component/FinancialFigure";
-import { AccountList } from "./account/component/AccountList";
+import { AccountList } from "./account/component/staff_access/AccountList";
 
 export const getUserID = _ => {
   const rememberMe = localStorage.getItem("rememberMe");

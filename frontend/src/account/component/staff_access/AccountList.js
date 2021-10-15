@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Title } from "../../component/Title";
-import '../style/AccountList.css';
+import { Title } from "../../../component/Title";
+import '../../style/AccountList.css';
 import {
     Row,
     Col,
@@ -10,13 +10,22 @@ import {
     DropdownItem
 }from "reactstrap";
 import { AccountTable } from "./AccountTable";
+import { getUserID } from "../../../App";
+import { CreateAccount } from "./CreateAccount";
 
 export const AccountList = _ => {
+    const [username, setUsername] = useState("");
     const [filter, setFilter] = useState({
         accountType: "All Account Types"
     });
-
     const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        fetch(`/api/profile?userID=${getUserID()}`)
+            .then((res) => {return res.json()})
+            .then((data) => setUsername(data.username));
+    }, []);
+
     useEffect(() => {
         const getData = async _ => {
             setUsers([]);
@@ -38,15 +47,23 @@ export const AccountList = _ => {
         getData();
     }, [filter])
 
+    const openCreateAccountForm = _ => {
+        document.getElementById("createAccountForm").style.display = "block";
+    }
+
     return(
         <section className="account-list">
+            {CreateAccount()}
             {Title("Account List")}
             <div className="container">
                 <div style={{marginBottom: 20}}>
                     {filterDropdown(filter, setFilter)}
                 </div>
                 <div style={{overflow: "auto"}}>
-                    {AccountTable(users)}
+                    {AccountTable(users, username)}
+                </div>
+                <div style={{textAlign: "right"}}>
+                    <button className="btn-lg" onClick={openCreateAccountForm}>Create New Account</button>
                 </div>
             </div>
         </section>

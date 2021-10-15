@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
         let user = await User.findOne({_id: String(userID)});
         if(!user || user.password != validationPass){
             console.log("Incorrect Password!");
-            return res.json({
+            return res.status(400).json({
                 status: false,
                 message: "Incorrect Password!"
             });
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
         user = await User.findOne({username: String(username)});
         if(user && String(username) != user.username){
             console.log("Username already exists, please choose another username!");
-            return res.json({
+            return res.status(400).json({
                 status: false,
                 message: "Username already exists, please choose another username!"
             });
@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
         user = await User.findOne({email: String(email)});
         if(user && String(email) != user.email){
             console.log("Email already exists, please choose another email!");
-            return res.json({
+            return res.status(400).json({
                 status: false,
                 message: "Email already exists, please choose another email!"
             });
@@ -42,7 +42,7 @@ router.get("/", async (req, res) => {
         const date = new Date();
         if(Date.parse(String(dateOfBirth)) >= Date.parse(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()) ){
             console.log("Invalid date of birth, please choose another date!");
-            return res.json({
+            return res.status(400).json({
                 status: false,
                 message: "Invalid date of birth, please choose another date!"
             });
@@ -60,21 +60,21 @@ router.get("/", async (req, res) => {
         }, async (err) => {
             if(err){
                 console.log(err);
-                return res.json({
+                return res.status(400).json({
                     status: false,
                     message: err
                 });
             }else{
                 console.log("Successfully updated the user's information!");
-                return res.json({
-                    status: true,
-                    message: "Account information successfully updated!"
-                });
             }
+        });
+        return res.status(200).json({
+            status: true,
+            message: "Account information successfully updated!"
         });
     }catch(error){
         console.log(error);
-        return res.json({
+        return res.status(400).json({
             status: false,
             message: err
         });

@@ -370,7 +370,7 @@ export const Book = _ => {
         useEffect(() => {
             const getData = async _ => {
                 setReservationsList("");
-                if(!userType || userType !== 'M'){
+                if(!userType || userType === 'C'){
                     return;
                 }
                 const res = await fetch("/api/getreservationlist", {

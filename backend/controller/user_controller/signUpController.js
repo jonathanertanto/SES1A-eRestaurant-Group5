@@ -7,7 +7,7 @@ const User = mongoose.model("User");
 
 router.get("/", async (req, res) => {
     try{
-        const {username, password, email, firstName, lastName, dateOfBirth, contactNumber} = req.query;
+        const {username, password, email, firstName, lastName, dateOfBirth, contactNumber, accountType} = req.query;
         
         // Check for existing username
         let user = await User.findOne({username: String(username)});
@@ -48,7 +48,7 @@ router.get("/", async (req, res) => {
             lastName: String(lastName),
             dateOfBirth: Date.parse(String(dateOfBirth)),
             contactNumber: String(contactNumber),
-            userType: 'C'
+            userType: String(accountType)
         });
         user.save();
         console.log(`${user.username} is successfully saved into the user database`);
@@ -56,7 +56,7 @@ router.get("/", async (req, res) => {
         // Successful Message
         return res.json({
             status: true,
-            message: `${user.username} is successfully saved into the customer database`,
+            message: `${user.username}'s account is successfully created!`,
             userID: user._id
         });
     }catch(error){

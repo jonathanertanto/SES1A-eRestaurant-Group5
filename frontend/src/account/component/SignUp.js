@@ -13,7 +13,7 @@ export const Signup = _ => {
     const [firstName, setFirstName] = useState(null);
     useEffect(() => {}, [firstName]);
 
-    const [lastName, setLastName] = useState(null);
+    const [lastName, setLastName] = useState("");
     useEffect(() => {}, [lastName]);
 
     const [dateOfBirth, setDateOfBirth] = useState(null);
@@ -33,7 +33,7 @@ export const Signup = _ => {
         if(password.length < 8)
             return alert("Password should be at least 8 characters!");
         
-        fetch(`/api/signup?username=${username}&password=${password}&email=${email}&firstName=${firstName}&lastName=${lastName}&dateOfBirth=${dateOfBirth}&contactNumber=${contactNumber}`)
+        fetch(`/api/signup?username=${username}&password=${password}&email=${email}&firstName=${firstName}&lastName=${lastName}&dateOfBirth=${dateOfBirth}&contactNumber=${contactNumber}&accountType=C`)
             .then((res) => { return res.json(); } )
             .then((data) => {
                 if(!data.status){
