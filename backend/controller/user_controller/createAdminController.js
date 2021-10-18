@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
         res.status(200).json({message: "Created admin user"});
     }catch(error){
         console.log(error);
-        res.json({
+        res.status(400).json({
             status: false,
             message: error
         });

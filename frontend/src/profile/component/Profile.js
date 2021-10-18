@@ -99,7 +99,23 @@ export const Profile = _ => {
         if(password.length < 8)
             return alert("Password should be at least 8 characters!");
 
-        fetch(`/api/updateuser?userID=${getUserID()}&username=${username}&password=${password}&validationPass=${oldPass}&email=${email}&firstName=${firstName}&lastName=${lastName}&dateOfBirth=${dateOfBirth}&contactNumber=${contactNumber}`)
+        fetch("/api/updateuser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                userID: getUserID(),
+                username: username,
+                password: password,
+                validationPass: oldPass,
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                dateOfBirth: dateOfBirth,
+                contactNumber: contactNumber
+            })
+        })
             .then((res) => { return res.json(); } )
             .then((data) => {
                 alert(data.message);
@@ -151,7 +167,7 @@ const profilePicture = (firstName, lastName, userType) => {
                             <h4>{firstName + " " + lastName}</h4>
                             <p class="text-secondary mb-1">Account: 
                                 {String(userType).toUpperCase()==='C'? " Customer":(
-                                    String(userType).toUpperCase() === 'M'? " Managemer" : " Staff"
+                                    String(userType).toUpperCase() === 'M'? " Managemer" : " Employee"
                                 )}
                             </p>
                         </div>

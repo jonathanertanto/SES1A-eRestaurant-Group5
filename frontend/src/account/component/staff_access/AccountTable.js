@@ -50,15 +50,31 @@ const tableItem = (user, username) => {
 
             if(!(username && email && firstName && dateOfBirth && contactNumber))
                 return alert("Please fill in all of the non-optional data!");
-
-            fetch(`/api/updateuser?userID=${user._id}&username=${username}&password=${user.password}&validationPass=${user.password}&email=${email}&firstName=${firstName}&lastName=${lastName}&dateOfBirth=${dateOfBirth}&contactNumber=${contactNumber}`)
-            .then((res) => { return res.json(); } )
-            .then((data) => {
-                alert(data.message);
-                if(data.status){
-                    window.location.reload();
-                }
-            });
+                
+            fetch("/api/updateuser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userID: user._id,
+                    username: username,
+                    password: user.password,
+                    validationPass: user.password,
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    dateOfBirth: dateOfBirth,
+                    contactNumber: contactNumber
+                })
+            })
+                .then((res) => { return res.json(); } )
+                .then((data) => {
+                    alert(data.message);
+                    if(data.status){
+                        window.location.reload();
+                    }
+                });
         }catch(error){
             alert(error);
         }

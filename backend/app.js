@@ -11,7 +11,7 @@ const app = express();
 require ("dotenv").config();
 
 //-----EXPRESS-----
-app.use(express.static(path.resolve(__dirname, '../backend/app.js')));
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
@@ -67,8 +67,8 @@ app.use("/api/canceldiscount", require("./controller/discount_controller/cancelD
 app.use("/api/getfinancialreport", require("./controller/financial_report_controller/getFinancialReportController"));
 
 //-----RANDOM DIRECTORY-----
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../backend/app.js'));
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(port, () =>{

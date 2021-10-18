@@ -5,9 +5,9 @@ var mongoose = require ("mongoose");
 require('../../model/User');
 const User = mongoose.model("User");
 
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
     try{
-        const {userID, username, password, validationPass, email, firstName, lastName, dateOfBirth, contactNumber} = req.query;
+        const {userID, username, password, validationPass, email, firstName, lastName, dateOfBirth, contactNumber} = req.body;
         // Check password
         let user = await User.findOne({_id: String(userID)});
         if(!user || user.password != validationPass){
