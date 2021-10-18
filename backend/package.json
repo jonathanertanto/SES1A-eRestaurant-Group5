@@ -11,8 +11,6 @@
     "morgan": "^1.10.0"
   },
   "scripts": {
-    "start": "node app.js",
-    "build": "cd && npm install && npm run build",
-    "server": "nodemon app.js --ignore client"
+    "start": "nodemon app.js"
   }
 }

@@ -3,12 +3,11 @@ const logger = require("morgan");
 const express = require('express');
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const port = process.env.PORT || 3001;
 const cookieParser = require('cookie-parser');
 const router = express.Router();
-
 const app = express();
 require ("dotenv").config();
+const port = process.env.PORT || 3001;
 
 //-----EXPRESS-----
 app.use(express.static(path.join(__dirname, 'build')));
@@ -20,13 +19,7 @@ app.use(cookieParser());
 
 //-----DATABASE SETUP-----
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost:27017/LeBistrotdAndreDB", {useNewUrlParser: true});
-mongoose.connection.on("connected", () =>{
-    console.log("Successfully connected!");
-});
-mongoose.connection.on("error",(err) => {
-    console.log(err);
-})
+mongoose.connect(process.env.CONNECTION_URL, {useNewUrlParser: true});
 
 //-----USER-----
 app.use("/api/createadmin", require("./controller/user_controller/createAdminController"));
@@ -67,7 +60,7 @@ app.use("/api/canceldiscount", require("./controller/discount_controller/cancelD
 app.use("/api/getfinancialreport", require("./controller/financial_report_controller/getFinancialReportController"));
 
 //-----RANDOM DIRECTORY-----
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 

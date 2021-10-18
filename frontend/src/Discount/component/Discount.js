@@ -6,8 +6,14 @@ import "../style/discount.css";
 
 export const Discount = _ =>{
     const [discounts, setDiscounts] = useState("");
+    const [reservation, setReservation] = useState("I");
+    const [table, setTable] = useState("I");
+    const [orders, setOrders] = useState("");
+    const [meals, setMeals] = useState("");
+
     useEffect(()=>{
         const getData = async _ => {
+            setDiscounts("");
             const res = await fetch("/api/getdiscounts", {
                 method: "POST",
                 headers: {
@@ -37,9 +43,6 @@ export const Discount = _ =>{
         }
         getData();
     }, []);
-
-    const [reservation, setReservation] = useState("I");
-    const [table, setTable] = useState("I");
     useEffect(() => {
         const getData = async _ =>{
             if(!getUserID()){
@@ -61,8 +64,6 @@ export const Discount = _ =>{
         getData();
     }, []);
 
-    const [orders, setOrders] = useState("");
-    const [meals, setMeals] = useState("");
     useEffect(() => {
         const getData = async _ =>{
             if(!getUserID()){

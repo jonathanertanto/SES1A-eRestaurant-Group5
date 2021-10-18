@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
                 return res.status(400).json({status: false});
             }
             console.log("Discounts successfully retrieved!");
-            return res.status(200).json({status: true, discounts: returnData});
+            return res.status(200).json({status: true, discounts: returnData.sort((a, b) => (a._id < b._id) ? -1 : 1)});
         }
         console.log("There is no discount existed in the database!");
 
@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
                 min_transaction: [40, 20, 20, 0, 50, 0, 0],
                 nominal: [20, 5, 5, 10, 1, 10, 25],
                 type: ["P", "P", "N", "N", "Q", "N", "P"],
-                meal: ["", "", "", "", "615603c46ba5684e703fd31f", "615603c46ba5684e703fd31a", "615603c46ba5684e703fd31a"],
+                meal: ["", "", "", "", "616d660b5603d83fdb4db45a", "616d660b5603d83fdb4db455", "616d660b5603d83fdb4db455"],
                 menuType: ["A", "A", "L", "D", "A", "A", "A"],
                 mealType: ["F", "A", "A", "D", "D", "F", "F"]
             }
