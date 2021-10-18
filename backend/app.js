@@ -60,6 +60,10 @@ app.use("/api/canceldiscount", require("./controller/discount_controller/cancelD
 app.use("/api/getfinancialreport", require("./controller/financial_report_controller/getFinancialReportController"));
 
 //-----RANDOM DIRECTORY-----
+app.get('/', (req, res) => {
+    res.send("Test");
+});
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });

@@ -45,7 +45,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "https://lebistrotdandre.herokuapp.com",
   "eslintConfig": {
     "extends": "react-app"
   },
