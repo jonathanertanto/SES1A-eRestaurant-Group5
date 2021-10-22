@@ -123,7 +123,7 @@ const mealItem = (discountDetail, order, meal, orders, meals) => {
         order.notes = e.target.value;
     }
     const updateData = _ => {
-        if(orders.length <= 0 || !order || discountDetail === "" || meals.length <= 0 || !meal){
+        if(orders.length <= 0 || !order || meals.length <= 0 || !meal){
             return;
         }
 

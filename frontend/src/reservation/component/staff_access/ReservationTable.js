@@ -78,7 +78,7 @@ const reservationItem = (reservation, table, customer, setStaffSelection) => {
             <td>{reservation._id}</td>
             <td>{table.name}</td>
             <td>{table.capacity}</td>
-            <td>{new Date(String(table.date)).toString()}</td>
+            <td>{new Date(String(table.date)).toUTCString().toString()}</td>
             <td>{reservation.number_of_people}</td>
             <td>{(String(reservation.notes) === "null" ? "" : reservation.notes)}</td>
             <td><input type="checkbox" id="completeStatus" name="completeStatus" value="true" defaultChecked={(reservation.completeness)} onChange={setComplete} /> Complete</td>

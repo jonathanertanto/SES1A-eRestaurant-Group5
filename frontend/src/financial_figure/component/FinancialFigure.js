@@ -16,7 +16,7 @@ export const FinancialFigure = _ => {
         timeInterval: "Daily",
         location: "All Locations",
         startPeriod: new Date().getFullYear() + "-" + (new Date().getMonth() < 10 ? "0" : "") + new Date().getMonth() + "-" + (new Date().getDate() < 10 ? "0" : "") + new Date().getDate(),
-        endPeriod: new Date()
+        endPeriod: new Date().getFullYear() + "-" + ((new Date().getMonth()+1) < 10 ? "0" : "") + (new Date().getMonth()+1) + "-" + (new Date().getDate() < 10 ? "0" : "") + new Date().getDate()
     });
 
     const [data, setData] = useState([]);

@@ -14,25 +14,9 @@ import {Meal} from "./Meal";
 import {Order} from "./Order";
 
 export const Menu = _ =>{
-    // const [userType, setUserType] = useState(null);
-    // useEffect(() => {
-    //     const getData = async _ =>{
-    //         if(!getUserID()){
-    //             return setUserType("");
-    //         }
-    //         const res = await fetch(`/api/profile?userID=${getUserID()}`);
-    //         const data = await res.json();
-    //         if(data.status)
-    //             setUserType(data.userType);
-    //         else
-    //             setUserType("");
-    //     }
-    //     getData();
-    // }, []);
-
     // User's selection
     const [selection, setSelection] = useState({
-        menuType: "",
+        menuType: "All Types of Menu",
         mealType: "All Types of Meal",
         meal: null,
         quantity: 1,
@@ -60,7 +44,7 @@ export const Menu = _ =>{
                 return;
             }
             let newSelection = {
-                menuType: (new Date(String(data.table.date)).getHours() >= 18? "Dinner":"Lunch"),
+                menuType: (new Date(String(data.table.date)).getUTCHours() >= 18? "Dinner":"Lunch"),
                 mealType: "All Types of Meal",
                 meal: null,
                 quantity: 1,
@@ -76,7 +60,7 @@ export const Menu = _ =>{
         if(table===""){
             return selection.menuType = "All Types of Menu"
         }
-        if(new Date(String(table.date)).getHours() >= 18){
+        if(new Date(String(table.date)).getUTCHours() >= 18){
             selection.menuType = "Dinner";
         }else{
             selection.menuType = "Lunch";
@@ -92,14 +76,19 @@ export const Menu = _ =>{
         const getData = async _ =>{
             try{
                 //This line is just for demonstration purpose only. In real-life, it will not be implemented and the manager will need to add the meal items by themselve.
-                const response = await fetch(`/api/gettestingmenu`, {
+                // const response = await fetch(`/api/gettestingmenu`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     }
+                // });
+                // This is the code that will be use during deployment
+                const response = await fetch(`/api/getallmeals`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
+                    }
                 });
-                // This is the code that will be use during deployment
-                // const response = await fetch(`/api/getallmeals`);
                 const data = await response.json();
                 let items = data.menuItem;
                 if(selection.menuType !== "All Types of Menu"){
@@ -123,7 +112,7 @@ export const Menu = _ =>{
     }, [selection.menuType]);
 
     const getReservationMenuType = _ => {
-        return new Date(String(table.date)).getHours() >= 18 ?  "Dinner" : "Lunch";
+        return new Date(String(table.date)).getUTCHours() >= 18 ?  "Dinner" : "Lunch";
     }
 
     // Order Window

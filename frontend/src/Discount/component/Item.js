@@ -6,9 +6,9 @@ export const Item = (discounts, reservation, table, meals, subTotalPayment, menu
     const formatDate = (date) =>{
         const months = ["Jan", "Feb", "March", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
         const datetime = new Date(String(date));
-        const day = datetime.getDate();
-        const month = months[datetime.getMonth()];
-        const year = datetime.getFullYear();
+        const day = datetime.getUTCDate();
+        const month = months[datetime.getUTCMonth()];
+        const year = datetime.getUTCFullYear();
         return day + " " + month + " " + year;
     }
     const applyNow = (discount) => {
@@ -36,7 +36,7 @@ export const Item = (discounts, reservation, table, meals, subTotalPayment, menu
             }
 
             // Check the menu type
-            if(String(discount.menuType).toUpperCase()!=="A" ? true : (new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch") !== (String(discount.menuType).toUpperCase()==="L"?"Lunch":"Dinner") ){
+            if(String(discount.menuType).toUpperCase()!=="A" ? true : (new Date(String(table.date)).getUTCHours() >= 18? "Dinner":"Lunch") !== (String(discount.menuType).toUpperCase()==="L"?"Lunch":"Dinner") ){
                 return alert(`Please select a discount offer that suits with your reservation menu type: ${String(discount.menuType === "L"?"Lunch":"Dinner")}`);
             }
 

@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
-const router = express.Router();
 const app = express();
 require ("dotenv").config();
 const port = process.env.PORT || 3001;
@@ -31,8 +30,8 @@ app.use("/api/deleteuser", require("./controller/user_controller/deleteUserContr
 app.use("/api/getaccountlist", require("./controller/user_controller/getAccountListController"));
 
 //-----BOOKING-----
-app.use("/availability", require ("./controller/booking_controller/availabilityController"));
-app.use("/reserve", require ("./controller/booking_controller/reservationController"));
+app.use("/api/availability", require ("./controller/booking_controller/availabilityController"));
+app.use("/api/reserve", require ("./controller/booking_controller/reservationController"));
 app.use("/api/getreservation", require("./controller/booking_controller/getReservationController"));
 app.use("/api/cancelreservation", require("./controller/booking_controller/cancelReservationController"));
 app.use("/api/getreservationlist", require("./controller/booking_controller/getReservationListController"));
@@ -60,10 +59,6 @@ app.use("/api/canceldiscount", require("./controller/discount_controller/cancelD
 app.use("/api/getfinancialreport", require("./controller/financial_report_controller/getFinancialReportController"));
 
 //-----RANDOM DIRECTORY-----
-app.get('/', (req, res) => {
-    res.send("Test");
-});
-
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });

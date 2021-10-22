@@ -1,13 +1,9 @@
-var express = require ("express");
-var router = express.Router();
-var mongoose = require ("mongoose");
-
+const express = require ("express");
+const router = express.Router();
 const Day = require ("../../model/day").model;
 const Table = require ("../../model/table").model;
-require ("../../model/Reservation");
-const Reservation = mongoose.model("Reservation");
-require ("../../model/Order");
-const Order = mongoose.model("Order");
+const Reservation = require ("../../model/reservation").model;
+const Order = require ("../../model/Order").model;
 
 router.post("/", async (req, res) => {
     try{

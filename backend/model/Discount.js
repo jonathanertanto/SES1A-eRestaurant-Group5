@@ -31,4 +31,4 @@ const DiscountSchema = new mongoose.Schema({
     }
 });
 
-mongoose.model("Discount", DiscountSchema);
+module.exports.model = mongoose.model("Discount", DiscountSchema);

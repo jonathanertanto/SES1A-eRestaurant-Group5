@@ -1,23 +1,19 @@
-var express = require ("express");
-var router = express.Router();
-var mongoose = require ("mongoose");
-
-require ("../../model/Reservation");
-const Reservation = mongoose.model("Reservation");
+const express = require ("express");
+const router = express.Router();
+const Reservation = require ("../../model/reservation").model;
+const Order = require ("../../model/Order").model;
 const Table = require ("../../model/table").model;
-require('../../model/Meal');
-const Meal = mongoose.model("Meal");
-require ("../../model/Order");
-const Order = mongoose.model("Order");
+const Meal = require('../../model/meal').model;
 const calculateDiscount = require("../discount_controller/calculateDiscountController").calculateDiscount;
 
 router.post("/", async (req, res) => {
     try{
+        const {location, startDate, endDate, timeInterval} = req.body;
         let tables;
-        if(String(req.body.location).toUpperCase() === "ALL LOCATIONS"){
+        if(String(location).toUpperCase() === "ALL LOCATIONS"){
             tables = await Table.find({}).sort([['date', 1]]);
         }else{
-            tables = await Table.find({location: String(req.body.location)}).sort([['date', 1]]);
+            tables = await Table.find({location: String(location)}).sort([['date', 1]]);
         }
 
         const periods = [];
@@ -27,13 +23,13 @@ router.post("/", async (req, res) => {
         revenue.push(0);
         profit.push(0);
 
-        let filterStartDate = new Date(String(req.body.startDate));
+        let filterStartDate = new Date(String(startDate));
         filterStartDate = new Date(filterStartDate.getFullYear(), filterStartDate.getMonth(), filterStartDate.getDate());
-        let filterEndDate = new Date(String(req.body.endDate));
+        let filterEndDate = new Date(String(endDate));
         filterEndDate = new Date(filterEndDate.getFullYear(), filterEndDate.getMonth(), filterEndDate.getDate());
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let temp;
-        switch(String(req.body.timeInterval).toUpperCase()){
+        switch(String(timeInterval).toUpperCase()){
             case "DAILY":
                 temp = filterStartDate;
                 while(temp.getTime() <= filterEndDate.getTime()){
@@ -46,8 +42,8 @@ router.post("/", async (req, res) => {
                 break;
             case "WEEKLY":
                 temp = new Date(filterStartDate.getFullYear(), filterStartDate.getMonth(), (filterStartDate.getDate() - filterStartDate.getDay() + 1));
-                let endDate = new Date(filterEndDate.getFullYear(), filterEndDate.getMonth(), (filterEndDate.getDate() - filterStartDate.getDay() + 1));
-                while(temp.getTime() <= endDate.getTime()){
+                let temp2 = new Date(filterEndDate.getFullYear(), filterEndDate.getMonth(), (filterEndDate.getDate() - filterStartDate.getDay() + 1));
+                while(temp.getTime() <= temp2.getTime()){
                     periods.push(temp.getDate() + "-" + (temp.getDate()+6) + " " + months[temp.getMonth()] + " " + temp.getFullYear());
                     const data = await setData(temp, tables, "WEEKLY");
                     revenue.push(data[0]);

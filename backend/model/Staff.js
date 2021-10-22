@@ -4,4 +4,4 @@ const staffSchema = new mongoose.Schema({
     restaurant: String
 });
 
-mongoose.model("Staff", staffSchema);
+module.exports.model = mongoose.model("Staff", staffSchema);

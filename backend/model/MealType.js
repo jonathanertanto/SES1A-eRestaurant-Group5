@@ -7,4 +7,4 @@ const mealTypeSchema = new mongoose.Schema({
     }
 });
 
-mongoose.model("MealType", mealTypeSchema);
+module.exports.model = mongoose.model("MealType", mealTypeSchema);

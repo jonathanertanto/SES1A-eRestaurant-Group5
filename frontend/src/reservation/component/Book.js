@@ -152,7 +152,7 @@ export const Book = _ => {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        discountID: (userType === 'C' ? reservation.discount : staffSelection.reservation.discount),
+                        discountID: (userType === "C" ? reservation.discount : staffSelection.reservation.discount),
                         transaction: subTotalPayment,
                         meals: meals,
                         orders: orders
@@ -268,7 +268,7 @@ export const Book = _ => {
             if (isSelectedDateValid() && selection.location && selection.size) {
                 (async _ => {
                     let datetime = getDate();
-                    let res = await fetch("/availability", {
+                    let res = await fetch("/api/availability", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
@@ -339,7 +339,7 @@ export const Book = _ => {
 
         // Create new reservation
         const reserve = async _ => {
-            await fetch("/reserve", {
+            await fetch("/api/reserve", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -397,12 +397,12 @@ export const Book = _ => {
     //-----END OF SECTION-----
 
     // If Unauthorised users try to open
-    if(!getUserID()){
-        return window.location.href="/login";
-    }
+    // if(!getUserID()){
+    //     return window.location.href="/login";
+    // }
 
-    if(String(userType) === ""){
-        return (<section></section>)
+    if(!getUserID() || !userType || String(userType) === ""){
+        return (<section></section>);
     }
     
     if(String(userType).toUpperCase() === "C"){

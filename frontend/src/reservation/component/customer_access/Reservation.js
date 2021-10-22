@@ -6,7 +6,8 @@ import {TextField} from "../TextField";
 
 export const Reservation = (reservation, table, getCurrentDate, orders, meals, discountList, subTotalPayment, discount, discountDetail, oldOrders) => {
     const cancelReservation = _ => {
-        const date = new Date(String(table.date));
+        let date = new Date(String(table.date));
+        date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours());
         if(date < new Date(getCurrentDate())){
             return alert("Reservation cancellation must be at least 1 hour before!");
         }
@@ -66,8 +67,8 @@ const tableInformation = (table) => {
     const items = [];
     items.push(TextField("Table Number", table.name));
     items.push(TextField("Table Capacity", table.capacity));
-    items.push(TextField("Reservation Type", new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch"));
-    items.push(TextField("Reservation Date/Time", new Date(String(table.date)) ));
+    items.push(TextField("Reservation Type", new Date(String(table.date)).getUTCHours() >= 18? "Dinner":"Lunch"));
+    items.push(TextField("Reservation Date/Time", new Date(String(table.date)).toUTCString() ));
     items.push(TextField("Reservation Location", table.location));
     return items;
 }

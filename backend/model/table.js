@@ -1,6 +1,6 @@
-var mongoose = require ("mongoose");
+const mongoose = require ("mongoose");
 
-var tableSchema = new mongoose.Schema ({
+const tableSchema = new mongoose.Schema ({
     name: String,
     capacity: Number,
     isAvailable: Boolean,
@@ -8,7 +8,5 @@ var tableSchema = new mongoose.Schema ({
     date: Date
 });
 
-var Table = mongoose.model("Table", tableSchema);
-
-module.exports.model = Table;
+module.exports.model = mongoose.model("Table", tableSchema);
 module.exports.schema = tableSchema;

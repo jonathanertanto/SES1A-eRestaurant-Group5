@@ -13,4 +13,4 @@ const OrderSchema = new mongoose.Schema({
     reservation: String
 });
 
-mongoose.model("Order", OrderSchema);
+module.exports.model = module.exports.model = mongoose.model("Order", OrderSchema);

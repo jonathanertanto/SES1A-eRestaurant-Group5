@@ -119,7 +119,7 @@ const item = (discount, reservation, totalPayment, meals) => {
             <td>{String(discount.mealType).toUpperCase() === "A" ? "All" : String(discount.mealType).toUpperCase() === "F"? "Food" : "Drink" }</td>
             <td>{(String(discount.type)==="N"&&"$")+discount.nominal+(String(discount.type)==="P"?"%":"")}</td>
             <td>${discount.min_transaction}</td>
-            <td>{new Date(String(discount.end_date)).toString()}</td>
+            <td>{new Date(String(discount.end_date)).toUTCString()}</td>
             <td className="text-right"><button onClick={applyDiscount}>Apply</button> </td>
         </tr>
     );

@@ -1,11 +1,9 @@
-var express = require ("express");
-var router = express.Router();
-var mongoose = require ("mongoose");
+const express = require ("express");
+const router = express.Router();
 
-require('../../model/User');
-const User = mongoose.model("User");
+const User = require("../../model/user").model;
 
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
     try{
         // Check for existing username
         let user = await User.findOne({username: String("admin")});

@@ -1,15 +1,8 @@
-var express = require ("express");
-var router = express.Router();
-var mongoose = require ("mongoose");
-
-require ("../../model/Order");
-const Order = mongoose.model("Order");
-
-require ("../../model/Discount");
-const Discount = mongoose.model("Discount");
-
-require ("../../model/Reservation");
-const Reservation = mongoose.model("Reservation");
+const express = require ("express");
+const router = express.Router();
+const Order = require ("../../model/Order").model;
+const Discount = require ("../../model/Discount").model;
+const Reservation = require ("../../model/reservation").model;
 
 router.post("/", async (req, res) => {
     try{

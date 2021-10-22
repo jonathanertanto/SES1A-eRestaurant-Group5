@@ -1,7 +1,7 @@
-var mongoose = require ("mongoose");
+const mongoose = require ("mongoose");
 const tableSchema = require ("./table").schema;
 
-var daySchema = new mongoose.Schema ({
+const daySchema = new mongoose.Schema ({
     date: {
         type: Date,
         required: true
@@ -9,7 +9,4 @@ var daySchema = new mongoose.Schema ({
     tables: [tableSchema]
 });
 
-var Day = mongoose.model ("Day", daySchema);
-
-module.exports.model = Day;
-module.exports.schema =daySchema;
+module.exports.model = mongoose.model ("Day", daySchema);

@@ -13,4 +13,4 @@ const ReservationSchema = new mongoose.Schema({
     user: String
 });
 
-mongoose.model("Reservation", ReservationSchema);
+module.exports.model = mongoose.model("Reservation", ReservationSchema);

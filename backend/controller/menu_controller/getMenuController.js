@@ -1,19 +1,15 @@
-var express = require ("express");
-var router = express.Router();
-var mongoose = require ("mongoose");
-
-require('../../model/Meal');
-const Meal = mongoose.model("Meal");
+const express = require ("express");
+const router = express.Router();
+const Meal = require('../../model/meal').model;
 
 router.post("/", async (req, res) => {
     try{
-        Meal.find({}).sort([['type', -1]]).exec( (err, meals) => {
-            if(err){
-                console.log(err);
-            }else{
-                return res.json({menuItem: meals});
-            }
-        });
+        const data = await Meal.find({});
+
+        if(data.length <= 0){
+            return res.json({menuItem: ""});
+        }
+        return res.json({menuItem: data.sort((a, b) => (a.type > b.type) ? -1: 1)});
     }catch(error){
         console.log(error);
     }

@@ -7,4 +7,4 @@ const menuTypeSchema = new mongoose.Schema({
     }
 });
 
-mongoose.model("MenuType", menuTypeSchema);
+module.exports.model = mongoose.model("MenuType", menuTypeSchema);

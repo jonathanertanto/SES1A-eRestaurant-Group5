@@ -10,4 +10,4 @@ const ReservationSchema = new mongoose.Schema({
     contact_number: String
 });
 
-mongoose.model("Reservation", ReservationSchema);
+module.exports.model = mongoose.model("Reservation", ReservationSchema);

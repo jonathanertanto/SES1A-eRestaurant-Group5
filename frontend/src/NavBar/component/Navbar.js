@@ -24,20 +24,6 @@ export const Navbar = (props) => {
     }, []);
 
     useEffect(() => {
-        const createAdmin = async _ => {
-            try{
-                if(getUserID()){
-                    return;
-                }
-                await fetch("/api/createadmin");
-            }catch(err){
-                console.log(err);
-            }
-        }
-        createAdmin();
-    }, [])
-
-    useEffect(() => {
         const handleResize = _ => {
           setWindowDimensions(getWindowDimensions());
         }
@@ -55,7 +41,7 @@ export const Navbar = (props) => {
                         {userType !== "I" && 
                             <div className={windowDimensions.width < maxWidth && "topnav-dropdown-content"}>
                                 <a className={props.page==="homepage"? "active":""} href="/"><Home />Home</a>
-                                { (!isManager(userType) && !isEmployee(userType)) && <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>}
+                                {(!isManager(userType) && !isEmployee(userType)) && <a className={props.page==="menu"? "active":""} href="/menu"><ListAlt />Menu</a>}
                                 {getUserID() && <a className={props.page==="reservation"? "active":""} href="/reservation"><Event />Reservation</a>}
                                 {(!isManager(userType) && !isEmployee(userType)) && <a className={props.page==="discount"? "active":""} href="/discount"><LocalOffer />Discount</a>}
                                 {isManager(userType) && <a className={props.page==="financialfigure"? "active":""} href="/financialfigure"><ShowChart />Financial Figures</a>}
