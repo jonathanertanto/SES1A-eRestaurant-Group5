@@ -17,14 +17,12 @@ export const CustomerDetail = (customer) =>{
     items.push(textField("Contact Number", customer.contactNumber));
 
     return(
-        <div id="customerForm" className="form-popup center">
-             <form className="form-container">
-                <h2>CUSTOMER INFORMATION</h2>
-                {customerData(items)}
-                <div className="right-side-button">
-                    <button type="button" onClick={closeDiscountForm} >Close</button>
-                </div>
-             </form>
+        <div id="customerForm" className="form-popup center form-container">
+            <h2>CUSTOMER INFORMATION</h2>
+            {customerData(items)}
+            <div className="right-side-button">
+                <button type="button" onClick={closeDiscountForm} >Close</button>
+            </div>
         </div>
     )
 }

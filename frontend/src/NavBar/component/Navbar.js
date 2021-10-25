@@ -51,7 +51,7 @@ export const Navbar = (props) => {
                         }
                     </div>
                 </div>
-                {props.page==="homepage" && homepageHeader()}
+                {props.page==="homepage" && homepageHeader(userType)}
             </header>
             <Outlet />
         </main>
@@ -86,11 +86,11 @@ const getWindowDimensions = _ => {
     };
 }
 
-const homepageHeader = _ => {
+const homepageHeader = (userType) => {
     return (
         <div>
             {restaurantName()}
-            {bookingBtn()}
+            {bookingBtn(userType)}
         </div>
     )
 }
@@ -109,13 +109,13 @@ const restaurantName = _ => {
         </div>
     );
 }
-const bookingBtn = _ => {
+const bookingBtn = (userType) => {
     let bookingUrl = "/login";
     if(getUserID())
         bookingUrl = "/reservation";
     return(
         <div className="center booking-button">
-            <a href={bookingUrl}>Book a Table</a>
+            <a href={bookingUrl}>{ (String(userType).toUpperCase() === "M" || String(userType).toUpperCase() === "E") ? "Reservation List" : "Book a Table"}</a>
         </div>
     )
 }

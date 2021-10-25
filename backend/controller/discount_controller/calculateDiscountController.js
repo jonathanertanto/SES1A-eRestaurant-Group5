@@ -92,7 +92,7 @@ const totalTransactioins = (orders, meals, type) => {
 
 const findOrdersIndex = (meals, meal) => {
     for(let i=0; i<meals.length; ++i){
-        if(meals[i]._id === meal){
+        if(String(meals[i]._id) === meal){
             return i;
         }
     }

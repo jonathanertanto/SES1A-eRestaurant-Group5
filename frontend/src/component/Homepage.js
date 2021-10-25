@@ -1,25 +1,44 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {getUserID} from "../App";
 
 let bookingUrl = "/login";
 
 export const Homepage = _ =>{
-    if(getUserID())
-        bookingUrl = "/reservation";
+    const [userType, setUserType] = useState("");
+    useEffect(() => {
+        const getData = async _ =>{
+            if(!getUserID()){
+                return setUserType("");
+            }
+            const res = await fetch(`/api/profile?userID=${getUserID()}`);
+            const data = await res.json();
+            if(data.status)
+                setUserType(data.userType);
+            else
+                setUserType("");
+        }
+        getData();
+    }, []);
+    
+    if(getUserID()){
+        bookingUrl = String(userType).toUpperCase() === "C" ? "/reservation" : "/";
+    }else{
+        bookingUrl = "/login";
+    }
 
     return(
         <section>
-            {restaurantInfo()}
+            {restaurantInfo(userType)}
             {aboutInfo()}
             {contactInfo()}
         </section>
     )
 }
-const restaurantInfo = _ =>{
+const restaurantInfo = (userType) =>{
     return(
         <section className="container-info">
             {restaurantTime()}
-            {menuHyperLink()}
+            {menuHyperLink(userType)}
         </section>
     );
 }
@@ -34,12 +53,12 @@ const restaurantTime = _ =>{
         </div>
     )
 }
-const menuHyperLink = _ =>{
+const menuHyperLink = (userType) =>{
     return(
         <div className="info-box right">
             <a href="/menu"><img className="info-box" src="https://i.pinimg.com/564x/77/c5/e7/77c5e7acb0f6e244bfeed141f19b8b71.jpg" alt="Press to go to menu page"/></a>
             <div className="info-box-text center">
-                <a href="/menu">Dinning</a>
+                <a href={(String(userType).toUpperCase() === "M" || String(userType).toUpperCase() === "E") ? "/" : "/menu"}>Dinning</a>
             </div>
         </div>
     )

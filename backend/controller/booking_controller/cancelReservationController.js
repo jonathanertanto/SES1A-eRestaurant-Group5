@@ -7,7 +7,7 @@ const Order = require ("../../model/Order").model;
 
 router.post("/", async (req, res) => {
     try{
-        Order.deleteMany({_reservation: String(req.body.reservation)}, (err) => {
+        Order.deleteMany({reservation: String(req.body.reservation)}, (err) => {
             if(err){
                 console.log(err);
                 return res.status(400).json({status: false});

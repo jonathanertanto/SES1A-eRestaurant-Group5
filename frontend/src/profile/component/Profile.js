@@ -7,56 +7,55 @@ import { PasswordField } from "./PasswordField";
 import { DateField } from "./DateField";
 
 export const Profile = _ => {
-    const [username, setUsername] = useState(null);
+    const [username, setUsername] = useState("");
     useEffect(() => {
         fetch(`/api/profile?userID=${getUserID()}`)
             .then((res) => {return res.json()})
             .then((data) => setUsername(data.username));
     }, []);
-    const [email, setEmail] = useState(null);
+    const [email, setEmail] = useState("");
     useEffect(() => {
         fetch(`/api/profile?userID=${getUserID()}`)
             .then((res) => {return res.json()})
             .then((data) => setEmail(data.email));
     }, []);
-    const [password, setPassword] = useState(null);
+    const [password, setPassword] = useState("");
     useEffect(() => {
         fetch(`/api/profile?userID=${getUserID()}`)
             .then((res) => {return res.json()})
             .then((data) => setPassword(data.password));
     }, []);
-    const [firstName, setFirstName] = useState(null);
+    const [firstName, setFirstName] = useState("");
     useEffect(() => {
         fetch(`/api/profile?userID=${getUserID()}`)
             .then((res) => {return res.json()})
             .then((data) => setFirstName(data.firstName));
     }, []);
-    const [lastName, setLastName] = useState(null);
+    const [lastName, setLastName] = useState("");
     useEffect(() => {
         fetch(`/api/profile?userID=${getUserID()}`)
             .then((res) => {return res.json()})
             .then((data) => setLastName(data.lastName));
     }, []);
-    const [dateOfBirth, setDateOfBirth] = useState(null);
+    const [dateOfBirth, setDateOfBirth] = useState("");
     useEffect(() => {
         fetch(`/api/profile?userID=${getUserID()}`)
             .then((res) => {return res.json()})
             .then((data) => setDateOfBirth(data.dateOfBirth));
     }, []);
-    const [contactNumber, setContactNumber] = useState(null);
+    const [contactNumber, setContactNumber] = useState("");
     useEffect(() => {
         fetch(`/api/profile?userID=${getUserID()}`)
             .then((res) => {return res.json()})
             .then((data) => setContactNumber(data.contactNumber));
     }, []);
-    const [userType, setUserType] = useState(null);
+    const [userType, setUserType] = useState("");
     useEffect(() => {
         fetch(`/api/profile?userID=${getUserID()}`)
             .then((res) => {return res.json()})
             .then((data) => setUserType(data.userType));
     }, []);
-    const [oldPass, setOldPass] = useState(null);
-    useEffect(() => {}, [oldPass]);
+    const [oldPass, setOldPass] = useState("");
 
     const items = [];
     items.push(NormalField("Username", username, setUsername));
@@ -68,7 +67,6 @@ export const Profile = _ => {
     items.push(NormalField("Contact Number", contactNumber, setContactNumber));
 
     const [buttonClicked, setButtonClicked] = useState(null);
-    useEffect(() => {}, [buttonClicked]);
 
     const openEditValidation = _ => {
         setButtonClicked("edit");
@@ -120,7 +118,7 @@ export const Profile = _ => {
             .then((data) => {
                 alert(data.message);
                 if(data.status){
-                    closeForm();
+                    window.location.reload();
                 }
             });
     }
@@ -141,11 +139,11 @@ export const Profile = _ => {
     
     return(
         <section>
-            {Confirmation(setOldPass, accountModification, closeForm)}
             <section className="profile">
                 <div className="container">
                     <div className="main-body">
                         <div className="row gutters-sm">
+                            {Confirmation(setOldPass, accountModification, closeForm)}
                             {profilePicture(firstName, lastName, userType)}
                             {userData(items, openEditValidation, openDeleteValidation)}
                         </div>
@@ -167,7 +165,9 @@ const profilePicture = (firstName, lastName, userType) => {
                             <h4>{firstName + " " + lastName}</h4>
                             <p class="text-secondary mb-1">Account: 
                                 {String(userType).toUpperCase()==='C'? " Customer":(
-                                    String(userType).toUpperCase() === 'M'? " Managemer" : " Employee"
+                                    String(userType).toUpperCase() === 'M'? " Manager" : (
+                                        String(userType).toUpperCase() === 'E'? " Employee" : "" 
+                                    )
                                 )}
                             </p>
                         </div>
