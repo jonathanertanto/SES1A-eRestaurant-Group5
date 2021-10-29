@@ -1,10 +1,10 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom";
-import {Navbar} from "./Navbar/component/Navbar";
+import {Navbar} from "./navbar/component/Navbar";
 import {Homepage} from "./component/Homepage";
 import {Menu} from "./menu/component/Menu";
 import {Book} from "./reservation/component/Book";
-import {Discount} from "./Discount/component/Discount";
+import {Discount} from "./discount/component/Discount";
 import {Profile} from "./profile/component/Profile";
 import {Login} from "./account/component/Login";
 import {Signup} from "./account/component/SignUp";

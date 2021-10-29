@@ -20,8 +20,12 @@ export const Item = (discounts, reservation, table, meals, subTotalPayment, menu
     const applyDiscount = (discount) =>{
         try{
             // Check if the reservation, meals, and discount variables are empty or not
-            if(reservation === "I" || reservation === "" || meals === "I" || !discount || !Number.isFinite(subTotalPayment)){
+            if(reservation === "I" || meals === "I" || !discount || !Number.isFinite(subTotalPayment)){
                 return;
+            }
+
+            if(reservation === ""){
+                return alert("Please book a table first!");
             }
 
             // Check if the reservation has an order
@@ -35,9 +39,16 @@ export const Item = (discounts, reservation, table, meals, subTotalPayment, menu
                 return window.location.href = "/reservation";
             }
 
+            // Check if the discount offer still can be applied with the set end-period of the offer
+            let reservationDate = new Date(String(table.date));
+            reservationDate = new Date(reservationDate.getUTCFullYear(), reservationDate.getUTCMonth(), reservationDate.getUTCDate());
+            if(new Date(String(discount.end_date)).getTime() < reservationDate.getTime()){
+                return alert("Please choose a discount offer that will still be active for your reservation time");
+            }
+
             // Check the menu type
-            if(String(discount.menuType).toUpperCase()!=="A" ? true : (new Date(String(table.date)).getUTCHours() >= 18? "Dinner":"Lunch") !== (String(discount.menuType).toUpperCase()==="L"?"Lunch":"Dinner") ){
-                return alert(`Please select a discount offer that suits with your reservation menu type: ${String(discount.menuType === "L"?"Lunch":"Dinner")}`);
+            if(String(discount.menuType).toUpperCase()!=="A" && (new Date(String(table.date)).getUTCHours() >= 18? "Dinner":"Lunch") !== (String(discount.menuType).toUpperCase()==="L"?"Lunch":"Dinner") ){
+                return alert(`Please select a discount offer that suits with your reservation menu type: ${new Date(String(table.date)).getUTCHours() >= 18? "Dinner":"Lunch"}`);
             }
 
             // Check if the orders has the required meal type

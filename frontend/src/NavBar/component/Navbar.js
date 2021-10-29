@@ -115,7 +115,10 @@ const bookingBtn = (userType) => {
         bookingUrl = "/reservation";
     return(
         <div className="center booking-button">
-            <a href={bookingUrl}>{ (String(userType).toUpperCase() === "M" || String(userType).toUpperCase() === "E") ? "Reservation List" : "Book a Table"}</a>
+            <a href={bookingUrl}>{ (String(userType).toUpperCase() === "M" || String(userType).toUpperCase() === "E") ? "Reservation List" : (
+                    String(userType).toUpperCase() === "I" ? "" : "Book a Table"
+                )}
+            </a>
         </div>
     )
 }

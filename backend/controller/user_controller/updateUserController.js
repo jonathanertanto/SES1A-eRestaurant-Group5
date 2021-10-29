@@ -6,8 +6,8 @@ router.post("/", async (req, res) => {
     try{
         const {userID, username, password, validationPass, email, firstName, lastName, dateOfBirth, contactNumber} = req.body;
         // Check password
-        let user = await User.findOne({_id: String(userID)});
-        if(!user || user.password != validationPass){
+        const user = await User.findOne({_id: String(userID)});
+        if(!user || String(user.password) != String(validationPass)){
             console.log("Incorrect Password!");
             return res.status(400).json({
                 status: false,
@@ -16,8 +16,8 @@ router.post("/", async (req, res) => {
         }
         
         // Check for existing username
-        user = await User.findOne({username: String(username)});
-        if(user && String(username) != user.username){
+        const usernameValidation = await User.findOne({username: String(username).toLowerCase()});
+        if(usernameValidation && String(username).toLowerCase() != String(user.username)){
             console.log("Username already exists, please choose another username!");
             return res.status(400).json({
                 status: false,
@@ -26,8 +26,8 @@ router.post("/", async (req, res) => {
         }
 
         // Check for existing email
-        user = await User.findOne({email: String(email)});
-        if(user && String(email) != user.email){
+        const emailValidation = await User.findOne({email: String(email).toLowerCase()});
+        if(emailValidation && String(email).toLowerCase() != String(user.email).toLowerCase()){
             console.log("Email already exists, please choose another email!");
             return res.status(400).json({
                 status: false,
@@ -47,8 +47,8 @@ router.post("/", async (req, res) => {
 
         // Update User on Database
         User.updateOne({_id: String(userID)}, {
-            username: String(username),
-            email: String(email),
+            username: String(username).toLowerCase(),
+            email: String(email).toLowerCase(),
             password: String(password),
             firstName: String(firstName),
             lastName: String(lastName),

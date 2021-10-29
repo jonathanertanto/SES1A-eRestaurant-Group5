@@ -206,15 +206,17 @@ export const Book = _ => {
                 if(!data.status){
                     return setDiscountList("");
                 }
+                let reservationDate = String(userType).toUpperCase() === "C" ? new Date(String(table.date)) : new Date(String(staffSelection.date));
+                reservationDate = new Date(reservationDate.getUTCFullYear(), reservationDate.getUTCMonth(), reservationDate.getUTCDate());
                 if(String(userType).toUpperCase() === "C"){
                     setDiscountList(data.discounts.filter(data => 
-                        (new Date(String(data.end_date)).getTime() > new Date(String(table.date)).getTime()) &&
-                        (String(data.menuType)==="A" ? true : (new Date(String(table.date)).getHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") )
+                        (new Date(String(data.end_date)).getTime() >= reservationDate.getTime()) &&
+                        (String(data.menuType)==="A" ? true : (new Date(String(table.date)).getUTCHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") )
                     ));
                 }else{
                     setDiscountList(data.discounts.filter(data => 
-                        (new Date(String(data.end_date)).getTime() > new Date(String(staffSelection.table.date)).getTime()) &&
-                        (String(data.menuType)==="A" ? true : (new Date(String(staffSelection.table.date)).getHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") )
+                        (new Date(String(data.end_date)).getTime() > reservationDate.getTime()) &&
+                        (String(data.menuType)==="A" ? true : (new Date(String(staffSelection.table.date)).getUTCHours() >= 18? "Dinner":"Lunch") === (String(data.menuType)==="L"?"Lunch":"Dinner") )
                     ));
                 }
             }

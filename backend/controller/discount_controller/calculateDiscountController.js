@@ -54,6 +54,8 @@ const calculateDiscount = async (discountID, orders, meals, transaction) => {
                     temp = Number(meals[idx].price) * Number(orders[idx].quantity);
                 }else if(String(discount.mealType).toUpperCase() !== "A" ){
                     temp = totalTransactioins(orders, meals, String(discount.mealType));
+                }else{
+                    temp = nominal;
                 }
                 nominal = temp < nominal ? temp : nominal;
                 break;

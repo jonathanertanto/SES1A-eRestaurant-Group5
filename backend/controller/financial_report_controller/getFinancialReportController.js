@@ -35,8 +35,8 @@ router.post("/", async (req, res) => {
                 while(temp.getTime() <= filterEndDate.getTime()){
                     periods.push(temp.getDate() + " " + months[temp.getMonth()] + " " + temp.getFullYear());
                     const data = await setData(temp, tables, "DAILY");
-                    revenue.push(data[0]);
-                    profit.push(data[0]-data[1]);
+                    revenue.push(roundNumber(data[0]));
+                    profit.push(roundNumber(data[0]-data[1]));
                     temp.setDate(temp.getDate() + 1);
                 }
                 break;
@@ -46,8 +46,8 @@ router.post("/", async (req, res) => {
                 while(temp.getTime() <= temp2.getTime()){
                     periods.push(temp.getDate() + "-" + (temp.getDate()+6) + " " + months[temp.getMonth()] + " " + temp.getFullYear());
                     const data = await setData(temp, tables, "WEEKLY");
-                    revenue.push(data[0]);
-                    profit.push(data[0]-data[1]);
+                    revenue.push(roundNumber(data[0]));
+                    profit.push(roundNumber(data[0]-data[1]));
                     temp.setDate(temp.getDate() + 7);
                 }
                 break;
@@ -56,8 +56,8 @@ router.post("/", async (req, res) => {
                 while(temp.getTime() <= filterEndDate.getTime()){
                     periods.push(months[temp.getMonth()] + " " + temp.getFullYear());
                     const data = await setData(temp, tables, "MONTHLY");
-                    revenue.push(data[0]);
-                    profit.push(data[0]-data[1]);
+                    revenue.push(roundNumber(data[0]));
+                    profit.push(roundNumber(data[0]-data[1]));
                     temp.setMonth(temp.getMonth() + 1);
                 }
                 break;
@@ -66,8 +66,8 @@ router.post("/", async (req, res) => {
                 for(let i=filterStartDate.getFullYear(); i<=filterEndDate.getFullYear(); ++i){
                     periods.push(i);
                     const data = await setData(temp, tables, "YEARLY");
-                    revenue.push(data[0]);
-                    profit.push(data[0]-data[1]);
+                    revenue.push(roundNumber(data[0]));
+                    profit.push(roundNumber(data[0]-data[1]));
                 }
                 break;
         }
@@ -125,4 +125,9 @@ const setData = async (temp, tables, type) => {
         }
     }
     return [nominal, cost];
+}
+const roundNumber = (nominal) => {
+    nominal = Number((Number(nominal)*100).toPrecision(15) );
+    nominal = Math.round(nominal) / 100;
+    return nominal;
 }

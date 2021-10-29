@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
         const {username, password, email, firstName, lastName, dateOfBirth, contactNumber, accountType} = req.query;
         
         // Check for existing username
-        let user = await User.findOne({username: String(username)});
+        let user = await User.findOne({username: String(username).toLowerCase()});
         if(user){
             console.log("Username already exists, please choose another username!");
             return res.json({
@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
         }
 
         // Check for existing email
-        user = await User.findOne({email: String(email)});
+        user = await User.findOne({email: String(email).toLowerCase()});
         if(user){
             console.log("Email already exists, please choose another email!");
             return res.json({
@@ -38,8 +38,8 @@ router.get("/", async (req, res) => {
 
         // Insertion of User entity
         user = new User({
-            username: String(username),
-            email: String(email),
+            username: String(username).toLowerCase(),
+            email: String(email).toLowerCase(),
             password: String(password),
             firstName: String(firstName),
             lastName: String(lastName),

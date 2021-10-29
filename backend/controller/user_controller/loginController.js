@@ -5,10 +5,10 @@ const User = require("../../model/user").model;
 router.get("/", async (req, res) => {
     try{
         const {username, email, password} = req.query;
-        let user = await User.findOne({username: String(username)});
+        let user = await User.findOne({username: String(username).toLowerCase()});
         if(!user){
             console.log("Invalid username. Searching for email...");
-            user = await User.findOne({email: String(email)});
+            user = await User.findOne({email: String(email).toLowerCase()});
         }
         if(!user){
             console.log("Invalid username/email!");

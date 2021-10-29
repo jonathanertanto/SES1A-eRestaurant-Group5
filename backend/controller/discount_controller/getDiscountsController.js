@@ -5,13 +5,14 @@ const Reservation = require ("../../model/reservation").model;
 
 router.post("/", async (req, res) => {
     try{
+        const {userID} = req.body;
         let discounts = await Discount.find({});
         if(discounts.length > 0){
             console.log("There is already discounts existed!");
             console.log("Successfully retrieve discounts!");
             const returnData = [];
             for(let i=0; i<discounts.length; ++i){
-                let temp = await Reservation.findOne({user: String(req.body.userID), discount: String(discounts[i]._id)});
+                let temp = await Reservation.findOne({user: String(userID), discount: String(discounts[i]._id)});
                 if(temp === null){
                     returnData.push(discounts[i]);
                 }
